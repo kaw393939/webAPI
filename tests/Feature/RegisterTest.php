@@ -6,15 +6,24 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 
 class RegisterTest extends TestCase
 {
+
+
+
     public function setUp()
     {
         parent::setUp();
         //$this->artisan('migrate', ['param' => '--seed']);
         $this->artisan('key:generate');
         $this->artisan('migrate');
+
+
+
+
     }
 
     public function testRegistersSuccessfullyTest()
@@ -37,7 +46,7 @@ class RegisterTest extends TestCase
                     'updated_at',
                     'api_token',
                 ],
-            ]);;
+            ]);
     }
 
     public function testsRequiresPasswordEmailAndName()

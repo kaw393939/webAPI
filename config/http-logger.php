@@ -6,8 +6,8 @@ return [
      * The log profile which determines whether a request should be logged.
      * It should implement `LogProfile`.
      */
-    'log_profile' => \Spatie\HttpLogger\LogNonGetRequests::class,
-
+    //'log_profile' => \Spatie\HttpLogger\LogNonGetRequests::class,
+    'log_profile' => \App\Log\LogAllRequests::class,
     /*
      * The log writer used to write the request to a log.
      * It should implement `LogWriter`.

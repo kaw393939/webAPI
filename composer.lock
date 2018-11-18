@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9a56644cf25f7493546f4c6715891eb",
+    "content-hash": "63a4f898e360532f39341583a5d023b4",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1339,6 +1339,53 @@
                 "serialize"
             ],
             "time": "2018-10-02T13:36:53+00:00"
+        },
+        {
+            "name": "ozanakman/laravel-repository-generator",
+            "version": "v0.02",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ozanakman/laravel-repository-generator.git",
+                "reference": "1c2d73d02791108a90854f85cb74db0ce9a457cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ozanakman/laravel-repository-generator/zipball/1c2d73d02791108a90854f85cb74db0ce9a457cc",
+                "reference": "1c2d73d02791108a90854f85cb74db0ce9a457cc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^5.4.16",
+                "illuminate/support": "^5.4.16",
+                "php": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OzanAkman\\RepositoryGenerator\\": "src/"
+                },
+                "files": [
+                    "src/Support/helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ozan Akman",
+                    "email": "info@ozanakman.com.tr"
+                }
+            ],
+            "description": "Quickly generating repository and interfaces from existing model files",
+            "homepage": "https://github.com/ozanakman/laravel-repository-generator",
+            "keywords": [
+                "laravel",
+                "repository"
+            ],
+            "abandoned": true,
+            "time": "2017-05-08T21:19:27+00:00"
         },
         {
             "name": "paragonie/random_compat",

@@ -21,7 +21,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
         \App\Http\Middleware\LogAfterRequest::class,
-        \Spatie\HttpLogger\Middlewares\HttpLogger::class
+        \Spatie\HttpLogger\Middlewares\HttpLogger::class,
+
 
     ];
 
@@ -64,7 +65,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    ];
+        'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+        ];
 
     /**
      * The priority-sorted list of middleware.

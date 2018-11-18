@@ -1,5 +1,7 @@
 <?php
+
 namespace Tests\Feature;
+
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -7,7 +9,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use Tests\TestCase;
-
 
 
 class LoginTest extends TestCase
@@ -22,6 +23,7 @@ class LoginTest extends TestCase
         //$this->artisan('key:generate');
 
     }
+
     /**
      * A basic test example.
      *
@@ -30,12 +32,13 @@ class LoginTest extends TestCase
     public function testRequiresEmailAndLoginTest()
     {
         $this->json('POST', 'api/login')
-            ->assertStatus(422)
-            ->assertJson(['errors' => [
-                'email' => [ 'The email field is required.' ],
-                'password' => [ 'The password field is required.' ],
-            ]]);
+            ->assertStatus(401)
+            ->assertJson([
+                'success' => "false",
+                'message' => "Invalid Email or Password",
+            ]);
     }
+
     public function testUserLoginsSuccessfullyTest()
     {
         factory(User::class)->create([
@@ -45,15 +48,11 @@ class LoginTest extends TestCase
         $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
         $this->json('POST', 'api/login', $payload)
             ->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'name',
-                    'email',
-                    'created_at',
-                    'updated_at',
-                    'api_token',
-                ],
-            ]);
+            ->assertJsonStructure(
+                [
+                    'success',
+                    'token',
+                ]
+            );
     }
 }

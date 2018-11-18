@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class RegisterTest extends TestCase
 {
 
-
+    //use RefreshDatabase;
 
     public function setUp()
     {

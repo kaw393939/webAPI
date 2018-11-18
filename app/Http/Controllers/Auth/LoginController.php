@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Auth;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class LoginController extends Controller
 
 
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $this->validateLogin($request);
         if ($this->attemptLogin($request)) {

@@ -5,7 +5,11 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
+
+
 class RegisterController extends Controller
 {
     /*
@@ -41,12 +45,13 @@ class RegisterController extends Controller
      * @param  mixed  $user
      * @return mixed
      */
-    protected function registered(Request $request, $user)
+    protected function registered(RegisterRequest $request, $user)
     {
+        //$validated = $request->validated();
         $user->generateToken();
         return response()->json(['data' => $user->toArray()], 201);
     }
-
+/*
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -55,6 +60,7 @@ class RegisterController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
     }
+*/
     /**
      * Create a new user instance after a valid registration.
      *
@@ -68,5 +74,17 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        //$this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 }

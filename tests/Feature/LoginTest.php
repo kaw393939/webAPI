@@ -12,13 +12,14 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function setUp()
     {
         parent::setUp();
         //$this->artisan('migrate', ['param' => '--seed']);
-        $this->artisan('migrate:refresh');
-        $this->artisan('key:generate');
+        //$this->artisan('migrate:refresh');
+        //$this->artisan('key:generate');
 
     }
     /**

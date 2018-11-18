@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class RegisterTest extends TestCase
 {
 
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     public function setUp()
     {
@@ -32,7 +32,6 @@ class RegisterTest extends TestCase
             'name' => 'John',
             'email' => 'john@toptal.com',
             'password' => 'toptal123',
-           // 'password_confirmation' => 'toptal123',
         ];
 
         $this->json('post', '/api/register', $payload)

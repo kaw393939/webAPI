@@ -29,6 +29,8 @@ class ApiController extends Controller
             'data' => $user
         ], 201);
     }
+
+    //Remove this function after refactoring the register method
     public function login(Request $request)
     {
         $input = $request->only('email', 'password');

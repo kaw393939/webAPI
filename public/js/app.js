@@ -71521,9 +71521,24 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: {
+        email: '',
+        pass: ''
+    },
     methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapActions */])(['login']), {
-        onInputChange: function onInputChange(event) {
+        onEmailChange: function onEmailChange(event) {
+            this.email = event;
+
             this.$emit("textChange", event);
+        },
+        onPassChange: function onPassChange(event) {
+            this.pass = event;
+
+            this.$emit("textChange", event);
+        },
+        onSubmit: function onSubmit() {
+            console.log(this.email, this.pass);
+            this.login({ email: this.email, pass: this.pass });
         }
     })
 });
@@ -71594,7 +71609,7 @@ var render = function() {
                           label: "Email",
                           required: ""
                         },
-                        on: { input: _vm.onInputChange },
+                        on: { input: _vm.onEmailChange },
                         model: {
                           value: _vm.Email,
                           callback: function($$v) {
@@ -71617,7 +71632,7 @@ var render = function() {
                           required: ""
                         },
                         on: {
-                          input: _vm.onInputChange,
+                          input: _vm.onPassChange,
                           "click:append": function($event) {
                             _vm.show1 = !_vm.show1
                           }
@@ -71651,9 +71666,11 @@ var render = function() {
               }
             },
             [
-              _c("v-btn", { attrs: { large: "" }, on: { click: _vm.login } }, [
-                _vm._v("Login")
-              ])
+              _c(
+                "v-btn",
+                { attrs: { large: "" }, on: { click: _vm.onSubmit } },
+                [_vm._v("Login")]
+              )
             ],
             1
           )
@@ -72773,15 +72790,17 @@ var getters = {
 };
 
 var actions = {
-    login: function login() {
+    login: function login(_ref, obj) {
+        var commit = _ref.commit;
+
+        console.log("email", obj);
         console.log("this is login");
     },
-    logOut: function logOut(_ref) {
-        var commit = _ref.commit;
+    logOut: function logOut(_ref2) {
+        var commit = _ref2.commit;
 
         commit("setToken", null);
     }
-
 };
 
 var mutations = {

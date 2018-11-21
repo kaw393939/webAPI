@@ -9,13 +9,13 @@ const getters = {
 };
 
 const actions = {
-    login: () => {
+    login: ({commit}, obj) => {
+        console.log("email",obj)
         console.log("this is login")
     },
     logOut: ({commit}) => {
         commit("setToken", null);
     }
-
 };
 
 const mutations = {

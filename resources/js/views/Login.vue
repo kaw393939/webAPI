@@ -23,7 +23,7 @@
                                 color="blue-grey lighten-2"
                                 label="Email"
                                 required
-                                @input="onInputChange"
+                                @input="onEmailChange"
                         ></v-text-field>
                         <v-text-field
                                 v-model="password"
@@ -34,7 +34,7 @@
                                 label="Password"
                                 hint="Atleast 6 characters"
                                 required
-                                @input="onInputChange"
+                                @input="onPassChange"
                                 @click:append="show1 = !show1"
                         ></v-text-field>
                     </v-flex>
@@ -42,7 +42,7 @@
                 </v-layout>
             </v-container>
             <div style="width: 100%; display:flex; justify-content: center; align-items: center; ">
-                <v-btn large @click="login">Login</v-btn>
+                <v-btn large @click="onSubmit">Login</v-btn>
             </div>
         </v-form>
         <v-divider></v-divider>
@@ -55,10 +55,25 @@
 <script>
     import {mapActions} from "vuex";
     export default {
+        data: {
+            email: '',
+            pass: ''
+        },
         methods: {
             ...mapActions(['login']),
-            onInputChange: function(event) {
+            onEmailChange: function(event) {
+                this.email = event;
+
                 this.$emit("textChange", event);
+            },
+            onPassChange: function(event){
+                this.pass = event;
+
+                this.$emit("textChange", event);
+            },
+            onSubmit: function(){
+                console.log(this.email, this.pass);
+                this.login({email: this.email, pass: this.pass});
             }
         }
     };

@@ -2,7 +2,7 @@
     <v-app id="keep">
         <navigation></navigation>
         <v-content style="display: flex; justify-content: center; align-items: center;">
-            <login></login>
+            <login @textChange="onChange"></login>
             <!--<passRecover></passRecover>-->
             <!-- <register></register> -->
             <!-- <not-found></not-found> -->
@@ -27,6 +27,11 @@
             login: Login,
             register: Register,
             passRecover: PassRecover
+        },
+        methods: {
+            onChange(text){
+                console.log(text)
+            }
         }
     };
 </script>

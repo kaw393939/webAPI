@@ -12,11 +12,10 @@ class LogoutAPIController extends Controller
 {
     public function logout(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
+
         try {
-            JWTAuth::invalidate($request->token);
+            JWTAuth::parseToken()->invalidate();
+
             return response()->json([
                 'success' => true,
                 'message' => 'User logged out successfully'

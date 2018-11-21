@@ -37,7 +37,13 @@ class LogoutTest extends TestCase
         $response = $this->json('post', '/api/login', $payload)
         ->assertStatus(200);
 
-        $this->json('get', '/api/logout?token=' . $response->json("token"))
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
+        ];
+        $this->withHeaders($headers)
+            ->json('get', '/api/logout')
             ->assertStatus(200)
             ->assertJsonStructure(
                 [

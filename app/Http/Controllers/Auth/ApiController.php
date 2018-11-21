@@ -44,24 +44,7 @@ class ApiController extends Controller
             'token' => $jwt_token,
         ]);
     }
-    public function logout(Request $request)
-    {
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
-        try {
-            JWTAuth::invalidate($request->token);
-            return response()->json([
-                'success' => true,
-                'message' => 'User logged out successfully'
-            ]);
-        } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sorry, the user cannot be logged out'
-            ], 500);
-        }
-    }
+
     public function getAuthUser(Request $request)
     {
 

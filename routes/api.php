@@ -18,6 +18,6 @@ Route::post('register', 'Auth\ApiController@register')->name('register');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');
-    Route::get('user', 'Auth\ApiController@getAuthUser')->name('user');
+    Route::get('user', 'Auth\GetAuthUserAPIController@getAuthUser')->name('user');
 
 });

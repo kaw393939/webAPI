@@ -72306,7 +72306,11 @@ var render = function() {
             "align-items": "center"
           }
         },
-        [_c("register", { on: { textChange: _vm.onChange } })],
+        [
+          _c("login", { on: { textChange: _vm.onChange } }),
+          _vm._v(" "),
+          _c("register", { on: { textChange: _vm.onChange } })
+        ],
         1
       )
     ],

@@ -28,6 +28,7 @@ class ApiController extends Controller
     }
     public function login(Request $request)
     {
+        //print_r($request);
         $input = $request->only('email', 'password');
         $jwt_token = null;
         if (!$jwt_token = JWTAuth::attempt($input)) {

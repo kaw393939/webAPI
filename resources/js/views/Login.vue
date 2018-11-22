@@ -73,7 +73,7 @@
             },
             onSubmit: function(){
                 console.log(this.email, this.pass);
-                this.login({email: this.email, pass: this.pass});
+                this.login({email: this.email, password: this.pass});
             }
         }
     };

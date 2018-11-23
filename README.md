@@ -97,15 +97,15 @@ To auto-fix any issues that don't require your input, you can try the following 
 npm run lint:autofix
 ```
 
-#### Notes on Unit Testing and Linting
-
-**It is highly recommended that you go through the resources on how to write tests for front-end code and `Vue.js` components that are specified below.**
+#### Notes on Linting and Unit Testing
 
 Linting is done using the popular [`Eslint`](https://eslint.org) JavaScript linter. If you're unsure how to fix your linting errors, I recommend looking through the list of rules and how to fix them:
 
 -   [ESLint Rules](https://eslint.org/docs/rules/)
 
 ---
+
+**It is highly recommended that you go through the resources below to learn how to write tests for front-end code and `Vue.js`.**
 
 All unit tests are executed using [`Jest`](https://jestjs.io/en/). To learn more about `Jest`, please look through its documentation:
 

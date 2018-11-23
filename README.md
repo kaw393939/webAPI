@@ -110,9 +110,12 @@ Linting is done using the popular [`Eslint`](https://eslint.org) JavaScript lint
 All unit tests are executed using [`Jest`](https://jestjs.io/en/). To learn more about `Jest`, please look through its documentation:
 
 -   [Jest Getting Started](https://jestjs.io/docs/en/getting-started.html)
+-   [Jest Matchers](https://jestjs.io/docs/en/expect)
 
 In addition to `Jest`, the [`vue-test-utils`](https://github.com/vuejs/vue-test-utils) package is used to test all `Vue.js` related code. It is **highly recommended** to go through its [documentation](https://vue-test-utils.vuejs.org/guides/#getting-started) to learn how to properly test `Vue.js` components.
 
+-   [Unit Testing Introduction](https://vuejs.org/v2/guide/unit-testing.html)
+-   [Unit Testing Vue Components](https://vuejs.org/v2/cookbook/unit-testing-vue-components.html)
 -   [Knowing What to Test](https://vue-test-utils.vuejs.org/guides/#common-tips)
 
 Each test file needs to be in the same directory as the module/component tested and should follow the `.test` naming convention, for example:

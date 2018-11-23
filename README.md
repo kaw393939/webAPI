@@ -2,8 +2,8 @@
 
 To get started with this project, please have a look at the following:
 
--   [Local Development Setup](#local-development-setup) - How to run this project locally on your machine
--   [Contributing to Front-End Code](#contributing-to-front-end-code) - How to contribute to front-end code
+-   [Local Development Setup](#local-development-setup) - Learn how to run this project locally on your machine
+-   [Contributing](#contributing-to-front-end-code) - Learn how to contribue to this project
 
 ## Local Development Setup
 
@@ -55,6 +55,69 @@ php artisan serve
 
 Open `127.0.0.1:3000` or `localhost:3000` to view it in the browser.
 
-## Contributing to Front-End Code
+## Contributing
 
-TODO
+In order to contribute to codebase of this project, you need to have a knowledge of `Laravel` and `Vue.js`.
+
+To get started learning about these two Web frameworks, please visit the following sites:
+
+-   [Laravel.com](https://laravel.com) - official `Laravel` website
+-   [Laracast.com/laravel](https://laracasts.com/skills/laravel) -
+    video tutorials for learning `Laravel` from scratch
+-   [Vue.js](https://vuejs.org/v2/guide/) - official `Vue.js` website
+-   [Laracast.com/vuejs](https://laracasts.com/series/learn-vue-2-step-by-step) - video tutorials for learning `Vue.js` from scratch
+
+### Contributing to Front-End Codebase
+
+**Before you start contributing to this project's front-end codebase, make sure you have a good understanding of `Vue.js` and front-end Web development. Please look through the learning resources above to learn more about modern front-end Web frameworks.**
+
+Every `pull request` requires unit tests and must follow best practices for writing front-end code. In order to check whether your contribution is ready for a pull request, you can take advantage of the `scripts` specified in the `package.json` file.
+
+```sh
+npm run test
+```
+
+The `test` script will run all unit tests to make sure your code behaves exactly how you're expecting. If you want the `test runner` to keep watching for changes as you're writing your tests, you can use the following command, which will re-run your tests as you're making changes:
+
+```sh
+npm run test:watch
+```
+
+To check whether your code is following best practices, you can use the following command:
+
+```sh
+npm run lint
+```
+
+If errors appear in your terminal, make sure you go back and fix them as necessary.
+
+To auto-fix any issues that don't require your input, you can try the following command:
+
+```sh
+npm run lint:autofix
+```
+
+#### Notes on Unit Testing and Linting
+
+**It is highly recommended that you go through the resources on how to write tests for front-end code and `Vue.js` components that are specified below.**
+
+Linting is done using the popular [`Eslint`](https://eslint.org) JavaScript linter. If you're unsure how to fix your linting errors, I recommend looking through the list of rules and how to fix them:
+
+-   [ESLint Rules](https://eslint.org/docs/rules/)
+
+---
+
+All unit tests are executed using [`Jest`](https://jestjs.io/en/). To learn more about `Jest`, please look through its documentation:
+
+-   [Jest Getting Started](https://jestjs.io/docs/en/getting-started.html)
+
+In addition to `Jest`, the [`vue-test-utils`](https://github.com/vuejs/vue-test-utils) package is used to test all `Vue.js` related code. It is **highly recommended** to go through its [documentation](https://vue-test-utils.vuejs.org/guides/#getting-started) to learn how to properly test `Vue.js` components.
+
+-   [Knowing What to Test](https://vue-test-utils.vuejs.org/guides/#common-tips)
+
+Each test file needs to be in the same directory as the module/component tested and should follow the `.test` naming convention, for example:
+
+```sh
+resources/js/components/MyComponent.vue
+resources/js/components/MyComponent.test.js # your test code goes here
+```

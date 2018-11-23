@@ -3,7 +3,7 @@
 To get started with this project, please have a look at the following:
 
 -   [Local Development Setup](#local-development-setup) - Learn how to run this project locally on your machine
--   [Contributing](#contributing-to-front-end-code) - Learn how to contribue to this project
+-   [Contributing](#contributing) - Learn how to contribue to this project
 
 ## Local Development Setup
 

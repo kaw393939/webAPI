@@ -9,7 +9,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "lint": "eslint --ext .js,.vue resources/js",
-        "lint-autofix": "eslint --ext .js,.vue resources/js --fix"
+        "lint-autofix": "eslint --ext .js,.vue resources/js --fix",
+        "test": "jest",
+        "test:watch": "jest --watch"
     },
     "dependencies": {
         "axios": "^0.18.0",
@@ -18,14 +20,24 @@
         "vuetify": "^1.3.9"
     },
     "devDependencies": {
+        "@vue/test-utils": "^1.0.0-beta.25",
+        "babel-jest": "^23.6.0",
+        "babel-preset-env": "^1.7.0",
         "cross-env": "^5.1",
         "eslint": "^5.9.0",
         "eslint-plugin-vue": "^5.0.0-beta.4",
-        "laravel-mix": "^2.0"
+        "jest": "^23.6.0",
+        "laravel-mix": "^2.0",
+        "vue-jest": "^3.0.0"
     },
     "eslintConfig": {
+        "env": {
+            "node": true,
+            "jest": true
+        },
         "extends": [
-            "plugin:vue/essential"
+            "plugin:vue/essential",
+            "eslint:recommended"
         ],
         "rules": {
             "indent": [
@@ -58,6 +70,22 @@
                     "indent": "off"
                 }
             }
+        ]
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "vue"
+        ],
+        "transform": {
+            ".*\\.(vue)$": "vue-jest",
+            "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+        }
+    },
+    "babel": {
+        "presets": [
+            "env"
         ]
     }
 }

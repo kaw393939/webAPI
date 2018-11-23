@@ -110,7 +110,8 @@
                 this.signUp({
                     name: this.name,
                     email: this.email,
-                    password: this.pass
+                    password: this.pass,
+                    password_confirmation: this.passConfirm
                 });
             }
         }};

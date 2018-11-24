@@ -38917,8 +38917,10 @@ var actions = {
         console.log("email", obj);
         console.log("this is signUp");
         __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("api/register", obj).then(function (res) {
-            console.log("RES", res);
-        }).catch(console.error);
+            return console.log("RES", res);
+        }).catch(function (err) {
+            console.log("ERR", err.response);
+        });
     },
     login: function login(_ref2, obj) {
         var commit = _ref2.commit;
@@ -38927,7 +38929,9 @@ var actions = {
         console.log("this is login");
         __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("api/login", obj).then(function (res) {
             return console.log("RES", res);
-        }).catch(console.error);
+        }).catch(function (err) {
+            console.log("ERR", err.response);
+        });
     },
     logOut: function logOut(_ref3) {
         var commit = _ref3.commit;

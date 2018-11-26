@@ -10,8 +10,8 @@
                                 </v-toolbar>
                                 <v-card-text>
                                     <v-form>
-                                        <v-text-field prepend-icon="person" name="name" label="Name" type="text"  @input="onNameChange" ></v-text-field>
-                                        <v-text-field prepend-icon="mail" name="email" label="Email" type="text"  @input="onEmailChange" ></v-text-field>
+                                        <v-text-field prepend-icon="person" name="name" label="Name" type="text" :error-messages="nameErrors"  @input="onNameChange" ></v-text-field>
+                                        <v-text-field prepend-icon="mail" name="email" label="Email" type="text" :error-messages="emailErrors"  @input="onEmailChange" ></v-text-field>
                                         <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password" @input="onPassChange"></v-text-field>
                                         <v-text-field prepend-icon="lock" name="passwordConf" label="Password Confirm" type="password"  @input="onPassConfirmChange" ></v-text-field>
                                     </v-form>
@@ -31,12 +31,46 @@
 
 <script>
     import {mapActions} from "vuex";
+    import { validationMixin } from 'vuelidate'
+    import { required, maxLength, email } from 'vuelidate/lib/validators'
+
     export default {
+
+        mixins: [validationMixin],
+
+        validations: {
+            name: { required, maxLength: maxLength(10) },
+            email: { required, email },
+            select: { required },
+            checkbox: { required }
+        },
         data: {
             name: '',
             email: '',
             pass: '',
             passConfirm: ''
+        },
+        computed: {
+            selectErrors () {
+                const errors = []
+                if (!this.$v.select.$dirty) return errors
+                !this.$v.select.required && errors.push('Item is required')
+                return errors
+            },
+            nameErrors () {
+                const errors = []
+                if (!this.$v.name.$dirty) return errors
+                !this.$v.name.maxLength && errors.push('Name must be at most 10 characters long')
+                !this.$v.name.required && errors.push('Name is required.')
+                return errors
+            },
+            emailErrors () {
+                const errors = []
+                if (!this.$v.email.$dirty) return errors
+                !this.$v.email.email && errors.push('Must be valid e-mail')
+                !this.$v.email.required && errors.push('E-mail is required')
+                return errors
+            }
         },
         methods: {
             ...mapActions(['signUp']),

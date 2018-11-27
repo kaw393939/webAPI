@@ -1,20 +1,24 @@
 import axios from "axios";
 
 const state = {
-  token: null
+  token: null,
+  error: ''
 };
 
 const getters = {
-  isLoggedIn: state => !!state.token
+  isLoggedIn: state => !!state.token,
+  error: state => state.error,
 };
 
 const actions = {
-  signUp: ({commit}, obj) => {
-    axios.post("api/register", obj ).then(res => console.log("RES", res)).catch(err => {
-      console.log("ERR", err.response);
+  signUp ({commit}, obj) {
+    return axios.post("api/register", obj).then(res => console.log("RES", res)).catch(err => {
+      commit("sendError", err.response.data.errors.email[0]);
+      return err;
     });
+
   },
-  login: ({commit}, obj) => {
+  login ({commit}, obj) {
     axios.post("api/login", obj).then(res => console.log("RES", res)).catch(err => {
       console.log("ERR", err.response);
     });
@@ -27,7 +31,11 @@ const actions = {
 const mutations = {
   setToken: (state, token) => {
     state.token = token;
+  },
+  sendError: (state, error) => {
+    state.error = error;
   }
+
 };
 
 export default {
@@ -36,3 +44,5 @@ export default {
   actions,
   mutations
 }
+
+

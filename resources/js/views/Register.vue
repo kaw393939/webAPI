@@ -9,6 +9,7 @@
                 <v-toolbar-title>Register</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
+                <div style="color: #ff0000; height: 2rem; font-size: 1.2rem;">{{error}}</div>
                 <v-form>
                   <v-text-field prepend-icon="person" name="name" label="Name" type="text" :error-messages="nameErrors" required @blur="$v.name.$touch()"  @input="onNameChange" ></v-text-field>
                   <v-text-field prepend-icon="mail" name="email" label="Email" type="text" :error-messages="emailErrors" required @blur="$v.email.$touch()"  @input="onEmailChange" ></v-text-field>
@@ -30,7 +31,7 @@
 
 
 <script>
-  import {mapActions} from "vuex";
+  import {mapActions, mapGetters} from "vuex";
   import { validationMixin } from 'vuelidate'
   import { required, maxLength, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
@@ -53,6 +54,7 @@
       };
     },
     computed: {
+      ...mapGetters(['error']),
       selectErrors () {
         const errors = []
         if (!this.$v.select.$dirty) return errors
@@ -75,19 +77,19 @@
       },
       passErrors () {
         const errors = []
-          console.log(this.$v);
+        console.log(this.$v);
         if (!this.$v.password.$dirty) return errors
-          !this.$v.password.required && errors.push('Password is required')
-          !this.$v.password.minLength && errors.push('Password must be at least 6 characters long')
+        !this.$v.password.required && errors.push('Password is required')
+        !this.$v.password.minLength && errors.push('Password must be at least 6 characters long')
         return errors
-        },
-       passConfirmErrors () {
+      },
+      passConfirmErrors () {
         const errors = []
         if (!this.$v.passConfirm.$dirty) return errors
         !this.$v.passConfirm.required && errors.push('Password confirmation is required')
         !this.$v.passConfirm.sameAsPassword && errors.push('Passwords must match')
         return errors
-        }
+      }
     },
     methods: {
       ...mapActions(['signUp']),
@@ -112,7 +114,6 @@
         this.$emit("textChange", event);
       },
       onSubmit: function(){
-        console.log(this.email, this.pass);
         if(!this.$v.$invalid) {
           this.signUp({
             name: this.name,

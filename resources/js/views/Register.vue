@@ -32,7 +32,7 @@
 <script>
   import {mapActions} from "vuex";
   import { validationMixin } from 'vuelidate'
-  import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
+  import { required, maxLength, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
   export default {
 
@@ -42,13 +42,13 @@
       name: { required, maxLength: maxLength(10) },
       email: { required, email },
       password: {required, minLength: minLength(6)},
-      passConfirm: {required}
+      passConfirm: {required, sameAsPassword: sameAs('password')}
     },
     data: function() {
       return {
         name: '',
         email: '',
-        pass: '',
+        password: '',
         passConfirm: ''
       };
     },
@@ -77,14 +77,15 @@
         const errors = []
           console.log(this.$v);
         if (!this.$v.password.$dirty) return errors
-        !this.$v.password.minLength && errors.push('Password must be at least 6 characters long')
-        !this.$v.password.required && errors.push('Password is required')
+          !this.$v.password.required && errors.push('Password is required')
+          !this.$v.password.minLength && errors.push('Password must be at least 6 characters long')
         return errors
         },
        passConfirmErrors () {
         const errors = []
         if (!this.$v.passConfirm.$dirty) return errors
         !this.$v.passConfirm.required && errors.push('Password confirmation is required')
+        !this.$v.passConfirm.sameAsPassword && errors.push('Passwords must match')
         return errors
         }
     },
@@ -101,7 +102,7 @@
         this.$emit("textChange", event);
       },
       onPassChange: function(event){
-        this.pass = event;
+        this.password = event;
 
         this.$emit("textChange", event);
       },
@@ -115,7 +116,7 @@
         this.signUp({
           name: this.name,
           email: this.email,
-          password: this.pass,
+          password: this.password,
           password_confirmation: this.passConfirm
         });
       },

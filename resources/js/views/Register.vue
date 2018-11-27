@@ -18,7 +18,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="onSubmit">Register</v-btn>
+                <v-btn color="primary" :disabled="$v.$invalid" @click="onSubmit">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -113,12 +113,14 @@
       },
       onSubmit: function(){
         console.log(this.email, this.pass);
-        this.signUp({
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.passConfirm
-        });
+        if(!this.$v.$invalid) {
+          this.signUp({
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.passConfirm
+          })
+        }
       },
       clear () {
         this.$v.$reset()

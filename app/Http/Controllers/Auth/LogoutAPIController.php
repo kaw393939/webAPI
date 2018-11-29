@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 namespace App\Http\Controllers\Auth;
-use Illuminate\Http\Request;
+use App\Http\Requests\LogoutRequest;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
 
 class LogoutAPIController extends Controller
 {
-    public function logout(Request $request)
+    public function logout(LogoutRequest $request)
     {
 
         try {

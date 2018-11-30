@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 namespace App\Http\Controllers\Auth;
-use App\Http\Requests\LogoutRequest;
+use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
 
 class LogoutAPIController extends Controller
 {
-    public function logout(LogoutRequest $request)
+    public function logout(Request $request)
     {
+//        $this->validate($request,['token' =>'required']);
+
 
         try {
             JWTAuth::parseToken()->invalidate();

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -8,27 +9,25 @@ use JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Auth;
 class RegisterAPIController extends Controller
 {
 
-    public $loginAfterSignUp = true;
-
     public function register(RegisterRequest $request)
     {
-
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $input = $request->only('name', 'email', 'password');
+        $user = User::create($input);
+        $user->password = Hash::make($input['password']);
         $user->save();
 
-        if ($this->loginAfterSignUp) {
-            return app('App\Http\Controllers\Auth\LoginAPIController')->login($request);
-        }
+        $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
+
+        //refactor this with a custom response class.
         return response()->json([
-            'success' => true,
-            'data' => $user
+            'code'   => 201,
+            'status' => true,
+            'message'=> "Register Success",
+            'token' => $token
         ], 201);
     }
 }

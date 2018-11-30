@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use JWTAuth;
 use App\Http\Controllers\Controller;
@@ -8,19 +10,19 @@ use App\Http\Controllers\Controller;
 class LoginAPIController extends Controller
 {
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $input = $request->only('email', 'password');
-        $jwt_token = null;
-        if (!$jwt_token = JWTAuth::attempt($input)) {
-            return response()->json([
-                'success' => "false",
-                'message' => "Invalid Email or Password",
-            ], 401);
-        }
+        $jwt_token = JWTAuth::attempt($input);
+
+        //refactor to use custom response class
         return response()->json([
-            'success' => true,
+            'code'   => 200,
+            'status' => true,
+            'message'=> "Login Success",
             'token' => $jwt_token,
-        ]);
+        ], 200);
     }
+
+
 }

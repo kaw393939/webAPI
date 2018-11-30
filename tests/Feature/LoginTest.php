@@ -32,10 +32,9 @@ class LoginTest extends TestCase
     public function testRequiresEmailAndLoginTest()
     {
         $this->json('POST', 'api/login')
-            ->assertStatus(401)
-            ->assertJson([
-                'success' => "false",
-                'message' => "Invalid Email or Password",
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'email',
             ]);
     }
 
@@ -50,7 +49,9 @@ class LoginTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(
                 [
-                    'success',
+                    'code',
+                    'status',
+                    'message',
                     'token',
                 ]
             );

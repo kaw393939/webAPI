@@ -35,9 +35,11 @@ class RegisterTest extends TestCase
         ];
 
         $this->json('post', '/api/register', $payload)
-            ->assertStatus(200)
+            ->assertStatus(201)
             ->assertJsonStructure([
-                'success',
+                'code',
+                'status',
+                'message',
                 'token',
             ]
             );

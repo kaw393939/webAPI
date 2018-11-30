@@ -43,10 +43,10 @@ class LogoutTest extends TestCase
             'Authorization' => 'Bearer ' . $response->json('token'),
         ];
         print_r($headers);
-//        $this->withHeaders($headers)
-        $this
-            ->json('get','/api/logout',[$headers])
-//            ->json('get', '/api/logout')
+        $this->withHeaders($headers)
+//        $this
+//            ->json('get','/api/logout',[$headers])
+            ->json('get', '/api/logout')
             ->assertStatus(200)
             ->assertJsonStructure(
                 [
@@ -54,6 +54,6 @@ class LogoutTest extends TestCase
                     'message',
                 ]
             );
-        print_r($this);
+//        print_r($this);
     }
 }

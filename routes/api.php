@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login', 'Auth\LoginAPIController@login')->name('login');
-Route::post('register', 'Auth\ApiController@register')->name('register');
+Route::post('register', 'Auth\RegisterAPIController@register')->name('register');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');

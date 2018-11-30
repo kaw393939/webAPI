@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 use App\Http\Requests\RegisterRequest;
 use App\User;
@@ -8,8 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
 
-class ApiController extends Controller
+class RegisterAPIController extends Controller
 {
+
     public $loginAfterSignUp = true;
 
     public function register(RegisterRequest $request)
@@ -22,30 +24,11 @@ class ApiController extends Controller
         $user->save();
 
         if ($this->loginAfterSignUp) {
-            return $this->login($request);
+            return app('App\Http\Controllers\Auth\LoginAPIController')->login($request);
         }
         return response()->json([
             'success' => true,
             'data' => $user
         ], 201);
     }
-
-    //Remove this function after refactoring the register method
-    public function login(Request $request)
-    {
-        $input = $request->only('email', 'password');
-        $jwt_token = null;
-        if (!$jwt_token = JWTAuth::attempt($input)) {
-            return response()->json([
-                'success' => "false",
-                'message' => "Invalid Email or Password",
-            ], 401);
-        }
-        return response()->json([
-            'success' => true,
-            'token' => $jwt_token,
-        ]);
-    }
-
-
 }

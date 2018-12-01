@@ -18,7 +18,7 @@ class LoginAPIController extends ApiController
     {
         $input = $request->only('email', 'password');
         $jwt_token = JWTAuth::attempt($input);
-        $data[] = $this->buildDataObject('authtoken',['token' => $jwt_token]);
+        $data[] = $this->buildDataObject('authtoken',['token' => $jwt_token,'status'=>200]);
         //refactor to use custom response class
 //        return response()->json([
 //            'code'   => 200,

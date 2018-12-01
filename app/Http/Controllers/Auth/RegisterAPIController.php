@@ -22,7 +22,7 @@ class RegisterAPIController extends ApiController
         $user->save();
 
         $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
-        $data[] = $this->buildDataObject('response',['message'=> "Register Success",'token' => $token]);
+        $data[] = $this->buildDataObject('response',['message'=> "Register Success",'token' => $token,'status'=>200]);
         //refactor this with a custom response class.
 //        return response()->json([
 //            'code'   => 201,

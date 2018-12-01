@@ -2,9 +2,9 @@
   <v-app id="keep">
     <navigation></navigation>
     <v-content style="display: flex; justify-content: center; align-items: center;">
-      <!--<login @textChange="onChange"></login>-->
+      <login @textChange="onChange"></login>
       <!--<passRecover></passRecover>-->
-      <register @textChange="onChange"></register>
+      <!--<register @textChange="onChange"></register>-->
       <!-- <not-found></not-found> -->
     </v-content>
   </v-app>

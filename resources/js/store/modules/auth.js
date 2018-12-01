@@ -20,7 +20,8 @@ const actions = {
   },
   login ({commit}, obj) {
     axios.post("api/login", obj).then(res => console.log("RES", res)).catch(err => {
-      console.log("ERR", err.response);
+      commit("sendError", err.response.data.message);
+      return err;
     });
   },
   logOut: ({commit}) => {

@@ -55,12 +55,6 @@
     },
     computed: {
       ...mapGetters(['error']),
-      selectErrors () {
-        const errors = []
-        if (!this.$v.select.$dirty) return errors
-        !this.$v.select.required && errors.push('Item is required')
-        return errors
-      },
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors

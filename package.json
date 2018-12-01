@@ -1,93 +1,94 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "lint": "eslint --ext .js,.vue resources/js",
-        "lint:autofix": "eslint --ext .js,.vue resources/js --fix",
-        "test": "jest",
-        "test:watch": "jest --watch"
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "lint": "eslint --ext .js,.vue resources/js",
+    "lint:autofix": "eslint --ext .js,.vue resources/js --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
+    "lodash": "^4.17.11",
+    "vue": "^2.5.17",
+    "vuetify": "^1.3.9"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.25",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "cross-env": "^5.1",
+    "eslint": "^5.9.0",
+    "eslint-plugin-vue": "^5.0.0-beta.4",
+    "jest": "^23.6.0",
+    "laravel-mix": "^2.0",
+    "vue-jest": "^3.0.0",
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.0.1"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "jest": true
     },
-    "dependencies": {
-        "axios": "^0.18.0",
-        "babel-core": "^6.26.3",
-        "lodash": "^4.17.11",
-        "vue": "^2.5.17",
-        "vuetify": "^1.3.9"
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "vue/html-indent": [
+        "error",
+        2,
+        {
+          "attribute": 1,
+          "closeBracket": 0,
+          "alignAttributesVertically": true
+        }
+      ],
+      "vue/script-indent": [
+        "error",
+        2,
+        {
+          "baseIndent": 1
+        }
+      ]
     },
-    "devDependencies": {
-        "@vue/test-utils": "^1.0.0-beta.25",
-        "babel-jest": "^23.6.0",
-        "babel-preset-env": "^1.7.0",
-        "cross-env": "^5.1",
-        "eslint": "^5.9.0",
-        "eslint-plugin-vue": "^5.0.0-beta.4",
-        "jest": "^23.6.0",
-        "laravel-mix": "^2.0",
-        "vue-jest": "^3.0.0",
-        "vuex": "^3.0.1"
-    },
-    "eslintConfig": {
-        "env": {
-            "node": true,
-            "jest": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "eslint:recommended"
+    "overrides": [
+      {
+        "files": [
+          "*.vue"
         ],
         "rules": {
-            "indent": [
-                "error",
-                2
-            ],
-            "vue/html-indent": [
-                "error",
-                2,
-                {
-                    "attribute": 1,
-                    "closeBracket": 0,
-                    "alignAttributesVertically": true
-                }
-            ],
-            "vue/script-indent": [
-                "error",
-                2,
-                {
-                    "baseIndent": 1
-                }
-            ]
-        },
-        "overrides": [
-            {
-                "files": [
-                    "*.vue"
-                ],
-                "rules": {
-                    "indent": "off"
-                }
-            }
-        ]
-    },
-    "jest": {
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "vue"
-        ],
-        "transform": {
-            ".*\\.(vue)$": "vue-jest",
-            "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+          "indent": "off"
         }
-    },
-    "babel": {
-        "presets": [
-            "env"
-        ]
+      }
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     }
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  }
 }

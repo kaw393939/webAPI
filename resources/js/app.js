@@ -11,6 +11,6 @@ import  store from "./store";
 Vue.use(Vuetify);
 
 new Vue({
-    store,
-    render: h => h(App)
+  store,
+  render: h => h(App)
 }).$mount("#app")

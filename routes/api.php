@@ -21,3 +21,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('user', 'Auth\GetAuthUserAPIController@getAuthUser')->name('user');
 
 });
+
+
+Route::any('{all}', 'ApiController@fourOhFour')->where('all', '.*');
+

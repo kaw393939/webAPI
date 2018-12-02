@@ -1,79 +1,84 @@
 <template>
-  <v-app id="inspire">
-    <v-content style="padding: 0;">
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12" style="width: 35rem;">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>Register</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <div style="color: #ff0000; height: 2rem; font-size: 1.2rem;">{{error}}</div>
-                <v-form>
-                  <v-text-field
-                    prepend-icon="person"
-                    name="name"
-                    label="Name"
-                    type="text"
-                    :error-messages="nameErrors"
-                    required
-                    @blur="$v.name.$touch()"
-                    @input="onNameChange"
-                  ></v-text-field>
-                  <v-text-field
-                    prepend-icon="mail"
-                    name="email"
-                    label="Email"
-                    type="text"
-                    :error-messages="emailErrors"
-                    required
-                    @blur="$v.email.$touch()"
-                    @input="onEmailChange"
-                  ></v-text-field>
-                  <v-text-field
-                    prepend-icon="lock"
-                    name="password"
-                    label="Password"
-                    type="password"
-                    :error-messages="passErrors"
-                    required
-                    @blur="$v.password.$touch()"
-                    @input="onPassChange"
-                  ></v-text-field>
-                  <v-text-field
-                    prepend-icon="lock"
-                    name="passwordConf"
-                    label="Password Confirm"
-                    type="password"
-                    :error-messages="passConfirmErrors"
-                    required
-                    @blur="$v.passConfirm.$touch()"
-                    @input="onPassConfirmChange"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" :disabled="$v.$invalid" @click="onSubmit">Register</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-  </v-app>
+  <v-layout align-center justify-center>
+    <v-flex xs12 sm8 md5>
+      <v-card class="elevation-12">
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Register</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <div class="errorMessage">{{error}}</div>
+          <v-form>
+            <v-text-field
+              v-model.trim.lazy="name"
+              prepend-icon="person"
+              name="name"
+              label="Name"
+              type="text"
+              :error-messages="nameErrors"
+              @input="$v.name.$touch()"
+              @blur="$v.name.$touch()"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model.trim.lazy="email"
+              prepend-icon="mail"
+              name="email"
+              label="Email"
+              type="text"
+              :error-messages="emailErrors"
+              @input="$v.email.$touch()"
+              @blur="$v.email.$touch()"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model.trim.lazy="password"
+              prepend-icon="lock"
+              name="password"
+              label="Password"
+              type="password"
+              :error-messages="passErrors"
+              @input="$v.password.$touch()"
+              @blur="$v.password.$touch()"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model.trim.lazy="passConfirm"
+              prepend-icon="lock"
+              name="passwordConf"
+              label="Password Confirmation"
+              type="password"
+              :error-messages="passConfirmErrors"
+              @input="$v.passConfirm.$touch()"
+              @blur="$v.passConfirm.$touch()"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" :disabled="$v.$invalid" @click="onSubmit">Register</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
+<style>
+.errorMessage {
+  color: #ff0000;
+  height: 2rem;
+  font-size: 1.2rem;
+}
+</style>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import {
-  required,
+  email,
   maxLength,
   minLength,
-  email,
+  required,
   sameAs
 } from "vuelidate/lib/validators";
 
@@ -81,12 +86,13 @@ export default {
   mixins: [validationMixin],
 
   validations: {
-    name: { required, maxLength: maxLength(10) },
+    name: { required, maxLength: maxLength(30) },
     email: { required, email },
     password: { required, minLength: minLength(6) },
     passConfirm: { required, sameAsPassword: sameAs("password") }
   },
-  data: function() {
+
+  data() {
     return {
       name: "",
       email: "",
@@ -94,74 +100,98 @@ export default {
       passConfirm: ""
     };
   },
+
   computed: {
     ...mapGetters(["error"]),
+
     nameErrors() {
       const errors = [];
-      if (!this.$v.name.$dirty) return errors;
-      !this.$v.name.maxLength &&
-        errors.push("Name must be at most 10 characters long");
-      !this.$v.name.required && errors.push("Name is required.");
+      const { name } = this.$v;
+
+      if (!name.$dirty) {
+        return errors;
+      }
+      if (!name.maxLength) {
+        const { max } = name.$params.maxLength;
+        errors.push(`Name must be at most ${max} characters long.`);
+      }
+      if (!name.required) {
+        errors.push(`Name is required.`);
+      }
+
       return errors;
     },
+
     emailErrors() {
       const errors = [];
-      if (!this.$v.email.$dirty) return errors;
-      !this.$v.email.email && errors.push("Must be valid e-mail");
-      !this.$v.email.required && errors.push("E-mail is required");
+      const { email } = this.$v;
+
+      if (!email.$dirty) {
+        return errors;
+      }
+      if (!email.email) {
+        errors.push(`Must be a valid email.`);
+      }
+      if (!email.required) {
+        errors.push(`Email is required.`);
+      }
+
       return errors;
     },
+
     passErrors() {
       const errors = [];
-      console.log(this.$v);
-      if (!this.$v.password.$dirty) return errors;
-      !this.$v.password.required && errors.push("Password is required");
-      !this.$v.password.minLength &&
-        errors.push("Password must be at least 6 characters long");
+      const { password } = this.$v;
+
+      if (!password.$dirty) {
+        return errors;
+      }
+      if (!password.required) {
+        errors.push(`Password is required.`);
+      }
+      if (!password.minLength) {
+        const { min } = password.$params.minLength;
+        errors.push(`Password must be at least ${min} characters long.`);
+      }
+
       return errors;
     },
+
     passConfirmErrors() {
       const errors = [];
-      if (!this.$v.passConfirm.$dirty) return errors;
-      !this.$v.passConfirm.required &&
-        errors.push("Password confirmation is required");
-      !this.$v.passConfirm.sameAsPassword &&
-        errors.push("Passwords must match");
+      const { passConfirm } = this.$v;
+
+      if (!passConfirm.$dirty) {
+        return errors;
+      }
+      if (!passConfirm.required) {
+        errors.push(`Password confirmation is required.`);
+      }
+      if (!passConfirm.sameAsPassword) {
+        errors.push(`Passwords must match.`);
+      }
+
       return errors;
     }
   },
   methods: {
     ...mapActions(["signUp"]),
-    onNameChange: function(event) {
-      this.name = event;
 
-      this.$emit("textChange", event);
-    },
-    onEmailChange: function(event) {
-      this.email = event;
-
-      this.$emit("textChange", event);
-    },
-    onPassChange: function(event) {
-      this.password = event;
-
-      this.$emit("textChange", event);
-    },
-    onPassConfirmChange: function(event) {
-      this.passConfirm = event;
-
-      this.$emit("textChange", event);
-    },
     onSubmit: function() {
-      if (!this.$v.$invalid) {
-        this.signUp({
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          password_confirmation: this.passConfirm
-        });
+      const { name, email, password, passConfirm } = this;
+
+      if (this.$v.$invalid) {
+        return;
       }
+
+      this.signUp({
+        name,
+        email,
+        password,
+        password_confirmation: passConfirm
+      });
     },
+
     clear() {
       this.$v.$reset();
       this.name = "";

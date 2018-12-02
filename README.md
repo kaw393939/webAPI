@@ -20,7 +20,6 @@ Install project dependencies and create a database file:
 
 ```sh
 composer install
-npm install
 touch database/database.sqlite
 cp .env.example .env
 ```
@@ -50,6 +49,7 @@ Create a minified bundle of your front-end code:
 
 ```sh
 cd frontend
+npm install
 npm run build
 ```
 

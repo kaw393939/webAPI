@@ -21,7 +21,21 @@ class UserResource extends Resource
                 'name' => $this -> name,
                 'email' => $this -> email,
                 'email_verified_at' => $this->email_verified_at,
+            ],
+//            'relationships' => new UsersRelationshipResource($this),
+              'relationships' => '',
+            'links'         => [
+                'self' => route('users.show',['user' => $this->id]),
             ]
         ];
     }
+
+//    public function with($request)
+//    {
+//        return [
+//            'links' => [
+//                'self' => route('users.index'),
+//            ],
+//        ];
+//    }
 }

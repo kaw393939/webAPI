@@ -1,8 +1,10 @@
 <template>
   <v-app id="keep">
     <navigation></navigation>
-    <v-content class="content">
-      <router-view/>
+    <v-content>
+      <v-container fluid fill-height>
+        <router-view/>
+      </v-container>
     </v-content>
   </v-app>
 </template>
@@ -11,17 +13,8 @@
 import Navigation from "./components/Navigation";
 
 export default {
-    components: {
-        navigation: Navigation
-    }
+  components: {
+    navigation: Navigation
+  }
 };
 </script>
-
-
-<style>
-.content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-</style>

@@ -23,27 +23,26 @@ class ShowUserTest extends TestCase
     }
 
 
-
-
     public function testshowUserSuccessfullyTest()
     {
-//        factory(User::class)->create([
-//            'id' => ,
-//            'name' => 'test',
-//            'email' => 'testlogin@user.com',
-//            'password' => bcrypt('toptal123'),
-//        ]);
-//        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
-        $this->json('POST', 'api/users/1')
-            ->assertStatus(200);
-//            ->assertJsonStructure(
-//                [
-//                    'code',
-//                    'status',
-//                    'message',
-//                    'token',
-//                ]
-//            );
-    }
+        $user = factory(User::class)->create();
 
+        $response = $this ->json('GET',"/api/users/{$user->id}");
+
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'id' => (string) $user->id,
+                'attributes' => [
+                   'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified_at' =>(string)$user->email_verified_at
+        ],
+        'relationships' => '',
+        'links' => [
+
+                   ]
+
+            ]);
+    }
 }

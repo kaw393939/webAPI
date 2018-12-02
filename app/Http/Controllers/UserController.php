@@ -10,11 +10,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\UserResource
      */
     public function index()
     {
-        //
+        return new UserResource(User::with(['user','id'])->paginate());
     }
 
     /**
@@ -46,6 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        UserResource::withoutWrapping();
         return new UserResource($user);
     }
 

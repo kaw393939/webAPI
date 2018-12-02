@@ -3,6 +3,7 @@
     <v-navigation-drawer v-model="drawer" fixed clipped class="grey lighten-4" app>
       <v-list dense class="grey lighten-4">
         {{isLogged}}
+        {{loggedIn}}
         <template v-if="isLogged">
          <template v-for="(item, i) in afterLogin">
           <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
@@ -63,6 +64,7 @@ const navItemConst = [
 
 export default {
   data: () => ({
+    loggedIn: false,
     drawer: null,
     navItems: [
       ...navItemConst,
@@ -73,12 +75,24 @@ export default {
   }),
 
   created() {
-    this.isLogged();
     this.getUser();
+    EventBus.$on("logged", () => {
+      console.log("mounted");
+      this.loggedIn = true;
+      console.log(this.loggedIn);
+    });
   },
 
   computed: {
-    ...mapGetters(["isLoggedIn", "user"]),
+    ...mapGetters(["isLoggedIn", "userData"]),
+    isLogged: function() {
+      console.log("userdataaa", this.userData);
+      if (this.userData) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     afterLogin: function() {
       return this.navItemsAfterAuth.map(item => {
         return item;
@@ -92,15 +106,9 @@ export default {
   },
   methods: {
     ...mapActions(["getUserDetails"]),
-    isLogged: function() {
-      EventBus.$on("logged", (user) => {
-        console.log("user", user);
-        return user.token ? this.isLogged = true : this.isLogged = false;
-      });
-    },
     getUser: function() {
-      const user = this.getUserDetails();
-      console.log("USER", user);
+      this.getUserDetails();
+    }
   }
-}}
+};
 </script>

@@ -12,7 +12,7 @@ const state = {
 const getters = {
     isLoggedIn: state => !!state.token,
     error: state => state.error,
-    user: state => state.user,
+    userData: state => state.user,
 };
 
 const actions = {
@@ -32,7 +32,7 @@ const actions = {
             .post("api/login", obj)
             .then(res => {
                 console.log(res.data);
-                EventBus.$emit("logged", res.data);
+                EventBus.$emit("logged", "logged");
                 setToken(res.data.token);
                 router.push("/");
             })
@@ -45,12 +45,11 @@ const actions = {
     getUserDetails({commit}){
         axios.get("/api/user")
         .then(res => {
-            console.log("RES", res.data);
-            setToken(res.data);
-            commit("sendUserData", res.data);           
+            console.log("RES", res.data.user);
+            // setToken(res.data);
+            commit("sendUserData", res.data.user);           
         })
-        .catch(err => {
-            return false; 
+        .catch(err => { 
             console.log(error);
         });
     },
@@ -64,9 +63,10 @@ const mutations = {
         state.error = error;
     },
     sendUserData: (state, userData) => {
-        if(userData)
-            state.user = userData;
-        state.user = "";
+        console.log("userData", userData);
+        userData ? state.user = userData : state.user = "";
+        console.log("USER ST", state.user);
+
     }
 };
 

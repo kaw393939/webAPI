@@ -49,6 +49,7 @@
 import { mapActions, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
+import { EventBus } from "../utilities/eventBus.js";
 
 export default {
   mixins: [validationMixin],

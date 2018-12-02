@@ -1,15 +1,18 @@
-import axios from "axios";
 import router from "../../router";
 import { setToken, getToken } from "../../utilities/localStorage";
+import { EventBus } from "../../utilities/eventBus";
 
 const state = {
     token: getToken(),
-    error: ""
+    error: "",
+    user: ""
+
 };
 
 const getters = {
     isLoggedIn: state => !!state.token,
-    error: state => state.error
+    error: state => state.error,
+    user: state => state.user,
 };
 
 const actions = {
@@ -28,6 +31,8 @@ const actions = {
         axios
             .post("api/login", obj)
             .then(res => {
+                console.log(res.data);
+                EventBus.$emit("logged", res.data);
                 setToken(res.data.token);
                 router.push("/");
             })
@@ -36,17 +41,32 @@ const actions = {
                 return err;
             });
     },
+
+    getUserDetails({commit}){
+        axios.get("/api/user")
+        .then(res => {
+            console.log("RES", res.data);
+            setToken(res.data);
+            commit("sendUserData", res.data);           
+        })
+        .catch(err => {
+            return false; 
+            console.log(error);
+        });
+    },
     logOut: ({ commit }) => {
         commit("setToken", null);
     }
 };
 
 const mutations = {
-    setToken: (state, token) => {
-        state.token = token;
-    },
     sendError: (state, error) => {
         state.error = error;
+    },
+    sendUserData: (state, userData) => {
+        if(userData)
+            state.user = userData;
+        state.user = "";
     }
 };
 

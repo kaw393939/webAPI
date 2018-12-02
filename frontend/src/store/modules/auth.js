@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router";
 
 const state = {
     token: null,
@@ -14,7 +15,7 @@ const actions = {
     signUp({ commit }, obj) {
         return axios
             .post("api/register", obj)
-            .then(res => console.log("RES", res))
+            .then(res => router.push("/login"))
             .catch(err => {
                 commit("sendError", err.response.data.errors.email[0]);
                 return err;
@@ -23,7 +24,7 @@ const actions = {
     login({ commit }, obj) {
         axios
             .post("api/login", obj)
-            .then(res => console.log("RES", res))
+            .then(res => router.push("/"))
             .catch(err => {
                 commit("sendError", err.response.data.message);
                 return err;

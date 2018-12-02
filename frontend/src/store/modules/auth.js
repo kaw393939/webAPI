@@ -3,7 +3,7 @@ import router from "../../router";
 import { setToken, getToken } from "../../utilities/localStorage";
 
 const state = {
-    token: null,
+    token: getToken(),
     error: ""
 };
 

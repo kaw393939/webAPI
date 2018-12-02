@@ -32,15 +32,22 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-    data: () => ({
-        drawer: null,
-        navItems: [
-            { icon: "home", text: "Home", href: "/" },
-            { divider: true },
-            { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
-            { icon: "info", text: "About", href: "/" }
-        ]
-    })
+  data: () => ({
+    drawer: null,
+    navItems: [
+      { icon: "home", text: "Home", href: "/" },
+      { divider: true },
+      { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
+      { icon: "info", text: "About", href: "/" },
+      { icon: "account-box", text: "Login", href: "/login" },
+      { icon: "account-box", text: "Register", href: "/register" }
+    ]
+  }),
+  created: {
+    
+  },
+  computed: mapGetters(["isLoggedIn"])
 };
 </script>

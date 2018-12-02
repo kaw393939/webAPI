@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { getToken } from "./utilities/localStorage";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -16,9 +17,10 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
  * a simple convenience so we don't have to attach every token manually.
  */
 const csrfToken = Cookies.get("XSRF-TOKEN");
+const token = getToken();
 
 if (csrfToken) {
-    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
+    window.axios.defaults.headers.common["X-CSRF-TOKEN"] = token;
 } else {
     console.error(
         "CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token"

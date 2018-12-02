@@ -20,7 +20,6 @@ Install project dependencies and create a database file:
 
 ```sh
 composer install
-npm install
 touch database/database.sqlite
 cp .env.example .env
 ```
@@ -46,10 +45,17 @@ php artisan key:generate
 php artisan jwt:secret
 ```
 
-Create a minified bundle of your front-end code and start the development server:
+Create a minified bundle of your front-end code:
 
 ```sh
+cd frontend
+npm install
 npm run build
+```
+
+Start your development server in the root directory:
+
+```sh
 php artisan serve
 ```
 
@@ -71,16 +77,12 @@ To get started learning about these two Web frameworks, please visit the followi
 
 **Before you start contributing to this project's front-end codebase, make sure you have a good understanding of `Vue.js` and front-end Web development. Please look through the learning resources above to learn more about modern front-end Web frameworks.**
 
-Every `pull request` requires unit tests and must follow best practices for writing front-end code. In order to check whether your contribution is ready for a pull request, you can take advantage of the `scripts` specified in the `package.json` file.
+Every `pull request` requires unit tests and must follow best practices for writing front-end code. In order to check whether your contribution is ready for a pull request, you can take advantage of the `scripts` specified in the `frontend/package.json` file.
+
+The test script will run all unit tests to make sure your code behaves exactly how you're expecting.
 
 ```sh
-npm run test
-```
-
-The `test` script will run all unit tests to make sure your code behaves exactly how you're expecting. If you want the `test runner` to keep watching for changes as you're writing your tests, you can use the following command, which will re-run your tests as you're making changes:
-
-```sh
-npm run test:watch
+npm run test:unit
 ```
 
 To check whether your code is following best practices, you can use the following command:
@@ -90,12 +92,6 @@ npm run lint
 ```
 
 If errors appear in your terminal, make sure you go back and fix them as necessary.
-
-To auto-fix any issues that don't require your input, you can try the following command:
-
-```sh
-npm run lint:autofix
-```
 
 #### Notes on Linting and Unit Testing
 
@@ -118,9 +114,9 @@ In addition to `Jest`, the [`vue-test-utils`](https://github.com/vuejs/vue-test-
 -   [Unit Testing Vue Components](https://vuejs.org/v2/cookbook/unit-testing-vue-components.html)
 -   [Knowing What to Test](https://vue-test-utils.vuejs.org/guides/#common-tips)
 
-Each test file needs to be in the same directory as the module/component tested and should follow the `.test` naming convention, for example:
+Each test file needs to be located in the `frontend/tests/unit` directory and should follow the `.spec` naming convention, for example:
 
 ```sh
-resources/js/components/MyComponent.vue
-resources/js/components/MyComponent.test.js # your test code goes here
+frontend/src/components/MyComponent.vue
+frontend/tests/unit/MyComponent.spec.js # your test code goes here
 ```

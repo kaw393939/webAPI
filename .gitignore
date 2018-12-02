@@ -15,3 +15,10 @@ yarn-error.log
 .env
 .phpunit.result.cache
 
+# front-end related build files
+/public/css
+/public/img
+/public/js
+/public/svg
+/public/*.js
+/public/*.json

@@ -1,66 +1,68 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md5>
-      <v-card class="elevation-12">
-        <v-toolbar dark color="primary">
-          <v-toolbar-title>Register</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <div class="errorMessage">{{error}}</div>
-          <v-form>
-            <v-text-field
-              v-model.trim.lazy="name"
-              prepend-icon="person"
-              name="name"
-              label="Name"
-              type="text"
-              :error-messages="nameErrors"
-              @input="$v.name.$touch()"
-              @blur="$v.name.$touch()"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model.trim.lazy="email"
-              prepend-icon="mail"
-              name="email"
-              label="Email"
-              type="text"
-              :error-messages="emailErrors"
-              @input="$v.email.$touch()"
-              @blur="$v.email.$touch()"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model.trim.lazy="password"
-              prepend-icon="lock"
-              name="password"
-              label="Password"
-              type="password"
-              :error-messages="passErrors"
-              @input="$v.password.$touch()"
-              @blur="$v.password.$touch()"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model.trim.lazy="passConfirm"
-              prepend-icon="lock"
-              name="passwordConf"
-              label="Password Confirmation"
-              type="password"
-              :error-messages="passConfirmErrors"
-              @input="$v.passConfirm.$touch()"
-              @blur="$v.passConfirm.$touch()"
-              required
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" :disabled="$v.$invalid" @click="onSubmit">Register</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md5>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Register</v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <div class="errorMessage">{{error}}</div>
+            <v-form>
+              <v-text-field
+                v-model.trim.lazy="name"
+                prepend-icon="person"
+                name="name"
+                label="Name"
+                type="text"
+                :error-messages="nameErrors"
+                @input="$v.name.$touch()"
+                @blur="$v.name.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="email"
+                prepend-icon="mail"
+                name="email"
+                label="Email"
+                type="text"
+                :error-messages="emailErrors"
+                @input="$v.email.$touch()"
+                @blur="$v.email.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="password"
+                prepend-icon="lock"
+                name="password"
+                label="Password"
+                type="password"
+                :error-messages="passErrors"
+                @input="$v.password.$touch()"
+                @blur="$v.password.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="passConfirm"
+                prepend-icon="lock"
+                name="passwordConf"
+                label="Password Confirmation"
+                type="password"
+                :error-messages="passConfirmErrors"
+                @input="$v.passConfirm.$touch()"
+                @blur="$v.passConfirm.$touch()"
+                required
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" :disabled="$v.$invalid" @click="onSubmit">Register</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <style>

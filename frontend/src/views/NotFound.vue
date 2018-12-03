@@ -1,20 +1,22 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md5 class="content">
-      <div class="robotWrapper">
-        <icon-robot width="185" height="185"></icon-robot>
-      </div>
-      <div class="robotShadow"></div>
-      <div class="textWrapper">
-        <h2 class="display-1 center">Whoops!</h2>
-      </div>
-      <div class="textWrapper">
-        <p class="headline center">We couldn't find the page you
-          <br>were looking for.
-        </p>
-      </div>
-    </v-flex>
-  </v-layout>
+  <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md5 class="content">
+        <div class="robotWrapper">
+          <icon-robot width="185" height="185"></icon-robot>
+        </div>
+        <div class="robotShadow"></div>
+        <div class="textWrapper">
+          <h2 class="display-1 center">Whoops!</h2>
+        </div>
+        <div class="textWrapper">
+          <p class="headline center">We couldn't find the page you
+            <br>were looking for.
+          </p>
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <style>

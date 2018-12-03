@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ShowUserTest extends TestCase
 {
     /**
-     * A basic test example.
+     * A test example for when viewing a particular users info.
      *
      * @return void
      */

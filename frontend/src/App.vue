@@ -1,7 +1,7 @@
 <template>
   <v-app id="keep">
     <navigation></navigation>
-    <v-content class="content">
+    <v-content>
       <router-view/>
     </v-content>
   </v-app>
@@ -11,17 +11,8 @@
 import Navigation from "./components/Navigation";
 
 export default {
-    components: {
-        navigation: Navigation
-    }
+  components: {
+    navigation: Navigation
+  }
 };
 </script>
-
-
-<style>
-.content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-</style>

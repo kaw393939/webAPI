@@ -1,19 +1,26 @@
 <template>
-  <v-content style="padding: 0;">
-    <v-container fluid fill-height>
-      <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md4>
-          <div>
-            <h1 class="text">Home</h1>
-          </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-content>
+  <v-container fluid fill-height>
+    <v-layout justify-center>
+      <v-flex xs12 sm8 md4>
+        <h2 class="headline center">New Questions</h2>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <style>
-.text {
-    text-align: center;
+.center {
+  text-align: center;
 }
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      questions: []
+    };
+  }
+};
+</script>
+

@@ -19,5 +19,5 @@ Route::post('register', 'Auth\RegisterAPIController@register')->name('register')
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');
     Route::get('user', 'Auth\GetAuthUserAPIController@getAuthUser')->name('user');
-
+    Route::post('edit', 'Auth\GetAuthUserAPIController@editAuthUser')->name('edit');
 });

@@ -1,18 +1,17 @@
 import router from "../../router";
 import { setToken, getToken } from "../../utilities/localStorage";
-import { EventBus } from "../../utilities/eventBus";
 
 const state = {
     token: getToken(),
     error: "",
-    user: ""
-
+    user: "",
+    isLogged: false
 };
 
 const getters = {
-    isLoggedIn: state => !!state.token,
+    isLoggedIn: state => state.isLogged,
     error: state => state.error,
-    userData: state => state.user,
+    userData: state => state.user
 };
 
 const actions = {
@@ -31,10 +30,9 @@ const actions = {
         axios
             .post("api/login", obj)
             .then(res => {
-                console.log(res.data);
-                EventBus.$emit("logged", "logged");
                 setToken(res.data.token);
                 router.push("/");
+                commit("setLoggedState", res.data.token);
             })
             .catch(err => {
                 commit("sendError", err.response.data.message);
@@ -42,16 +40,15 @@ const actions = {
             });
     },
 
-    getUserDetails({commit}){
-        axios.get("/api/user")
-        .then(res => {
-            console.log("RES", res.data.user);
-            // setToken(res.data);
-            commit("sendUserData", res.data.user);           
-        })
-        .catch(err => { 
-            console.log(error);
-        });
+    getUserDetails({ commit }) {
+        axios
+            .get("/api/user")
+            .then(res => {
+                commit("sendUserData", res.data.user);
+            })
+            .catch(err => {
+                console.log(error);
+            });
     },
     logOut: ({ commit }) => {
         commit("setToken", null);
@@ -63,10 +60,10 @@ const mutations = {
         state.error = error;
     },
     sendUserData: (state, userData) => {
-        console.log("userData", userData);
-        userData ? state.user = userData : state.user = "";
-        console.log("USER ST", state.user);
-
+        userData ? (state.user = userData) : (state.user = "");
+    },
+    setLoggedState(state, authToken) {
+        if (authToken) state.isLogged = true;
     }
 };
 

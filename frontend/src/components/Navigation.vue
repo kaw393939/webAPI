@@ -2,32 +2,33 @@
   <div>
     <v-navigation-drawer v-model="drawer" fixed clipped class="grey lighten-4" app>
       <v-list dense class="grey lighten-4">
-        {{isLogged}}
-        {{loggedIn}}
-        <template v-if="isLogged">
-         <template v-for="(item, i) in afterLogin">
+        <template v-if="userData || isLoggedIn">
+         <template v-for="(item, i) in navItemsAfterAuth">
           <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
           <v-list-tile v-else :key="i">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
+              <router-link :to="item.href">
+                <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
+            </router-link>
             </v-list-tile-content>
           </v-list-tile>
         </template>
         </template>
-       
         <template v-else>
           <template v-for="(item, i) in navItems">
             <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
-            <v-list-tile v-else :key="i">
+            <v-list-tile v-else :key="i">          
               <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
-              </v-list-tile-content>
+               <v-icon>{{ item.icon }}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <router-link :to="item.href">
+                  <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
+                </router-link>
+              </v-list-tile-content>          
             </v-list-tile>
           </template>
         </template>
@@ -52,7 +53,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { EventBus } from "../utilities/eventBus.js";
 import router from "../router";
 
 const navItemConst = [
@@ -76,17 +76,11 @@ export default {
 
   created() {
     this.getUser();
-    EventBus.$on("logged", () => {
-      console.log("mounted");
-      this.loggedIn = true;
-      console.log(this.loggedIn);
-    });
   },
 
   computed: {
-    ...mapGetters(["isLoggedIn", "userData"]),
+    ...mapGetters(["userData", "isLoggedIn"]),
     isLogged: function() {
-      console.log("userdataaa", this.userData);
       if (this.userData) {
         return true;
       } else {

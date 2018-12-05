@@ -24,9 +24,11 @@ class GetAuthUserAPIController extends Controller
         $profile = $request;
         if (Gate::forUser($user)->allows('edit-profile', $profile)) {
             return response()->json([
+                'code'   => 200,
+                'user' => $user,
                 'success' => true,
                 'message'=> "You may edit this profile",
-            ]);
+            ], 200);
         }
         return response()->json([
             'code'   => 401,

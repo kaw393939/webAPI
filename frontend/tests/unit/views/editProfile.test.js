@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import editProfile from 'editProfile.vue'
+import editProfile from './../../../src/views/editProfile'
 
 describe('editProfile', () => {
     // check for submit function

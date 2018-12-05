@@ -29,8 +29,9 @@ class GetAuthUserAPIController extends Controller
             ]);
         }
         return response()->json([
+            'code'   => 401,
             'success' => "false",
             'message'=> "You are unauthorized to edit this profile",
-        ]);
+        ], 401);
     }
 }

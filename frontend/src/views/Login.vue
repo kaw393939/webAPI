@@ -45,9 +45,9 @@
 
 <style>
 .errorMessage {
-  color: #ff0000;
-  height: 2rem;
-  font-size: 1.2rem;
+    color: #ff0000;
+    height: 2rem;
+    font-size: 1.2rem;
 }
 </style>
 
@@ -57,75 +57,75 @@ import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
 
 export default {
-  mixins: [validationMixin],
+    mixins: [validationMixin],
 
-  validations: {
-    email: { required, email },
-    password: { required }
-  },
-
-  data() {
-    return {
-      email: "",
-      password: ""
-    };
-  },
-
-  computed: {
-    ...mapGetters(["error"]),
-
-    emailErrors() {
-      const errors = [];
-      const { email } = this.$v;
-
-      if (!email.$dirty) {
-        return errors;
-      }
-      if (!email.email) {
-        errors.push(`Must be a valid email.`);
-      }
-      if (!email.required) {
-        errors.push(`Email is required.`);
-      }
-
-      return errors;
+    validations: {
+        email: { required, email },
+        password: { required }
     },
 
-    passErrors() {
-      const errors = [];
-      const { password } = this.$v;
-
-      if (!password.$dirty) {
-        return errors;
-      }
-      if (!password.required) {
-        errors.push(`Password is required.`);
-      }
-
-      return errors;
-    }
-  },
-  methods: {
-    ...mapActions(["login"]),
-
-    onSubmit: function() {
-      const { email, password } = this;
-
-      if (this.$v.$invalid) {
-        return;
-      }
-
-      this.login({
-        email,
-        password
-      });
+    data() {
+        return {
+            email: "",
+            password: ""
+        };
     },
 
-    clear() {
-      this.$v.$reset();
-      this.name = "";
-      this.email = "";
+    computed: {
+        ...mapGetters(["error"]),
+
+        emailErrors() {
+            const errors = [];
+            const { email } = this.$v;
+
+            if (!email.$dirty) {
+                return errors;
+            }
+            if (!email.email) {
+                errors.push(`Must be a valid email.`);
+            }
+            if (!email.required) {
+                errors.push(`Email is required.`);
+            }
+
+            return errors;
+        },
+
+        passErrors() {
+            const errors = [];
+            const { password } = this.$v;
+
+            if (!password.$dirty) {
+                return errors;
+            }
+            if (!password.required) {
+                errors.push(`Password is required.`);
+            }
+
+            return errors;
+        }
+    },
+    methods: {
+        ...mapActions(["login"]),
+
+        onSubmit: function() {
+            const { email, password } = this;
+
+            if (this.$v.$invalid) {
+                return;
+            }
+
+            this.login({
+                email,
+                password
+            });
+        },
+
+        clear() {
+            this.$v.$reset();
+            this.name = "";
+            this.email = "";
+        }
     }
-  }
 };
 </script>

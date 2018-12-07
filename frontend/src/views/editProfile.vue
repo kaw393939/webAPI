@@ -24,7 +24,7 @@
                                     <v-text-field
                                             v-model="email"
                                             :error-messages="emailErrors"
-                                            prepend-icon="person"
+                                            prepend-icon="email"
                                             label="Email"
                                             type="email"
                                             @input="$v.email.$touch()"
@@ -32,13 +32,13 @@
                                             required
                                     ></v-text-field>
                                     <v-text-field
-                                            v-model="input"
-                                            :error-messages="inputErrors"
-                                            prepend-icon="person"
+                                            v-model="bio"
+                                            :error-messages="bioErrors"
+                                            prepend-icon="find_in_page"
                                             label="Description.."
                                             type="text"
-                                            @input="$v.input.$touch()"
-                                            @blur="$v.input.$touch()"
+                                            @input="$v.bio.$touch()"
+                                            @blur="$v.bio.$touch()"
                                             required
                                     ></v-text-field>
                                 </v-form>
@@ -113,7 +113,7 @@
         return {
             name: { ...nameValidators },
             // email: { ...nameValidators },
-            input: {
+            bio: {
                 ...common,
                 minLength: minLength(5),
                 maxLength: maxLength(50)
@@ -128,7 +128,7 @@
             return {
                 name: "",
                 email: "",
-                input: "",
+                bio: "",
 
                 submission: {
                     errors: [],
@@ -141,7 +141,7 @@
             // ...getValidations(),
             name: { required, minLength: minLength(2) },
             email: { required, email },
-            input: { required, minLength: minLength(5), maxLength: maxLength(50) }
+            bio: { required, minLength: minLength(5), maxLength: maxLength(50) }
 
         },
 
@@ -176,15 +176,15 @@
 
             },
 
-            inputErrors() {
+            bioErrors() {
                 const errors = [];
 
-                const { input } = this.$v;
+                const { bio } = this.$v;
 
-                if (!input.$dirty) return errors;
+                if (!bio.$dirty) return errors;
 
-                if (!input.minLength || !input.maxLength) {
-                    const { minLength, maxLength } = input.$params;
+                if (!bio.minLength || !bio.maxLength) {
+                    const { minLength, maxLength } = bio.$params;
                     errors.push(
                         `Description must be between ${minLength.min} and ${
                             maxLength.max
@@ -192,7 +192,7 @@
                     );
                 }
 
-                if (!input.required) {
+                if (!bio.required) {
                     errors.push("Description is required.");
                 }
 
@@ -220,13 +220,13 @@
                 const submitForm = !this.$v.$invalid;
 
                 if (submitForm) {
-                    const { name, email, input } = this;
+                    const { name, email, bio } = this;
 
                     axios
-                        .post("api/profile", {
+                        .post("api/profile-edit", {
                             name,
                             email,
-                            input,
+                            bio,
                         })
                         .then(result => {
                             // cleanup if needed

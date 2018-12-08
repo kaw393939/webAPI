@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Events\RegistrationEvent;
+
 class RegisterAPIController extends Controller
 {
 
@@ -21,6 +23,8 @@ class RegisterAPIController extends Controller
         $user->save();
 
         $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
+
+        event(new RegistrationEvent($user));
 
         //refactor this with a custom response class.
         return response()->json([

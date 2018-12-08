@@ -1,12 +1,6 @@
 <template>
   <v-container fluid>
-    <v-layout justify>
-      <v-flex xs12>
-        <h2
-          class="heading headline text-lg-center text-md-center text-sm-center text-xs-center"
-        >New Questions</h2>
-      </v-flex>
-    </v-layout>
+    <page-heading>New Questions</page-heading>
     <v-layout justify-center wrap>
       <template v-for="question in questions">
         <v-flex xs12 sm10 md8 lg8 xl4 class="question" :key="question.id">
@@ -57,12 +51,7 @@
   </v-container>
 </template>
 
-<style>
-.heading {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
+<style scoped>
 .question {
   margin: 20px 15px;
 }
@@ -96,6 +85,8 @@
 
 <script>
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+
+import PageHeading from "@/components/PageHeading.vue";
 
 function fetchQuestions() {
   return Promise.resolve([
@@ -185,6 +176,10 @@ export function withDateFormatted(questions) {
 }
 
 export default {
+  components: {
+    PageHeading
+  },
+
   created() {
     fetchQuestions()
       .then(response => {

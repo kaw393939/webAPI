@@ -1,85 +1,68 @@
 <template>
-    <!--<v-app id="inspire">-->
-        <v-content class="main">
-            <v-container fixed fill-height>
-                <v-layout align-center justify-center>
-                    <v-flex xs12 sm8 md4 class="xs12">
-                        <v-card class="elevation-12">
-                            <v-toolbar dark color="primary">
-                                <v-toolbar-title>Update Profile</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form>
-                                    <v-text-field
-                                            v-model="name"
-                                            :error-messages="nameErrors"
-                                            prepend-icon="person"
-                                            label="Name"
-                                            type="text"
-                                            @input="$v.name.$touch()"
-                                            @blur="$v.name.$touch()"
-                                            required
-                                    ></v-text-field>
-                                    <v-text-field
-                                            v-model="email"
-                                            :error-messages="emailErrors"
-                                            prepend-icon="person"
-                                            label="Email"
-                                            type="email"
-                                            @input="$v.email.$touch()"
-                                            @blur="$v.email.$touch()"
-                                            required
-                                    ></v-text-field>
-                                    <v-text-field
-                                            v-model="input"
-                                            :error-messages="inputErrors"
-                                            prepend-icon="person"
-                                            label="Description.."
-                                            type="text"
-                                            @input="$v.input.$touch()"
-                                            @blur="$v.input.$touch()"
-                                            required
-                                    ></v-text-field>
-                                </v-form>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <p
-                                        v-if="submissionFailure"
-                                        class="subheading text-truncate errorMessage"
-                                >
-                                    {{ submissionError }}
-                                </p>
-                                <p
-                                        v-if="submissionSuccess"
-                                        class="subheading text-truncate successMessage"
-                                >
-                                    Successful submission!
-                                </p>
-                                <v-spacer></v-spacer>
-                                <v-btn @click="submit" color="primary">Save</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-content>
-    <!--</v-app>-->
+  <v-container fixed fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm10 md8 lg6>
+        <v-card class="elevation-12">
+          <v-toolbar dark color="primary">
+            <v-toolbar-title>Update Profile</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                v-model="name"
+                :error-messages="nameErrors"
+                prepend-icon="person"
+                label="Name"
+                type="text"
+                @input="$v.name.$touch()"
+                @blur="$v.name.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="email"
+                :error-messages="emailErrors"
+                prepend-icon="person"
+                label="Email"
+                type="email"
+                @input="$v.email.$touch()"
+                @blur="$v.email.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="input"
+                :error-messages="inputErrors"
+                prepend-icon="person"
+                label="Description.."
+                type="text"
+                @input="$v.input.$touch()"
+                @blur="$v.input.$touch()"
+                required
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <p
+              v-if="submissionFailure"
+              class="subheading text-truncate errorMessage"
+            >{{ submissionError }}</p>
+            <p
+              v-if="submissionSuccess"
+              class="subheading text-truncate successMessage"
+            >Successful submission!</p>
+            <v-spacer></v-spacer>
+            <v-btn @click="submit" color="primary">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <style>
 .errorMessage {
     color: red;
-}
-
-.main {
-    padding: 64px 0px 0px 30px !important;
-}
-
-.xs12 {
-    flex-basis: 50% !important;
-    max-width: 50% !important;
 }
 
 .successMessage {
@@ -102,25 +85,6 @@ const StatusCode = {
     "422": 422
 };
 
-function getValidations() {
-    const common = { required };
-
-    const nameValidators = {
-        ...common,
-        minLength: minLength(2)
-    };
-
-    return {
-        name: { ...nameValidators },
-        // email: { ...nameValidators },
-        input: {
-            ...common,
-            minLength: minLength(5),
-            maxLength: maxLength(50)
-        }
-    };
-}
-
 export default {
     mixins: [validationMixin],
 
@@ -138,26 +102,35 @@ export default {
     },
 
     validations: {
-        // ...getValidations(),
-        name: { required, minLength: minLength(2) },
-        email: { required, email },
-        input: { required, minLength: minLength(5), maxLength: maxLength(50) }
+        name: {
+            required,
+            minLength: minLength(2)
+        },
+        email: {
+            required,
+            email
+        },
+        input: {
+            required,
+            minLength: minLength(5),
+            maxLength: maxLength(50)
+        }
     },
 
     computed: {
         nameErrors() {
             const errors = [];
-            const name = this.$v.name;
+            const { name } = this.$v;
 
-            if (!name.$dirty) return errors;
-
+            if (!name.$dirty) {
+                return errors;
+            }
             if (!name.minLength) {
                 const { minLength } = name.$params;
                 errors.push(
                     `Name must be at least ${minLength.min} characters long.`
                 );
             }
-
             if (!name.required) {
                 errors.push("Name is required.");
             }
@@ -167,9 +140,18 @@ export default {
 
         emailErrors() {
             const errors = [];
-            if (!this.$v.email.$dirty) return errors;
-            !this.$v.email.email && errors.push("Must be a valid email");
-            !this.$v.email.required && errors.push("Email is required");
+            const { email } = this.$v;
+
+            if (!email.$dirty) {
+                return errors;
+            }
+            if (!email.email) {
+                errors.push(`Must be a valid email.`);
+            }
+            if (!email.required) {
+                errors.push(`Email is required.`);
+            }
+
             return errors;
         },
 
@@ -178,8 +160,9 @@ export default {
 
             const { input } = this.$v;
 
-            if (!input.$dirty) return errors;
-
+            if (!input.$dirty) {
+                return errors;
+            }
             if (!input.minLength || !input.maxLength) {
                 const { minLength, maxLength } = input.$params;
                 errors.push(
@@ -188,7 +171,6 @@ export default {
                     } characters long.`
                 );
             }
-
             if (!input.required) {
                 errors.push("Description is required.");
             }
@@ -236,6 +218,8 @@ export default {
 
                     .catch(err => {
                         const { response } = err;
+
+                        console.log("error", err);
 
                         // cleanup if needed
                         if (this.submission.success) {

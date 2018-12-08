@@ -69,195 +69,171 @@
 </template>
 
 <style>
-    .errorMessage {
-        color: red;
-    }
+.errorMessage {
+    color: red;
+}
 
-    .main{
-        padding: 64px 0px 0px 30px !important;
-    }
+.main {
+    padding: 64px 0px 0px 30px !important;
+}
 
-    .xs12{
-        flex-basis: 50% !important;
-        max-width: 50% !important;
-    }
+.xs12 {
+    flex-basis: 50% !important;
+    max-width: 50% !important;
+}
 
-    .successMessage {
-        color: green;
-    }
+.successMessage {
+    color: green;
+}
 </style>
 
 
 <script>
-    import { validationMixin } from "vuelidate";
-    import {
-        maxLength,
-        minLength,
-        required,
-        email,
-        sameAs
-    } from "vuelidate/lib/validators";
+import { validationMixin } from "vuelidate";
+import {
+    maxLength,
+    minLength,
+    required,
+    email,
+    sameAs
+} from "vuelidate/lib/validators";
 
-    const StatusCode = {
-        "422": 422
-    };
+const StatusCode = {
+    "422": 422
+};
 
-    function getValidations() {
-        const common = { required };
+export default {
+    mixins: [validationMixin],
 
-        const nameValidators = {
-            ...common,
-            minLength: minLength(2)
-        };
-
+    data() {
         return {
-            name: { ...nameValidators },
-            // email: { ...nameValidators },
-            bio: {
-                ...common,
-                minLength: minLength(5),
-                maxLength: maxLength(50)
-            },
-        };
-    }
-
-    export default {
-        mixins: [validationMixin],
-
-        data() {
-            return {
-                name: "",
-                email: "",
-                bio: "",
-
-                submission: {
-                    errors: [],
-                    success: false
-                }
-            };
-        },
-
-        validations: {
-            // ...getValidations(),
-            name: { required, minLength: minLength(2) },
-            email: { required, email },
-            bio: { required, minLength: minLength(5), maxLength: maxLength(50) }
-
-        },
-
-        computed: {
-            nameErrors() {
-                const errors = [];
-                const name = this.$v.name;
-
-                if (!name.$dirty) return errors;
-
-                if (!name.minLength) {
-                    const { minLength } = name.$params;
-                    errors.push(
-                        `Name must be at least ${minLength.min} characters long.`
-                    );
-                }
-
-                if (!name.required) {
-                    errors.push("Name is required.");
-                }
-
-                return errors;
-            },
-
-            emailErrors() {
-
-                const errors = [];
-                if(!this.$v.email.$dirty) return errors;
-                !this.$v.email.email && errors.push('Must be a valid email');
-                !this.$v.email.required && errors.push('Email is required');
-                return errors;
-
-            },
-
-            bioErrors() {
-                const errors = [];
-
-                const { bio } = this.$v;
-
-                if (!bio.$dirty) return errors;
-
-                if (!bio.minLength || !bio.maxLength) {
-                    const { minLength, maxLength } = bio.$params;
-                    errors.push(
-                        `Description must be between ${minLength.min} and ${
-                            maxLength.max
-                            } characters long.`
-                    );
-                }
-
-                if (!bio.required) {
-                    errors.push("Description is required.");
-                }
-
-                return errors;
-            },
-
-            submissionFailure() {
-                return this.submission.errors.length > 0;
-            },
-
-            submissionError() {
-                return this.submission.errors[0];
-            },
-
-            submissionSuccess() {
-                return this.submission.success;
+            name: "",
+            email: "",
+            bio: "",
+            submission: {
+                errors: [],
+                success: false
             }
+        };
+    },
+
+    validations: {
+        name: { required, minLength: minLength(2) },
+        email: { required, email },
+        bio: { required, minLength: minLength(5), maxLength: maxLength(50) }
+    },
+
+    computed: {
+        nameErrors() {
+            const errors = [];
+            const name = this.$v.name;
+
+            if (!name.$dirty) return errors;
+
+            if (!name.minLength) {
+                const { minLength } = name.$params;
+                errors.push(
+                    `Name must be at least ${minLength.min} characters long.`
+                );
+            }
+
+            if (!name.required) {
+                errors.push("Name is required.");
+            }
+
+            return errors;
         },
 
-        methods: {
-            submit() {
-                // trigger touch on all fields to show errors if existent
-                this.$v.$touch();
+        emailErrors() {
+            const errors = [];
+            if (!this.$v.email.$dirty) return errors;
+            !this.$v.email.email && errors.push("Must be a valid email");
+            !this.$v.email.required && errors.push("Email is required");
+            return errors;
+        },
 
-                const submitForm = !this.$v.$invalid;
+        bioErrors() {
+            const errors = [];
 
-                if (submitForm) {
-                    const { name, email, bio } = this;
+            const { bio } = this.$v;
 
-                    axios
-                        .post("api/profile-edit", {
-                            name,
-                            email,
-                            bio,
-                        })
-                        .then(result => {
-                            // cleanup if needed
-                            if (this.submission.errors.length > 0) {
-                                this.submission.errors = [];
-                            }
+            if (!bio.$dirty) return errors;
 
-                            this.submission.success = true;
-                        })
+            if (!bio.minLength || !bio.maxLength) {
+                const { minLength, maxLength } = bio.$params;
+                errors.push(
+                    `Description must be between ${minLength.min} and ${
+                        maxLength.max
+                    } characters long.`
+                );
+            }
 
-                        .catch(err => {
-                            const { response } = err;
+            if (!bio.required) {
+                errors.push("Description is required.");
+            }
 
-                            // cleanup if needed
-                            if (this.submission.success) {
-                                this.submission.success = false;
-                            }
+            return errors;
+        },
 
-                            if (response.status === StatusCode["422"]) {
-                                // validation error
-                                const { errors } = response.data;
+        submissionFailure() {
+            return this.submission.errors.length > 0;
+        },
 
-                                const errorsArray = Object.values(errors).map(error =>
-                                    error.pop()
-                                );
+        submissionError() {
+            return this.submission.errors[0];
+        },
 
-                                this.submission.errors = errorsArray;
-                            }
-                        });
-                }
+        submissionSuccess() {
+            return this.submission.success;
+        }
+    },
+
+    methods: {
+        submit() {
+            // trigger touch on all fields to show errors if existent
+            this.$v.$touch();
+
+            const submitForm = !this.$v.$invalid;
+
+            if (submitForm) {
+                const { name, email, bio } = this;
+
+                axios
+                    .post("api/edit-profile", {
+                        name,
+                        email,
+                        bio
+                    })
+                    .then(result => {
+                        // cleanup if needed
+                        if (this.submission.errors.length > 0) {
+                            this.submission.errors = [];
+                        }
+
+                        this.submission.success = true;
+                    })
+
+                    .catch(err => {
+                        const { response } = err;
+
+                        // cleanup if needed
+                        if (this.submission.success) {
+                            this.submission.success = false;
+                        }
+
+                        if (response.status === StatusCode["422"]) {
+                            // validation error
+                            const { errors } = response.data;
+
+                            const errorsArray = Object.values(errors).map(
+                                error => error.pop()
+                            );
+
+                            this.submission.errors = errorsArray;
+                        }
+                    });
             }
         }
-    };
+    }
+};
 </script>

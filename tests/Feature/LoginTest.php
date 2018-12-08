@@ -56,4 +56,18 @@ class LoginTest extends TestCase
                 ]
             );
     }
+
+    public function testUserLoginFailure()
+    {
+        $payload = ['email' => 'wrongemail@wrongemail.com', 'password' => 'password'];
+        $this->json('POST', 'api/login', $payload)
+            ->assertStatus(401)
+            ->assertJsonStructure(
+                [
+                    'code',
+                    'status',
+                    'message',
+                ]
+            );
+    }
 }

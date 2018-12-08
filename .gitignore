@@ -22,3 +22,5 @@ yarn-error.log
 /public/svg
 /public/*.js
 /public/*.json
+
+.DS_Store

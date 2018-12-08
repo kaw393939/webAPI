@@ -21,59 +21,59 @@
 
 <style>
 .content {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .robotWrapper {
-  animation: floating 3s ease-in-out infinite;
+    animation: floating 3s ease-in-out infinite;
 }
 .robotShadow {
-  width: 128px;
-  height: 16px;
-  background-color: rgba(234, 234, 234, 0.75);
-  margin: 40px auto 30px auto;
-  border-radius: 50%;
-  animation: floatingShadow 3s ease-in-out infinite;
+    width: 128px;
+    height: 16px;
+    background-color: rgba(234, 234, 234, 0.75);
+    margin: 40px auto 30px auto;
+    border-radius: 50%;
+    animation: floatingShadow 3s ease-in-out infinite;
 }
 
 .center {
-  text-align: center;
+    text-align: center;
 }
 
 .textWrapper {
-  margin: 10px 0;
+    margin: 10px 0;
 }
 
 @keyframes floating {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  45% {
-    transform: translate3d(0, -10%, 0);
-  }
-  55% {
-    transform: translate3d(0, -10%, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    45% {
+        transform: translate3d(0, -10%, 0);
+    }
+    55% {
+        transform: translate3d(0, -10%, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
 }
 
 @keyframes floatingShadow {
-  0% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(0.85);
-  }
-  55% {
-    transform: scale(0.85);
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(1);
+    }
+    45% {
+        transform: scale(0.85);
+    }
+    55% {
+        transform: scale(0.85);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>
 
@@ -82,9 +82,8 @@
 import IconRobot from "@/components/icons/IconRobot.vue";
 
 export default {
-  components: {
-    IconRobot
-  }
+    components: {
+        IconRobot
+    }
 };
 </script>
-

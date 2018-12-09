@@ -35,7 +35,7 @@ export default new Router({
         },
         {
             path: "/profile/edit",
-            component: () => import("./views/editProfile")
+            component: () => import("./views/EditProfile.vue")
         },
         {
             path: "/question/:id",

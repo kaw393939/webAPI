@@ -1,77 +1,60 @@
 <template>
   <v-container fluid>
-    <v-layout justify>
-      <v-flex xs12>
-        <h2
-          class="heading headline text-lg-center text-md-center text-sm-center text-xs-center"
-        >New Questions</h2>
-      </v-flex>
-    </v-layout>
+    <page-heading>New Questions</page-heading>
     <v-layout justify-center wrap>
       <template v-for="question in questions">
-        <v-flex xs12 sm10 md8 lg8 xl4 class="question" :key="question.id">
-          <v-card class="card elevation-2">
-            <v-layout align-center class="cardHeader">
-              <v-flex xs6 class="cardHeader__left">
-                <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
-              </v-flex>
-              <v-flex xs6 class="cardHeader__right">
-                <v-btn icon color="blue-grey--text darken-1--text">
-                  <v-icon>more_vert</v-icon>
-                </v-btn>
-              </v-flex>
-            </v-layout>
+        <card :key="question.id">
+          <card-header>
+            <v-flex xs6 class="cardHeader__left">
+              <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
+            </v-flex>
+            <v-flex xs6 class="cardHeader__right">
+              <v-btn icon color="blue-grey--text darken-1--text">
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            </v-flex>
+          </card-header>
 
-            <v-card-text>
-              <p class="title">{{ question.text }}</p>
-            </v-card-text>
+          <v-card-text>
+            <p class="title">{{ question.text }}</p>
+          </v-card-text>
 
-            <v-layout class="stats">
-              <v-flex shrink class="statItem">
-                <div>
-                  <v-icon>favorite</v-icon>
-                </div>
-                <div>
-                  <span>{{ question.likes }}</span>
-                </div>
-              </v-flex>
-              <v-flex shrink class="statItem">
-                <div>
-                  <v-icon>mode_comment</v-icon>
-                </div>
-                <div>
-                  <span>{{ question.comments }}</span>
-                </div>
-              </v-flex>
-            </v-layout>
+          <v-layout class="stats">
+            <v-flex shrink class="statItem">
+              <div>
+                <v-icon>favorite</v-icon>
+              </div>
+              <div>
+                <span>{{ question.likes }}</span>
+              </div>
+            </v-flex>
+            <v-flex shrink class="statItem">
+              <div>
+                <v-icon>mode_comment</v-icon>
+              </div>
+              <div>
+                <span>{{ question.comments }}</span>
+              </div>
+            </v-flex>
+          </v-layout>
 
-            <v-layout class="blue darken-2 tags" wrap>
-              <template v-for="tag in question.tags">
-                <v-chip label outline small color="white" :key="tag">{{ tag }}</v-chip>
-              </template>
-            </v-layout>
-          </v-card>
-        </v-flex>
+          <card-footer>
+            <template v-for="tag in question.tags">
+              <v-chip label outline small color="white" :key="tag">{{ tag }}</v-chip>
+            </template>
+          </card-footer>
+        </card>
       </template>
     </v-layout>
   </v-container>
 </template>
 
-<style>
-.heading {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.question {
-  margin: 20px 15px;
-}
-
+<style scoped>
 .cardHeader__right {
   text-align: right;
 }
 .cardHeader__left {
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 .stats {
@@ -88,14 +71,15 @@
 .statItem div {
   margin-right: 5px;
 }
-
-.tags {
-  padding: 10px 15px;
-}
 </style>
 
 <script>
 import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+
+import Card from "@/components/Card.vue";
+import CardHeader from "@/components/CardHeader.vue";
+import CardFooter from "@/components/CardFooter.vue";
+import PageHeading from "@/components/PageHeading.vue";
 
 function fetchQuestions() {
   return Promise.resolve([
@@ -185,6 +169,13 @@ export function withDateFormatted(questions) {
 }
 
 export default {
+  components: {
+    Card,
+    CardHeader,
+    CardFooter,
+    PageHeading
+  },
+
   created() {
     fetchQuestions()
       .then(response => {

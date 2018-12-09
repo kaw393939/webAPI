@@ -38,6 +38,10 @@ export default new Router({
             component: () => import("./views/editProfile")
         },
         {
+            path: "/question/:id",
+            component: () => import("./views/Question.vue")
+        },
+        {
             path: "*",
             component: () => import("./views/NotFound.vue")
         }

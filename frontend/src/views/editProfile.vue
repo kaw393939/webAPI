@@ -62,11 +62,11 @@
 
 <style>
 .errorMessage {
-    color: red;
+  color: red;
 }
 
 .successMessage {
-    color: green;
+  color: green;
 }
 </style>
 
@@ -74,171 +74,168 @@
 <script>
 import { validationMixin } from "vuelidate";
 import {
-    maxLength,
-    minLength,
-    required,
-    email,
-    sameAs
+  maxLength,
+  minLength,
+  required,
+  email,
+  sameAs
 } from "vuelidate/lib/validators";
 
 const StatusCode = {
-    "422": 422
+  "422": 422
 };
 
 export default {
-    mixins: [validationMixin],
+  mixins: [validationMixin],
 
-    data() {
-        return {
-            name: "",
-            email: "",
-            input: "",
+  data() {
+    return {
+      name: "",
+      email: "",
+      bio: "",
+      submission: {
+        errors: [],
+        success: false
+      }
+    };
+  },
 
-            submission: {
-                errors: [],
-                success: false
-            }
-        };
+  validations: {
+    name: {
+      required,
+      minLength: minLength(2)
     },
-
-    validations: {
-        name: {
-            required,
-            minLength: minLength(2)
-        },
-        email: {
-            required,
-            email
-        },
-        input: {
-            required,
-            minLength: minLength(5),
-            maxLength: maxLength(50)
-        }
+    email: {
+      required,
+      email
     },
-
-    computed: {
-        nameErrors() {
-            const errors = [];
-            const { name } = this.$v;
-
-            if (!name.$dirty) {
-                return errors;
-            }
-            if (!name.minLength) {
-                const { minLength } = name.$params;
-                errors.push(
-                    `Name must be at least ${minLength.min} characters long.`
-                );
-            }
-            if (!name.required) {
-                errors.push("Name is required.");
-            }
-
-            return errors;
-        },
-
-        emailErrors() {
-            const errors = [];
-            const { email } = this.$v;
-
-            if (!email.$dirty) {
-                return errors;
-            }
-            if (!email.email) {
-                errors.push(`Must be a valid email.`);
-            }
-            if (!email.required) {
-                errors.push(`Email is required.`);
-            }
-
-            return errors;
-        },
-
-        inputErrors() {
-            const errors = [];
-
-            const { input } = this.$v;
-
-            if (!input.$dirty) {
-                return errors;
-            }
-            if (!input.minLength || !input.maxLength) {
-                const { minLength, maxLength } = input.$params;
-                errors.push(
-                    `Description must be between ${minLength.min} and ${
-                        maxLength.max
-                    } characters long.`
-                );
-            }
-            if (!input.required) {
-                errors.push("Description is required.");
-            }
-
-            return errors;
-        },
-
-        submissionFailure() {
-            return this.submission.errors.length > 0;
-        },
-
-        submissionError() {
-            return this.submission.errors[0];
-        },
-
-        submissionSuccess() {
-            return this.submission.success;
-        }
-    },
-
-    methods: {
-        submit() {
-            // trigger touch on all fields to show errors if existent
-            this.$v.$touch();
-
-            const submitForm = !this.$v.$invalid;
-
-            if (submitForm) {
-                const { name, email, input } = this;
-
-                axios
-                    .post("api/profile", {
-                        name,
-                        email,
-                        input
-                    })
-                    .then(result => {
-                        // cleanup if needed
-                        if (this.submission.errors.length > 0) {
-                            this.submission.errors = [];
-                        }
-
-                        this.submission.success = true;
-                    })
-
-                    .catch(err => {
-                        const { response } = err;
-
-                        console.log("error", err);
-
-                        // cleanup if needed
-                        if (this.submission.success) {
-                            this.submission.success = false;
-                        }
-
-                        if (response.status === StatusCode["422"]) {
-                            // validation error
-                            const { errors } = response.data;
-
-                            const errorsArray = Object.values(errors).map(
-                                error => error.pop()
-                            );
-
-                            this.submission.errors = errorsArray;
-                        }
-                    });
-            }
-        }
+    input: {
+      required,
+      minLength: minLength(5),
+      maxLength: maxLength(50)
     }
+  },
+
+  computed: {
+    nameErrors() {
+      const errors = [];
+      const { name } = this.$v;
+
+      if (!name.$dirty) {
+        return errors;
+      }
+      if (!name.minLength) {
+        const { minLength } = name.$params;
+        errors.push(`Name must be at least ${minLength.min} characters long.`);
+      }
+      if (!name.required) {
+        errors.push("Name is required.");
+      }
+
+      return errors;
+    },
+
+    emailErrors() {
+      const errors = [];
+      const { email } = this.$v;
+
+      if (!email.$dirty) {
+        return errors;
+      }
+      if (!email.email) {
+        errors.push(`Must be a valid email.`);
+      }
+      if (!email.required) {
+        errors.push(`Email is required.`);
+      }
+
+      return errors;
+    },
+
+    bioErrors() {
+      const errors = [];
+
+      const { bio } = this.$v;
+
+      if (!input.$dirty) {
+        return errors;
+      }
+      if (!input.minLength || !input.maxLength) {
+        const { minLength, maxLength } = input.$params;
+        errors.push(
+          `Description must be between ${minLength.min} and ${
+            maxLength.max
+          } characters long.`
+        );
+      }
+      if (!input.required) {
+        errors.push("Description is required.");
+      }
+
+      return errors;
+    },
+
+    submissionFailure() {
+      return this.submission.errors.length > 0;
+    },
+
+    submissionError() {
+      return this.submission.errors[0];
+    },
+
+    submissionSuccess() {
+      return this.submission.success;
+    }
+  },
+
+  methods: {
+    submit() {
+      // trigger touch on all fields to show errors if existent
+      this.$v.$touch();
+
+      const submitForm = !this.$v.$invalid;
+
+      if (submitForm) {
+        const { name, email, bio } = this;
+
+        axios
+          .post("api/edit-profile", {
+            name,
+            email,
+            bio
+          })
+          .then(result => {
+            // cleanup if needed
+            if (this.submission.errors.length > 0) {
+              this.submission.errors = [];
+            }
+
+            this.submission.success = true;
+          })
+
+          .catch(err => {
+            const { response } = err;
+
+            console.log("error", err);
+
+            // cleanup if needed
+            if (this.submission.success) {
+              this.submission.success = false;
+            }
+
+            if (response.status === StatusCode["422"]) {
+              // validation error
+              const { errors } = response.data;
+
+              const errorsArray = Object.values(errors).map(error =>
+                error.pop()
+              );
+
+              this.submission.errors = errorsArray;
+            }
+          });
+      }
+    }
+  }
 };
 </script>

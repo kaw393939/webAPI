@@ -15,7 +15,14 @@ class LoginAPIController extends Controller
         $input = $request->only('email', 'password');
 
         try {
-            $jwt_token = JWTAuth::attempt($input);
+
+            if (! $jwt_token = JWTAuth::attempt($input)) {
+                return response()->json([
+                    'code' => 401,
+                    'status' => false,
+                    'message' => "Login Failed",
+                ], 401);
+            }
 
             //refactor to use custom response class
             return response()->json([
@@ -27,10 +34,10 @@ class LoginAPIController extends Controller
 
         } catch (JWTException $exception) {
             return response()->json([
-                'code' => 401,
+                'code' => 500,
                 'status' => false,
-                'message' => "Login Failed",
-            ], 401);
+                'message' => "Login Error",
+            ], 500);
         }
     }
 

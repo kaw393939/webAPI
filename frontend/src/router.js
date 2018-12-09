@@ -38,7 +38,7 @@ export default new Router({
             component: () => import("./views/EditProfile.vue")
         },
         {
-            path: "/profilet",
+            path: "/profile",
             component: () => import("./views/UserProfile.vue")
         },
         {

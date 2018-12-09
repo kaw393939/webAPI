@@ -3,7 +3,6 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import Question from "@/views/Question.vue";
 import PageHeading from "@/components/PageHeading.vue";
-import Card from "@/components/Card.vue";
 
 describe("Question", () => {
     let wrapper;

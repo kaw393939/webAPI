@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\NewQuestionEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class NewQuestionLisetner
 {
@@ -26,6 +27,6 @@ class NewQuestionLisetner
      */
     public function handle(NewQuestionEvent $event)
     {
-        //
+        Log::notice('A New Question Has Been Asked.');
     }
 }

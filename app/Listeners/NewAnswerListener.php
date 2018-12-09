@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\NewAnswerEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class NewAnswerListener
 {
@@ -26,6 +27,6 @@ class NewAnswerListener
      */
     public function handle(NewAnswerEvent $event)
     {
-        //
+        Log::notice('New Answer Has Been Added.');
     }
 }

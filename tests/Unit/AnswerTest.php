@@ -17,7 +17,7 @@ class AnswerTest extends TestCase
 
     public function testCreateAndReceiveAnswer()
     {
-        $user = $user = factory(\App\User::class)->make();
+        $user = factory(\App\User::class)->make();
         $user->save();
         $question = factory(\App\Question::class)->make();
         $question->user()->associate($user);

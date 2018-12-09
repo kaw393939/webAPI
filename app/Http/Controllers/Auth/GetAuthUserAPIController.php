@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 use App\Http\Requests\EditUserProfileRequest;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use JWTAuth;
@@ -20,14 +21,16 @@ class GetAuthUserAPIController extends Controller
 
     public function editAuthUser(EditUserProfileRequest $request)
     {
-        $user = JWTAuth::authenticate($request->token);
+        $currentUser = JWTAuth::authenticate($request->token);
         $profile = $request;
-        if (Gate::forUser($user)->allows('edit-profile', $profile)) {
+
+        if (Gate::forUser($currentUser)->allows('edit-profile', $profile)) {
+            $user = User::find($currentUser->id);
+            $this->saveEditedUser($user, $profile);
             return response()->json([
                 'code'   => 200,
-                'user' => $user,
                 'success' => true,
-                'message'=> "You may edit this profile",
+                'message'=> "Profile Updated",
             ], 200);
         }
         return response()->json([
@@ -35,5 +38,12 @@ class GetAuthUserAPIController extends Controller
             'success' => "false",
             'message'=> "You are unauthorized to edit this profile",
         ], 401);
+    }
+
+    public function saveEditedUser($user, $profile) {
+        $user->name = $profile->name;
+        $user->email = $profile->email;
+        $user->bio = $profile->bio;
+        $user->save();
     }
 }

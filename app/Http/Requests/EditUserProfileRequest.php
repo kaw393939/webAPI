@@ -25,6 +25,9 @@ class EditUserProfileRequest extends FormRequest
     {
         return [
             'id' => 'required|integer',
+            'name' => 'required|string',
+            'email' => 'required|string',
+            'bio' => 'required|string',
             'token' => 'required|string',
         ];
     }

@@ -19,7 +19,7 @@ class UserProfilePolicy
         //
     }
 
-    public function edit($user, $profile) {
+    public function editProfile($user, $profile) {
         return $user->id == $profile->id;
     }
 }

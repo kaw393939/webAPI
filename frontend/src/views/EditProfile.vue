@@ -30,13 +30,13 @@
                 required
               ></v-text-field>
               <v-text-field
-                v-model="input"
-                :error-messages="inputErrors"
+                v-model="bio"
+                :error-messages="bioErrors"
                 prepend-icon="person"
                 label="Description.."
                 type="text"
-                @input="$v.input.$touch()"
-                @blur="$v.input.$touch()"
+                @input="$v.bio.$touch()"
+                @blur="$v.bio.$touch()"
                 required
               ></v-text-field>
             </v-form>
@@ -80,10 +80,7 @@ import {
   email,
   sameAs
 } from "vuelidate/lib/validators";
-
-const StatusCode = {
-  "422": 422
-};
+import { getSubmissionErrors } from "@/utils/FormUtils";
 
 export default {
   mixins: [validationMixin],
@@ -109,7 +106,7 @@ export default {
       required,
       email
     },
-    input: {
+    bio: {
       required,
       minLength: minLength(5),
       maxLength: maxLength(50)
@@ -157,18 +154,18 @@ export default {
 
       const { bio } = this.$v;
 
-      if (!input.$dirty) {
+      if (!bio.$dirty) {
         return errors;
       }
-      if (!input.minLength || !input.maxLength) {
-        const { minLength, maxLength } = input.$params;
+      if (!bio.minLength || !bio.maxLength) {
+        const { minLength, maxLength } = bio.$params;
         errors.push(
           `Description must be between ${minLength.min} and ${
             maxLength.max
           } characters long.`
         );
       }
-      if (!input.required) {
+      if (!bio.required) {
         errors.push("Description is required.");
       }
 
@@ -190,51 +187,40 @@ export default {
 
   methods: {
     submit() {
-      // trigger touch on all fields to show errors if existent
       this.$v.$touch();
 
       const submitForm = !this.$v.$invalid;
 
-      if (submitForm) {
-        const { name, email, bio } = this;
+      if (!submitForm) return;
 
-        axios
-          .post("api/edit-profile", {
-            name,
-            email,
-            bio
-          })
-          .then(result => {
-            // cleanup if needed
-            if (this.submission.errors.length > 0) {
-              this.submission.errors = [];
-            }
+      const { name, email, bio } = this;
 
-            this.submission.success = true;
-          })
+      const handleError = error => {
+        this.resetSubmissionErrors();
 
-          .catch(err => {
-            const { response } = err;
+        this.submission = {
+          success: false,
+          errors: getSubmissionErrors(error)
+        };
+      };
 
-            console.log("error", err);
+      const handleSuccessfulSubmission = response => {
+        this.resetSubmissionErrors();
 
-            // cleanup if needed
-            if (this.submission.success) {
-              this.submission.success = false;
-            }
+        this.submission.success = true;
+      };
 
-            if (response.status === StatusCode["422"]) {
-              // validation error
-              const { errors } = response.data;
+      axios
+        .post("api/edit-profile", { name, email, bio })
+        .then(handleSuccessfulSubmission)
+        .catch(handleError);
+    },
 
-              const errorsArray = Object.values(errors).map(error =>
-                error.pop()
-              );
-
-              this.submission.errors = errorsArray;
-            }
-          });
-      }
+    resetSubmissionErrors() {
+      this.submission = {
+        errors: [],
+        success: false
+      };
     }
   }
 };

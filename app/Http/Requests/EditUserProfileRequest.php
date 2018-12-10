@@ -24,11 +24,11 @@ class EditUserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer',
+
             'name' => 'required|string',
             'email' => 'required|string',
             'bio' => 'required|string',
-            'token' => 'required|string',
+
         ];
     }
 }

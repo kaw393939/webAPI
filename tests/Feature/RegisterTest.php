@@ -29,10 +29,9 @@ class RegisterTest extends TestCase
     public function testRegistersSuccessfullyTest()
     {
         $payload = [
-            'name' => 'John',
-            'email' => 'john@toptal.com',
+            'name' => 'frank',
+            'email' => 'frank@toptal.com',
             'password' => 'toptal123',
-            'bio' => 'something',
         ];
 
         $this->json('post', '/api/register', $payload)
@@ -52,7 +51,6 @@ class RegisterTest extends TestCase
             ->assertStatus(422)
             ->assertJson([
                 'errors' => [
-                    'name' => ['The name field is required.'],
                     'email' => ['The email field is required.'],
                     'password' => ['The password field is required.'],
                 ]

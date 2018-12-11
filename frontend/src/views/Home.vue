@@ -74,23 +74,13 @@
 </style>
 
 <script>
-import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
+
 import { fetchQuestions } from "@/utils/FakerUtils";
-
-export function withDateFormatted(questions) {
-  return questions.map(question => {
-    const createdAtFormatted = `${distanceInWordsToNow(
-      question.createdAt
-    )} ago`;
-
-    return { ...question, createdAtFormatted };
-  });
-}
+import { withFormattedDate } from "@/utils/ApiResponseUtils";
 
 export default {
   components: {
@@ -103,7 +93,7 @@ export default {
   created() {
     fetchQuestions()
       .then(response => {
-        this.questions = withDateFormatted(response);
+        this.questions = response.map(withFormattedDate);
       })
       .catch(console.error);
   },

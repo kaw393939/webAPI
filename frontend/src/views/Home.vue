@@ -40,7 +40,7 @@
 
           <card-footer>
             <template v-for="tag in question.tags">
-              <v-chip label outline small color="white" :key="tag">{{ tag }}</v-chip>
+              <v-chip label outline small color="white" :key="tag.id">{{ tag.title }}</v-chip>
             </template>
           </card-footer>
         </card>
@@ -74,99 +74,13 @@
 </style>
 
 <script>
-import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
-
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
 
-function fetchQuestions() {
-  return Promise.resolve([
-    {
-      id: 1,
-      text: "How hard are the math courses at NJIT?",
-      tags: ["math", "course", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 2,
-      text: "What is the Math Placement Exam?",
-      tags: ["multiple", "math", "course", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 3,
-      text: "I suck at Math and need help.",
-      tags: ["multiple", "math", "course", "njit", "final", "exam"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 4,
-      text: "What will be on the Math 110 spring 2018 final exam?",
-      tags: ["multiple", "course", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 5,
-      text: "Graphing Calculator for Computer Science Major.",
-      tags: ["multiple", "math", "course", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 6,
-      text: "What are the office hours for MATH 211-002 with professor Smith?",
-      tags: ["multiple", "math", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 7,
-      text: "What will be on the Math 110 spring 2018 final exam?",
-      tags: ["multiple", "math", "course", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 8,
-      text: "Graphing Calculator for Computer Science Major.",
-      tags: ["multiple", "math", "course", "njit", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    },
-    {
-      id: 9,
-      text: "What are the office hours for MATH 211-002 with professor Smith?",
-      tags: ["multiple", "math", "njit", "final", "exam", "time"],
-      createdAt: "2018-08-05T19:25:45.805Z",
-      likes: 5,
-      comments: 10
-    }
-  ]);
-}
-
-export function withDateFormatted(questions) {
-  return questions.map(question => {
-    const createdAtFormatted = `${distanceInWordsToNow(
-      question.createdAt
-    )} ago`;
-
-    return { ...question, createdAtFormatted };
-  });
-}
+import { fetchQuestions } from "@/utils/FakerUtils";
+import { withFormattedDate } from "@/utils/ApiResponseUtils";
 
 export default {
   components: {
@@ -179,7 +93,7 @@ export default {
   created() {
     fetchQuestions()
       .then(response => {
-        this.questions = withDateFormatted(response);
+        this.questions = response.map(withFormattedDate);
       })
       .catch(console.error);
   },

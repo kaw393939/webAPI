@@ -43,7 +43,8 @@ class EditUserTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(
                 [
-                    'success',
+                    'code',
+                    'status',
                     'message',
                 ]
             );

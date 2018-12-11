@@ -26,11 +26,9 @@ class LogoutTest extends TestCase
     public function testUserLogout()
     {
         $payload = [
-            'name' => 'John',
             'email' => 'john@toptal.com',
             'password' => 'toptal123',
         ];
-
         $this->json('post', '/api/register', $payload);
 
         $payload = ['email' => 'john@toptal.com', 'password' => 'toptal123'];

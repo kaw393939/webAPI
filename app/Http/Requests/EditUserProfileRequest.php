@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Profile;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class EditUserProfileRequest extends FormRequest
@@ -11,9 +13,12 @@ class EditUserProfileRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(User $user, Profile $profile)
     {
-        return true;
+        if($user->id == $profile->user_id) {
+            return true;
+        }
+        return false;
     }
 
     /**

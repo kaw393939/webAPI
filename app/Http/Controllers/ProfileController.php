@@ -2,84 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditUserProfileRequest;
+use App\User;
 use App\Profile;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function createProfile(Request $request) {
+        $input = $request->only('first_name', 'last_name', 'bio');
+        Profile::class->create($input);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getProfile(Request $request)
     {
-        //
+        $user = JWTAuth::authenticate($request->token);
+        return response()->json(['user' => $user]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function editProfile(EditUserProfileRequest $request, Profile $profile)
     {
-        //
-    }
+        $currentUser = JWTAuth::authenticate($request->token);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
-    public function showProfile(Profile $profile)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
-    public function editProfile(Profile $profile)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Profile $profile)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Profile  $profile
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Profile $profile)
-    {
-        //
+        if ($this->authorize($currentUser, $profile)) {
+            return response()->json([
+                'code' => 200,
+                'status' => true,
+                'message' => "Can edit profile",
+            ], 200);
+        }
+        return response()->json([
+            'code' => 401,
+            'status' => false,
+            'message' => "Cannot edit profile",
+        ], 401);
     }
 }

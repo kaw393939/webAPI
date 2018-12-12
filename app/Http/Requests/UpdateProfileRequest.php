@@ -5,20 +5,20 @@ namespace App\Http\Requests;
 use App\Profile;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
 
-class EditUserProfileRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
+     * @throws \Tymon\JWTAuth\Exceptions\JWTException
      */
-    public function authorize(User $user, Profile $profile)
+    public function authorize()
     {
-        if($user->id == $profile->user_id) {
-            return true;
-        }
-        return false;
+        $user = JWTAuth::parseToken()->authenticate();
+        return $user->id == $this->user_id;
     }
 
     /**
@@ -29,11 +29,12 @@ class EditUserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'name' => 'required|string',
-            'email' => 'required|string',
+            'id' => 'required',
+            'user_id' => 'required',
+            'email' => 'required|email',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'bio' => 'required|string',
-
         ];
     }
 }

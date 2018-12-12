@@ -1,6 +1,37 @@
 <template>
   <v-container fluid>
-    <page-heading>New Questions</page-heading>
+    <v-layout>
+      <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
+        <v-card dark color="blue darken-2" class="infoCard">
+          <v-layout column class="infoCardContent">
+            <v-flex class="infoCardRow">
+              <v-avatar size="68">
+                <img :src="profileAvatar" alt="avatar">
+              </v-avatar>
+            </v-flex>
+            <v-flex class="infoCardRow">
+              <p class="headline font-weight-bold infoCardUserName">{{ name }}</p>
+            </v-flex>
+            <v-flex class="infoCardRow">
+              <v-btn color="blue-grey" @click="edit" class="white--text">EDIT PROFILE</v-btn>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
+        <v-card dark color="blue darken-2" class="infoCard">
+          <v-layout column class="infoCardContent">
+            <v-flex>
+              <v-icon small color="black darken-2">email</v-icon>
+              <span class="body-2 infoCardUserEmail">{{ email }}</span>
+            </v-flex>
+            <v-flex>
+              <p class="subheading">{{ description }}</p>
+            </v-flex>
+          </v-layout>
+        </v-card>
+      </v-flex>
+    </v-layout>
     <v-layout justify-center wrap>
       <template v-for="question in questions">
         <card :key="question.id">
@@ -50,11 +81,36 @@
 </template>
 
 <style scoped>
+.infoCard {
+  padding: 15px 10px;
+  height: 225px;
+}
+.infoCardWrapper {
+  margin: 5px 10px;
+}
+.infoCardRow {
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+}
+.infoCardContent {
+  height: 100%;
+  padding: 0 15px;
+}
+.infoCardUserName {
+  margin: 0;
+  text-transform: uppercase;
+}
+.infoCardUserEmail {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 .cardHeader__right {
   text-align: right;
 }
 .cardHeader__left {
-  padding-left: 20px;
+  margin-left: 20px;
 }
 
 .stats {
@@ -74,11 +130,11 @@
 </style>
 
 <script>
+import faker from "faker";
+
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
-import PageHeading from "@/components/PageHeading.vue";
-
 import { fetchQuestions } from "@/utils/FakerUtils";
 import { withFormattedDate } from "@/utils/ApiResponseUtils";
 
@@ -86,8 +142,7 @@ export default {
   components: {
     Card,
     CardHeader,
-    CardFooter,
-    PageHeading
+    CardFooter
   },
 
   created() {
@@ -100,8 +155,21 @@ export default {
 
   data() {
     return {
-      questions: []
+      questions: [],
+      name: "John Doe",
+      email: "johndoe@abc.xyz",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis at tortor at maximus. Quisque dignissim ipsum neque, a aliquam diam consequat in. Fusce lacinia dictum risus, nec pulvinar erat sodales.",
+      profileAvatar: faker.image.avatar()
     };
+  },
+
+  methods: {
+    edit() {
+      //    attempt to take the user to edit-profile route after checking for token in the storage
+      //    if the user is authorized, user is guided to edit-profile page with its information pre-populated
+      //    otherwise 401 error thrown out
+    }
   }
 };
 </script>

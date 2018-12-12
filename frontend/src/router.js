@@ -34,6 +34,18 @@ export default new Router({
             component: () => import("./views/PasswordRecovery.vue")
         },
         {
+            path: "/profile/edit",
+            component: () => import("./views/EditProfile.vue")
+        },
+        {
+            path: "/profile",
+            component: () => import("./views/UserProfile.vue")
+        },
+        {
+            path: "/question/:id",
+            component: () => import("./views/Question.vue")
+        },
+        {
             path: "*",
             component: () => import("./views/NotFound.vue")
         }

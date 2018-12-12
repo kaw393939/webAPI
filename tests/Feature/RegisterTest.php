@@ -32,6 +32,7 @@ class RegisterTest extends TestCase
             'name' => 'John',
             'email' => 'john@toptal.com',
             'password' => 'toptal123',
+            'bio' => 'something',
         ];
 
         $this->json('post', '/api/register', $payload)

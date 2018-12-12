@@ -13,12 +13,11 @@ class ShowUserTest extends TestCase
      *
      * @return void
      */
+    use RefreshDatabase;
+
     public function setUp()
     {
         parent::setUp();
-        //$this->artisan('migrate', ['param' => '--seed']);
-        //$this->artisan('migrate:refresh');
-        //$this->artisan('key:generate');
 
     }
 

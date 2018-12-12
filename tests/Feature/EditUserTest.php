@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Profile;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -35,10 +36,22 @@ class EditUserTest extends TestCase
                 ]
             );
 
-        $token = $response->json("token");
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
+        ];
 
-        $payload = ['id' => $user->id, 'token' => $token];
-        $this->withHeaders($payload)
+        $profile = factory(Profile::class)->create([
+            'first_name' => 'First',
+            'last_name' => 'Last',
+            'bio' => 'Hello!!!'
+        ]);
+        $profile->user_id = $user->id;
+        $profile->save();
+
+        $payload = ['id' => $profile->id, 'user_id' => $profile->user_id, 'email' => 'userlogin@user.com', 'first_name' => 'Test', 'last_name' => 'Johnson', 'bio' => 'Goodbye!!!'];
+        $this->withHeaders($headers)
             ->json('post', '/api/edit', $payload)
             ->assertStatus(200)
             ->assertJsonStructure(

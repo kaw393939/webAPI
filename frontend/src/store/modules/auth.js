@@ -19,6 +19,7 @@ const actions = {
         return axios
             .post("api/register", obj)
             .then(res => {
+                console.log("signup");
                 router.push("/login");
             })
             .catch(err => {
@@ -30,7 +31,9 @@ const actions = {
         axios
             .post("api/login", obj)
             .then(res => {
+                console.log("login");
                 setToken(res.data.token);
+                console.log(res);
                 router.push("/");
                 commit("setLoggedState", res.data.token);
             })
@@ -45,13 +48,23 @@ const actions = {
             .get("/api/user")
             .then(res => {
                 commit("sendUserData", res.data.user);
+                console.log("res", res);
             })
             .catch(err => {
                 console.log(error);
             });
     },
-    logOut: ({ commit }) => {
-        commit("setToken", null);
+
+    logout: ({ commit }) => {
+        console.log("logout");
+        commit("setLoggedState", null);
+        localStorage.removeItem("token");
+        console.log(localStorage.getItem("token"));
+    },
+
+    clearErrors: ({commit}) => {
+        console.log("clear");
+        commit("removeErrors");
     }
 };
 
@@ -64,6 +77,10 @@ const mutations = {
     },
     setLoggedState(state, authToken) {
         if (authToken) state.isLogged = true;
+        else state.isLogged = false;
+    },
+    removeErrors: (state) => {
+        state.error = "";
     }
 };
 

@@ -10,12 +10,24 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <router-link :to="item.href">
-                <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
+              <router-link :to="item.href" style="text-decoration: none;">
+                <v-list-tile-title class="black--text body-2">
+                  {{ item.text }}
+                </v-list-tile-title>
             </router-link>
             </v-list-tile-content>
           </v-list-tile>
         </template>
+        <v-list-tile>
+         <v-list-tile-action>
+            <v-icon></v-icon>
+          </v-list-tile-action>
+          <router-link @click.native="onLogout" to="/home" style="text-decoration: none;">
+              <v-list-tile-title class="black--text body-2">
+                Logout
+              </v-list-tile-title>
+          </router-link>
+        </v-list-tile>
         </template>
         <template v-else>
           <template v-for="(item, i) in navItems">
@@ -25,17 +37,19 @@
                <v-icon>{{ item.icon }}</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
-                  <router-link :to="item.href">
+                  <router-link :to="item.href"
+                    @click.native="error ? clearErrors() : console.log('no error')"
+                    style="text-decoration: none;"
+                    >
                   <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
                 </router-link>
               </v-list-tile-content>          
             </v-list-tile>
           </template>
         </template>
-
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="blue-grey" app absolute clipped-left>
+    <v-toolbar style="background: #1976d2" app absolute clipped-left>
       <v-toolbar-side-icon @click.native="drawer = !drawer" class="white--text"></v-toolbar-side-icon>
       <span class="title ml-3 mr-5 white--text">FAQBot</span>
       <v-text-field
@@ -56,53 +70,49 @@ import { mapGetters, mapActions } from "vuex";
 import router from "../router";
 
 const navItemConst = [
-  { icon: "home", text: "Home", href: "/" },
-  { divider: true },
-  { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
-  { icon: "info", text: "About", href: "/" }
+    { icon: "home", text: "Home", href: "/" },
+    { divider: true },
+    { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
+    { icon: "info", text: "About", href: "/" }
 ];
 
 export default {
-  data: () => ({
-    loggedIn: false,
-    drawer: null,
-    navItems: [
-      ...navItemConst,
-      { icon: "account-box", text: "Login", href: "/login" },
-      { icon: "account-box", text: "Register", href: "/register" }
-    ],
-    navItemsAfterAuth: [...navItemConst]
-  }),
+    data: () => ({
+        loggedIn: false,
+        drawer: null,
+        navItems: [
+            ...navItemConst,
+            { icon: "account-box", text: "Login", href: "/login" },
+            { icon: "account-box", text: "Register", href: "/register" }
+        ],
+        navItemsAfterAuth: [...navItemConst]
+    }),
 
-  created() {
-    this.getUser();
-  },
+    created() {
+        this.getUser();
+    },
 
-  computed: {
-    ...mapGetters(["userData", "isLoggedIn"]),
-    isLogged: function() {
-      if (this.userData) {
-        return true;
-      } else {
-        return false;
-      }
+    computed: {
+        ...mapGetters(["userData", "isLoggedIn", "error"]),
+        afterLogin: function() {
+            return this.navItemsAfterAuth.map(item => {
+                return item;
+            });
+        },
+        beforeLogin: function() {
+            return this.navItems.map(item => {
+                return item;
+            });
+        }
     },
-    afterLogin: function() {
-      return this.navItemsAfterAuth.map(item => {
-        return item;
-      });
-    },
-    beforeLogin: function() {
-      return this.navItems.map(item => {
-        return item;
-      });
+    methods: {
+        ...mapActions(["getUserDetails", "logout", "clearErrors"]),
+        getUser: function() {
+            this.getUserDetails();
+        },
+        onLogout: function() {
+            this.logout();
+        }
     }
-  },
-  methods: {
-    ...mapActions(["getUserDetails"]),
-    getUser: function() {
-      this.getUserDetails();
-    }
-  }
 };
 </script>

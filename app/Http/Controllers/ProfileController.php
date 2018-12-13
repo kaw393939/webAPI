@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Resources\ProfileResource;
+use App\Http\Resources\ProfilesResource;
 use App\User;
 use App\Profile;
 use DB;
@@ -11,72 +13,79 @@ use JWTAuth;
 
 class ProfileController extends Controller
 {
-    public function createProfile(Request $request) {
-        $user = JWTAuth::parseToken()->authenticate();
+    /**
+     * Display a listing of the resource.
+     *
+     */
+    public function index()
+    {
+        return new ProfilesResource(ProfileResource::collection(Profile::all()));
+    }
 
-        try {
-            $input = $request->only('first_name', 'last_name', 'bio');
-            $profile = Profile::make();
-            $profile->user_id = $user['id'];
-            $profile->fill($input);
-            $profile->save();
-            return response()->json([
-                'code' => 200,
-                'status' => true,
-                'message' => "Profile Created",
-            ], 200);
-        }
-        catch (\Illuminate\Database\QueryException $e) {
-            return response()->json([
-                'code' => 500,
-                'status' => false,
-                'message' => "Profile Error",
-            ], 500);
-        }
-    }
-    public function showProfile(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        $input = $request->only('id');
-        $profile = Profile::find($input['id']);
-        if ($profile) {
-            return response()->json([
-                'code' => 200,
-                'status' => true,
-                'message' => "Profile Found",
-                'profile' => $profile,
-            ], 200);
-        }
-        return response()->json([
-            'code' => 200,
-            'status' => false,
-            'message' => "Profile Not Found",
-        ], 200);
+        //
     }
-    public function editProfile()
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        $profile = $user->profile;
-        return response()->json([
-            'code' => 200,
-            'status' => true,
-            'message' => "Can edit profile",
-            'profile' => $profile,
-        ], 200);
+        //
     }
-    public function updateProfile(UpdateProfileRequest $request) {
-        $input = $request->only('id', 'user_id', 'email', 'first_name', 'last_name', 'bio');
-        $user = User::find($input['user_id']);
-        $profile = Profile::find($input['id']);
-        $user->email = $input['email'];
-        $profile->first_name = $input['first_name'];
-        $profile->last_name = $input['last_name'];
-        $profile->bio = $input['bio'];
-        $profile->save();
-        $user->save();
-        return response()->json([
-            'code' => 200,
-            'status' => true,
-            'message' => "Profile Updated",
-        ], 200);
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  User $user
+     * @return \App\Http\Resources\UserResource
+     */
+    public function show(Profile $profile)
+    {
+        ProfileResource::withoutWrapping();
+        return new ProfileResource($profile);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 }

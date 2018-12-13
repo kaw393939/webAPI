@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Profile;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 
-
-class UsersResource extends ResourceCollection
+class ProfilesResource extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -17,23 +17,22 @@ class UsersResource extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => UserResource::collection($this->collection),
+            'data' => ProfileResource::collection($this->collection),
         ];
     }
-
 
     public function with($request)
     {
 
-        $users = $this->collection->map(
-            function($user) {
-                return $user;
+        $profiles = $this->collection->map(
+            function($profile) {
+                return $profile;
             }
         );
-        $included = $users->merge($users)->unique();
+        $included = $profiles->merge($profiles)->unique();
         return [
             'links' => [
-                'self' => route('users.index'),
+                'self' => route('profiles.index'),
             ],
             'included' => $this->withIncluded($included),
         ];
@@ -43,11 +42,10 @@ class UsersResource extends ResourceCollection
     {
         return $included->map(
             function ($include) {
-                if ($include instanceof User){
-                    return new UserResource($include);
+                if ($include instanceof Profile){
+                    return new ProfileResource($include);
                 }
             }
         );
     }
-
 }

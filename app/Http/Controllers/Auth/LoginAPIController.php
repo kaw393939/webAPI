@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use JWTAuth;
 use App\Http\Controllers\Controller;
+use App\Events\LogInEvent;
 
 class LoginAPIController extends Controller
 {
@@ -13,6 +14,8 @@ class LoginAPIController extends Controller
     public function login(LoginRequest $request)
     {
         $input = $request->only('email', 'password');
+
+        event(new LogInEvent($request->email));
 
         try {
 

@@ -1,5 +1,6 @@
 import faker from "faker";
 import range from "lodash/range";
+import random from "lodash/random";
 
 export function fetchQuestion(id) {
     return new Promise(resolve => {
@@ -30,6 +31,24 @@ export function fetchQuestion(id) {
                     createdAt: faker.date.past()
                 }))
             });
-        }, 500);
+        }, 250);
+    });
+}
+
+export function fetchQuestions() {
+    return new Promise(resolve => {
+        const questions = range(0, 10).map(id => ({
+            id,
+            text: faker.lorem.sentences(),
+            tags: range(0, 5).map(tagId => ({
+                id: tagId,
+                title: faker.lorem.word()
+            })),
+            createdAt: faker.date.past(),
+            likes: random(0, 10),
+            comments: random(0, 10)
+        }));
+
+        resolve(questions);
     });
 }

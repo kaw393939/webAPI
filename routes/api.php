@@ -17,8 +17,6 @@ Route::post('login', 'Auth\LoginAPIController@login')->name('login');
 Route::post('register', 'Auth\RegisterAPIController@register')->name('register');
 
 Route::resource('users','UserController');
-Route::resource('questions','QuestionController');
-
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');

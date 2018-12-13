@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UsersResource;
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \App\Http\Resources\UserResource
      */
     public function index()
     {
-        return new UserResource(User::with(['user','id'])->paginate());
+
+        return new UsersResource(UserResource::collection(User::all()));
     }
 
     /**

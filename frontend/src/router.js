@@ -42,6 +42,10 @@ export default new Router({
             component: () => import("./views/UserProfile.vue")
         },
         {
+            path: "/question",
+            component: () => import("./views/Question.vue")
+        },
+        {
             path: "/question/:id",
             component: () => import("./views/Question.vue")
         },

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Events\LogInEvent;
 
 use Tests\TestCase;
 
@@ -59,6 +60,8 @@ class LoginTest extends TestCase
 
     public function testUserLoginFailure()
     {
+        $this->expectsEvents(LogInEvent::class);
+
         $payload = ['email' => 'wrongemail@wrongemail.com', 'password' => 'password'];
         $this->json('POST', 'api/login', $payload)
             ->assertStatus(401)

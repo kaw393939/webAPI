@@ -22,8 +22,19 @@ class ShowProfileTest extends TestCase
 
     }
 
+    public function testsShowProfilesSuccessfullyTest()
+    {
+        $profile = factory(Profile::class)->create();
+        $response = $this ->json('GET',"/api/profiles/");
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' =>[[
+                    'type'=>'profiles',
+                ]]
+            ]);
+    }
 
-    public function testshowProfileSuccessfullyTest()
+    public function testShowProfileSuccessfullyTest()
     {
         $profile = factory(Profile::class)->create();
 

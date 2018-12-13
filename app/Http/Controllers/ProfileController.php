@@ -47,7 +47,7 @@ class ProfileController extends Controller
      * Display the specified resource.
      *
      * @param  User $user
-     * @return \App\Http\Resources\UserResource
+     * @return ProfileResource
      */
     public function show(Profile $profile)
     {

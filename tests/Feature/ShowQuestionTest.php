@@ -22,7 +22,11 @@ class ShowQuestionTest extends TestCase
     }
     public function testsShowQuestionsSuccessfullyTest()
     {
-        factory(Question::class)->create();
+        $user = factory(\App\User::class)->make();
+        $user->save();
+        $question = factory(Question::class)->create();
+        $question->user()->associate($user);
+
         $response = $this ->json('GET',"/api/questions/");
         $response->assertStatus(200)
             ->assertJson([

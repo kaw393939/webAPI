@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::post('login', 'Auth\LoginAPIController@login')->name('login');
 Route::post('register', 'Auth\RegisterAPIController@register')->name('register');
 
+Route::resource('questions', 'QuestionController');
+Route::resource('profiles', 'ProfileController');
 Route::resource('users','UserController');
 
 Route::group(['middleware' => 'auth.jwt'], function () {

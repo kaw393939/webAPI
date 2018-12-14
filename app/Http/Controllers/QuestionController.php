@@ -6,6 +6,7 @@ use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionsResource;
 use App\Question;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class QuestionController extends Controller
 {
@@ -24,7 +25,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+
     }
     /**
      * Store a newly created resource in storage.
@@ -34,7 +35,28 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->only( 'user_id', 'question');
+        $user = \App\User::findOrFail($input['user_id']);
+
+        try {
+            $question = Question::create($input);
+            $question->save();
+            return response()->json([
+                'id' => $question->id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Create Success",
+            ], 200);
+        }
+        catch(\Exception $exception) {
+            return response()->json([
+                'code' => 404,
+                'status' => false,
+                'message' => "Create Fail",
+            ], 404);
+        }
+
+
     }
     /**
      * Display the specified resource.
@@ -66,7 +88,29 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->only( 'question');
+
+        try {
+            $question = \App\Question::findOrFail($id);
+            $question->question = $input['question'];
+            $question->save();
+
+            return response()->json([
+                'id' => $id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Update Success",
+            ], 200);
+        }
+        catch (\Exception $exception) {
+            return response()->json([
+                'id' => $id,
+                'code' => 404,
+                'status' => false,
+                'message' => "Update Fail",
+            ], 404);
+        }
+
     }
     /**
      * Remove the specified resource from storage.
@@ -76,6 +120,23 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        if(Question::destroy($id)) {
+            return response()->json([
+                'id' => $id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Delete Success",
+            ], 200);
+        }
+        else {
+
+            return response()->json([
+                'id' => $id,
+                'code' => 404,
+                'status' => false,
+                'message' => "Delete Fail",
+            ], 404);
+        }
     }
 }

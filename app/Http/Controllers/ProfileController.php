@@ -95,17 +95,26 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, $id)
     {
-        $profile = Profile::findOrFail($id);
-        $profile->update($request->all());
-        $user = User::findOrFail($profile['user_id']);
-        $user->email = $request->email;
-        $user->save();
+        try {
+            $profile = Profile::findOrFail($id);
+            $profile->update($request->all());
+            $user = User::findOrFail($profile['user_id']);
+            $user->email = $request->email;
+            $user->save();
 
-        return response()->json([
-            'code' => 200,
-            'status' => true,
-            'message' => "Profile Updated",
-        ], 200);
+            return response()->json([
+                'code' => 200,
+                'status' => true,
+                'message' => "Profile Updated",
+            ], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => true,
+                'message' => "Profile Update Failed",
+            ], 404);
+        }
     }
 
     /**

@@ -18,7 +18,9 @@ class UpdateProfileRequest extends FormRequest
     public function authorize()
     {
         $user = JWTAuth::parseToken()->authenticate();
-        return $user->id == $this->user_id;
+        $profileId = $this->route('profile');
+        $profile = Profile::find($profileId);
+        return $user->id == $profile->user_id;
     }
 
     /**
@@ -29,8 +31,6 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
-            'user_id' => 'required',
             'email' => 'required|email',
             'first_name' => 'required|string',
             'last_name' => 'required|string',

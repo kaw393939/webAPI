@@ -62,4 +62,61 @@ class ProfileTest extends TestCase
                 ]
             );
     }
+
+    public function testDeleteProfile()
+    {
+        $user = factory(User::class)->make();
+        $user->save();
+        $profile = factory(Profile::class)->create();
+        $profile->user()->associate($user);
+
+        $response = $this ->json('DELETE',"/api/profiles/{$profile->id}");
+        $response->assertStatus(200)
+            ->assertJson([
+                'id' => $profile->id,
+                'code' => '200',
+                'status' => true,
+                'message' => 'Delete Success',
+            ]);
+    }
+
+    public function testCreateProfile()
+    {
+        $user = factory(User::class)->create([
+            'email' => 'testlogin@user.com',
+            'password' => bcrypt('toptal123'),
+        ]);
+
+        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+        $response = $this->json('POST', 'api/login', $payload)
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    'code',
+                    'status',
+                    'message',
+                    'token',
+                ]
+            );
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
+        ];
+        $payload = [
+            'first_name' => 'Bob',
+            'question' => 'Johnson',
+            'bio' => 'Hello World!',
+        ];
+        $this->withHeaders($headers)
+            ->json('POST',"/api/profiles/", $payload)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'code',
+                'status',
+                'message',
+            ]);
+    }
 }

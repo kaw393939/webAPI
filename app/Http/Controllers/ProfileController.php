@@ -40,7 +40,27 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $input = $request->only('first_name', 'last_name', 'bio');
+
+        try {
+            $profile = Profile::create($input);
+            $profile->user_id = $user->id;
+            $profile->save();
+            return response()->json([
+                'id' => $profile->id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Create Success",
+            ], 200);
+        }
+        catch(\Exception $exception) {
+            return response()->json([
+                'code' => 404,
+                'status' => false,
+                'message' => "Create Fail",
+            ], 404);
+        }
     }
 
     /**
@@ -96,7 +116,23 @@ class ProfileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Profile::destroy($id)) {
+            return response()->json([
+                'id' => $id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Delete Success",
+            ], 200);
+        }
+        else {
+
+            return response()->json([
+                'id' => $id,
+                'code' => 404,
+                'status' => false,
+                'message' => "Delete Fail",
+            ], 404);
+        }
     }
 }
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileCreateRequest;
+use App\Http\Requests\ProfileDeleteRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProfilesResource;
@@ -38,7 +40,7 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfileCreateRequest $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
         $input = $request->only('first_name', 'last_name', 'bio');
@@ -123,7 +125,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ProfileDeleteRequest $request, $id)
     {
         if(Profile::destroy($id)) {
             return response()->json([

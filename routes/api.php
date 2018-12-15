@@ -22,7 +22,7 @@ Route::resource('profiles', 'ProfileController');
 Route::resource('users','UserController');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');
+    Route::post('logout', 'Auth\LogoutAPIController@logout')->name('logout');
     Route::get('user', 'ProfileController@showProfile')->name('user');
     Route::post('create', 'ProfileController@createProfile')->name('create');
     Route::post('edit', 'ProfileController@editProfile')->name('edit');

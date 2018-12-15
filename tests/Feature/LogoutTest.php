@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Events\LogOutEvent;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -26,8 +25,6 @@ class LogoutTest extends TestCase
 
     public function testUserLogout()
     {
-        $this->expectsEvents(LogOutEvent::class);
-
         $payload = [
             'name' => 'John',
             'email' => 'john@toptal.com',

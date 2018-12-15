@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Events\RegistrationEvent;
 
 
 class RegisterTest extends TestCase
@@ -29,8 +28,6 @@ class RegisterTest extends TestCase
 
     public function testRegistersSuccessfullyTest()
     {
-        $this->expectsEvents(RegistrationEvent::class);
-
         $payload = [
             'name' => 'John',
             'email' => 'john@toptal.com',

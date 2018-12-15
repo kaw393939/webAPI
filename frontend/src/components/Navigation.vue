@@ -2,48 +2,27 @@
   <div>
     <v-navigation-drawer v-model="drawer" fixed class="grey lighten-4" app>
       <v-list dense class="grey lighten-4">
-        <template v-if="userData || isLoggedIn">
-          <template v-for="(item, i) in navItemsAfterAuth">
-            <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
-            <v-list-tile v-else :key="i">
-              <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <router-link :to="item.href" style="text-decoration: none;">
-                  <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
-                </router-link>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-          <v-list-tile>
+        <template v-for="(item, i) in navLinks">
+          <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
+          <v-list-tile v-else :key="i">
             <v-list-tile-action>
-              <v-icon></v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
-            <router-link @click.native="onLogout" to="/home" style="text-decoration: none;">
-              <v-list-tile-title class="black--text body-2">Logout</v-list-tile-title>
-            </router-link>
+            <v-list-tile-content>
+              <router-link :to="item.href" style="text-decoration: none;">
+                <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
+              </router-link>
+            </v-list-tile-content>
           </v-list-tile>
         </template>
-        <template v-else>
-          <template v-for="(item, i) in navItems">
-            <v-divider v-if="item.divider" :key="i" dark class="my-3"></v-divider>
-            <v-list-tile v-else :key="i">
-              <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <router-link
-                  :to="item.href"
-                  @click.native="error ? clearErrors() : console.log('no error')"
-                  style="text-decoration: none;"
-                >
-                  <v-list-tile-title class="black--text body-2">{{ item.text }}</v-list-tile-title>
-                </router-link>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </template>
+        <v-list-tile v-if="isUserLoggedIn">
+          <v-list-tile-action>
+            <v-icon>fa-sign-out-alt</v-icon>
+          </v-list-tile-action>
+          <router-link @click.native="handleLogout" to="/" style="text-decoration: none;">
+            <v-list-tile-title class="black--text body-2">Logout</v-list-tile-title>
+          </router-link>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar style="background: #1976d2" app>
@@ -63,46 +42,83 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import router from "../router";
+import pick from "lodash/pick";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
-const navItemConst = [
-  { icon: "home", text: "Home", href: "/" },
-  { divider: true },
-  { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
-  { icon: "info", text: "About", href: "/" }
-];
+import { routes } from "@/router";
+import { removeAuthToken } from "@/utils/LocalStorageUtils";
+
+function filterRoutes(route) {
+  const filtered = ["/", "*", "/question/:id", "/profile/edit", "/profile"];
+  const isFilteredRoute = filtered.includes(route.href);
+  return !isFilteredRoute;
+}
+
+function assignIconsAndText(route) {
+  switch (route.href) {
+    case "/login":
+      return { ...route, icon: "fa-sign-in-alt", text: "Login" };
+    case "/register":
+      return { ...route, icon: "fa-user-plus", text: "Register" };
+    default:
+      return route;
+  }
+}
+
+const navItems = routes
+  .map(route => pick(route, ["path"]))
+  .map(route => ({ href: route.path }))
+  .filter(filterRoutes)
+  .map(assignIconsAndText)
+  .concat([{ divider: true }, { icon: "fa-home", text: "Home", href: "/" }])
+  .reverse();
 
 export default {
-  data: () => ({
-    loggedIn: false,
-    drawer: null,
-    navItems: [
-      ...navItemConst,
-      { icon: "account-box", text: "Login", href: "/login" },
-      { icon: "account-box", text: "Register", href: "/register" }
-    ],
-    navItemsAfterAuth: [...navItemConst]
-  }),
+  data() {
+    return {
+      drawer: null,
+      navItems
+    };
+  },
 
   computed: {
     ...mapGetters(["userData", "isLoggedIn", "error"]),
-    afterLogin: function() {
-      return this.navItemsAfterAuth.map(item => {
-        return item;
-      });
+
+    navLinks: function() {
+      return this.isLoggedIn
+        ? this.navItems.filter(({ href }) => {
+            const excluded = ["/login", "/register"];
+
+            return !excluded.includes(href);
+          })
+        : this.navItems;
     },
-    beforeLogin: function() {
-      return this.navItems.map(item => {
-        return item;
-      });
+
+    isUserLoggedIn: function() {
+      return this.isLoggedIn;
     }
   },
+
   methods: {
+    ...mapMutations(["resetAuthUser"]),
     ...mapActions(["logout", "clearErrors"]),
 
-    onLogout: function() {
-      this.logout();
+    handleLogout: function() {
+      console.log("clicked!");
+      const handleResponse = response => {
+        removeAuthToken();
+        this.resetAuthUser();
+      };
+
+      const handleError = error => {
+        removeAuthToken();
+        this.resetAuthUser();
+      };
+
+      axios
+        .get("api/logout")
+        .then(handleResponse)
+        .catch(handleError);
     }
   }
 };

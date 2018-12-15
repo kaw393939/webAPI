@@ -34,6 +34,10 @@ const actions = {
             const { token } = response.data;
 
             setAuthToken(token);
+            window.axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${token}`;
+
             router.push("/");
             commit("setLoggedState", token);
         };

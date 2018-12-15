@@ -1,18 +1,27 @@
+import router from "../../router";
+import { setToken, getToken } from "../../utilities/localStorage";
+
 const state = {
-    token: null,
-    error: ""
+    token: getToken(),
+    error: "",
+    user: "",
+    isLogged: false
 };
 
 const getters = {
-    isLoggedIn: state => !!state.token,
-    error: state => state.error
+    isLoggedIn: state => state.isLogged,
+    error: state => state.error,
+    userData: state => state.user
 };
 
 const actions = {
     signUp({ commit }, obj) {
         return axios
             .post("api/register", obj)
-            .then(res => console.log("RES", res))
+            .then(res => {
+                console.log("signup");
+                router.push("/login");
+            })
             .catch(err => {
                 commit("sendError", err.response.data.errors.email[0]);
                 return err;
@@ -21,23 +30,57 @@ const actions = {
     login({ commit }, obj) {
         axios
             .post("api/login", obj)
-            .then(res => console.log("RES", res))
+            .then(res => {
+                console.log("login");
+                setToken(res.data.token);
+                console.log(res);
+                router.push("/");
+                commit("setLoggedState", res.data.token);
+            })
             .catch(err => {
                 commit("sendError", err.response.data.message);
                 return err;
             });
     },
-    logOut: ({ commit }) => {
-        commit("setToken", null);
+
+    getUserDetails({ commit }) {
+        axios
+            .get("/api/user")
+            .then(res => {
+                commit("sendUserData", res.data.user);
+                console.log("res", res);
+            })
+            .catch(err => {
+                console.log(error);
+            });
+    },
+
+    logout: ({ commit }) => {
+        console.log("logout");
+        commit("setLoggedState", null);
+        localStorage.removeItem("token");
+        console.log(localStorage.getItem("token"));
+    },
+
+    clearErrors: ({commit}) => {
+        console.log("clear");
+        commit("removeErrors");
     }
 };
 
 const mutations = {
-    setToken: (state, token) => {
-        state.token = token;
-    },
     sendError: (state, error) => {
         state.error = error;
+    },
+    sendUserData: (state, userData) => {
+        userData ? (state.user = userData) : (state.user = "");
+    },
+    setLoggedState(state, authToken) {
+        if (authToken) state.isLogged = true;
+        else state.isLogged = false;
+    },
+    removeErrors: (state) => {
+        state.error = "";
     }
 };
 

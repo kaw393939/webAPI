@@ -18,9 +18,27 @@ class ShowUserTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-
+      
     }
 
+  
+
+    public function testsShowUsersSuccessfullyTest()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this ->json('GET',"/api/users/");
+
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' =>[[
+                    'type'=>'users',
+
+                    ]]
+
+           ]);
+    }
 
     public function testshowUserSuccessfullyTest()
     {
@@ -33,14 +51,14 @@ class ShowUserTest extends TestCase
             ->assertJson([
                 'id' => (string) $user->id,
                 'attributes' => [
-                   'name' => $user->name,
+                    'name' => $user->name,
                     'email' => $user->email,
                     'email_verified_at' =>(string)$user->email_verified_at
-        ],
-        'relationships' => '',
-        'links' => [
+                ],
+                'relationships' => '',
+                'links' => [
 
-                   ]
+                ]
 
             ]);
     }

@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 namespace App\Http\Controllers\Auth;
-use App\Events\LogOutEvent;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
-use App\User;
 
 class LogoutAPIController extends Controller
 {
@@ -16,9 +14,6 @@ class LogoutAPIController extends Controller
     {
 
         try {
-
-            event(new LogOutEvent($request->user()));
-
             JWTAuth::parseToken()->invalidate();
 
             return response()->json([

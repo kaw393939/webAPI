@@ -5,6 +5,7 @@ const state = {
     token: getToken(),
     error: "",
     user: "",
+    authUser: {},
     isLogged: false
 };
 
@@ -62,7 +63,7 @@ const actions = {
         console.log(localStorage.getItem("token"));
     },
 
-    clearErrors: ({commit}) => {
+    clearErrors: ({ commit }) => {
         console.log("clear");
         commit("removeErrors");
     }
@@ -79,8 +80,17 @@ const mutations = {
         if (authToken) state.isLogged = true;
         else state.isLogged = false;
     },
-    removeErrors: (state) => {
+    removeErrors: state => {
         state.error = "";
+    },
+
+    setAuthUser(state, payload) {
+        state.authUser = { ...payload.data };
+    },
+
+    resetAuthUser(state) {
+        state.authUser = {};
+        state.isLogged = false;
     }
 };
 

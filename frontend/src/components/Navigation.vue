@@ -67,49 +67,49 @@ import { mapGetters, mapActions } from "vuex";
 import router from "../router";
 
 const navItemConst = [
-    { icon: "home", text: "Home", href: "/" },
-    { divider: true },
-    { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
-    { icon: "info", text: "About", href: "/" }
+  { icon: "home", text: "Home", href: "/" },
+  { divider: true },
+  { icon: "question_answer", text: "NJIT FAQ Bot", href: "/" },
+  { icon: "info", text: "About", href: "/" }
 ];
 
 export default {
-    data: () => ({
-        loggedIn: false,
-        drawer: null,
-        navItems: [
-            ...navItemConst,
-            { icon: "account-box", text: "Login", href: "/login" },
-            { icon: "account-box", text: "Register", href: "/register" }
-        ],
-        navItemsAfterAuth: [...navItemConst]
-    }),
+  data: () => ({
+    loggedIn: false,
+    drawer: null,
+    navItems: [
+      ...navItemConst,
+      { icon: "account-box", text: "Login", href: "/login" },
+      { icon: "account-box", text: "Register", href: "/register" }
+    ],
+    navItemsAfterAuth: [...navItemConst]
+  }),
 
-    created() {
-        this.getUser();
-    },
+  created() {
+    // this.getUser();
+  },
 
-    computed: {
-        ...mapGetters(["userData", "isLoggedIn", "error"]),
-        afterLogin: function() {
-            return this.navItemsAfterAuth.map(item => {
-                return item;
-            });
-        },
-        beforeLogin: function() {
-            return this.navItems.map(item => {
-                return item;
-            });
-        }
+  computed: {
+    ...mapGetters(["userData", "isLoggedIn", "error"]),
+    afterLogin: function() {
+      return this.navItemsAfterAuth.map(item => {
+        return item;
+      });
     },
-    methods: {
-        ...mapActions(["getUserDetails", "logout", "clearErrors"]),
-        getUser: function() {
-            this.getUserDetails();
-        },
-        onLogout: function() {
-            this.logout();
-        }
+    beforeLogin: function() {
+      return this.navItems.map(item => {
+        return item;
+      });
     }
+  },
+  methods: {
+    ...mapActions(["getUserDetails", "logout", "clearErrors"]),
+    getUser: function() {
+      this.getUserDetails();
+    },
+    onLogout: function() {
+      this.logout();
+    }
+  }
 };
 </script>

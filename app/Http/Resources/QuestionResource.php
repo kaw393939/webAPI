@@ -31,7 +31,7 @@ class QuestionResource extends Resource
                     'title'=>''
                 ]
             ],
-            'createdAt'=>'',
+            'createdAt'=>$this->created_at,
             'likes'=>'',
             'votes'=>'',
 //           ANSWERS OBJECT CAN GO HERE

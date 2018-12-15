@@ -40,8 +40,8 @@ class QuestionController extends Controller
      */
     public function store(QuestionCreateRequest $request)
     {
-        $input = $request->only( 'user_id', 'question');
-        $user = \App\User::findOrFail($input['user_id']);
+        $input = $request->only( 'question');
+        $user = JWTAuth::toUser($request->bearerToken());
 
         try {
             $question = Question::create($input);

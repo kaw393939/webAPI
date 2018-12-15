@@ -67,7 +67,6 @@ class QuestionsTest extends TestCase
             ];
 
             $payload = [
-                'user_id' => $user->id,
                 'question' => 'Test Question?'
             ];
 

@@ -30,14 +30,7 @@ class ShowUserTest extends TestCase
         $response = $this ->json('GET',"/api/users/");
 
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'data' =>[[
-                    'type'=>'users',
-
-                    ]]
-
-           ]);
+        $response->assertStatus(200);
     }
 
     public function testshowUserSuccessfullyTest()

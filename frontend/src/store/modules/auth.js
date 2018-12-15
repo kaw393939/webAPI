@@ -1,5 +1,6 @@
 import router from "../../router";
 import { setToken, getToken } from "../../utilities/localStorage";
+import { setAuthToken } from "@/utils/LocalStorageUtils";
 
 const state = {
     token: getToken(),
@@ -29,19 +30,24 @@ const actions = {
             });
     },
     login({ commit }, obj) {
+        const handleResponse = response => {
+            const { token } = response.data;
+
+            setAuthToken(token);
+            router.push("/");
+            commit("setLoggedState", token);
+        };
+
+        const handleError = error => {
+            const { message } = error.response.data;
+
+            commit("sendError", message);
+        };
+
         axios
             .post("api/login", obj)
-            .then(res => {
-                console.log("login");
-                setToken(res.data.token);
-                console.log(res);
-                router.push("/");
-                commit("setLoggedState", res.data.token);
-            })
-            .catch(err => {
-                commit("sendError", err.response.data.message);
-                return err;
-            });
+            .then(handleResponse)
+            .catch(handleError);
     },
 
     getUserDetails({ commit }) {
@@ -86,6 +92,7 @@ const mutations = {
 
     setAuthUser(state, payload) {
         state.authUser = { ...payload.data };
+        state.isLogged = true;
     },
 
     resetAuthUser(state) {

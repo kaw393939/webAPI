@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
-class UpdateProfileRequest extends FormRequest
+class ProfileUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProfilesResource;
 use App\User;
@@ -93,7 +93,7 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProfileRequest $request, $id)
+    public function update(ProfileUpdateRequest $request, $id)
     {
         try {
             $profile = Profile::findOrFail($id);

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -19,7 +19,7 @@ class GetAuthUserAPIController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    public function editAuthUser(UpdateProfileRequest $request)
+    public function editAuthUser(ProfileUpdateRequest $request)
     {
         $currentUser = JWTAuth::authenticate($request->token);
         $profile = $request;

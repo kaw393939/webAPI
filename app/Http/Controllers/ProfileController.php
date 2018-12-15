@@ -147,30 +147,3 @@ class ProfileController extends Controller
     }
 }
 
-//public function editProfile()
-//{
-//    $user = JWTAuth::parseToken()->authenticate();
-//    $profile = $user->profile;
-//    return response()->json([
-//        'code' => 200,
-//        'status' => true,
-//        'message' => "Can edit profile",
-//        'profile' => $profile,
-//    ], 200);
-//}
-//public function updateProfile(UpdateProfileRequest $request) {
-//    $input = $request->only('id', 'user_id', 'email', 'first_name', 'last_name', 'bio');
-//    $user = User::find($input['user_id']);
-//    $profile = Profile::find($input['id']);
-//    $user->email = $input['email'];
-//    $profile->first_name = $input['first_name'];
-//    $profile->last_name = $input['last_name'];
-//    $profile->bio = $input['bio'];
-//    $profile->save();
-//    $user->save();
-//    return response()->json([
-//        'code' => 200,
-//        'status' => true,
-//        'message' => "Profile Updated",
-//    ], 200);
-//}

@@ -19,7 +19,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         $user = JWTAuth::parseToken()->authenticate();
         $profileId = $this->route('profile');
-        $profile = Profile::find($profileId);
+        $profile = Profile::findOrFail($profileId);
         return $user->id == $profile['user_id'];
     }
 

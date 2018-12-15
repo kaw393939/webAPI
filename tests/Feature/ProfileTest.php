@@ -65,13 +65,34 @@ class ProfileTest extends TestCase
 
     public function testDeleteProfile()
     {
-        $user = factory(User::class)->make();
-        $user->save();
+        $user = factory(User::class)->create([
+            'email' => 'testlogin@user.com',
+            'password' => bcrypt('toptal123'),
+        ]);
         $profile = factory(Profile::class)->create();
         $profile->user()->associate($user);
+        $profile->save();
 
-        $response = $this ->json('DELETE',"/api/profiles/{$profile->id}");
-        $response->assertStatus(200)
+        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+        $response = $this->json('POST', 'api/login', $payload)
+            ->assertStatus(200)
+            ->assertJsonStructure(
+                [
+                    'code',
+                    'status',
+                    'message',
+                    'token',
+                ]
+            );
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
+        ];
+
+        $this->withHeaders($headers)->json('DELETE',"/api/profiles/{$profile->id}")
+            ->assertStatus(200)
             ->assertJson([
                 'id' => $profile->id,
                 'code' => '200',
@@ -106,7 +127,7 @@ class ProfileTest extends TestCase
         ];
         $payload = [
             'first_name' => 'Bob',
-            'question' => 'Johnson',
+            'last_name' => 'Johnson',
             'bio' => 'Hello World!',
         ];
         $this->withHeaders($headers)

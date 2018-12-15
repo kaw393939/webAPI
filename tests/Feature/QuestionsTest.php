@@ -18,12 +18,27 @@ class QuestionsTest extends TestCase
 
     public function testDeleteQuestion()
     {
-        $user = factory(\App\User::class)->make();
+        $user = factory(\App\User::class)->create([
+            'email' => 'testlogin@user.com',
+            'password' => bcrypt('toptal123'),
+        ]);
         $user->save();
         $question = factory(\App\Question::class)->create();
         $question->user()->associate($user);
+        $question->save();
 
-        $response = $this ->json('DELETE',"/api/questions/{$question->id}");
+        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+        $response = $this->json('POST', 'api/login', $payload);
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
+        ];
+
+        $response = $this->withHeaders($headers)
+            ->json('DELETE',"/api/questions/{$question->id}");
+
         $response->assertStatus(200)
         ->assertJson([
             'id' => $question->id,
@@ -31,17 +46,33 @@ class QuestionsTest extends TestCase
             'status' => true,
             'message' => 'Delete Success',
         ]);
+
     }
 
     public function testCreateQuestion()
         {
-            $user = factory(\App\User::class)->make();
+            $user = factory(\App\User::class)->create([
+                'email' => 'testlogin@user.com',
+                'password' => bcrypt('toptal123'),
+            ]);
             $user->save();
+
+            $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+            $response = $this->json('POST', 'api/login', $payload);
+
             $headers = [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $response->json("token"),
+            ];
+
+            $payload = [
                 'user_id' => $user->id,
                 'question' => 'Test Question?'
             ];
-            $response = $this ->json('POST',"/api/questions/", $headers);
+
+            $response = $this->withHeaders($headers)
+                ->json('POST',"/api/questions/", $payload);
             $response->assertStatus(200)
                 ->assertJson([
                     'id' => DB::table('questions')->orderBy('id', 'desc')->first()->id,
@@ -53,17 +84,31 @@ class QuestionsTest extends TestCase
 
     public function testUpdateQuestion()
     {
-        $user = factory(\App\User::class)->make();
+        $user = factory(\App\User::class)->create([
+            'email' => 'testlogin@user.com',
+            'password' => bcrypt('toptal123'),
+        ]);
         $user->save();
         $question = factory(\App\Question::class)->create();
         $question->user()->associate($user);
         $question->question = "This is a test";
         $question->save();
 
+        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+        $response = $this->json('POST', 'api/login', $payload);
+
+
         $headers = [
-          'question'=> 'Test this is a',
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $response->json("token"),
         ];
-        $response = $this ->json('PUT',"/api/questions/{$question->id}", $headers);
+
+        $payload = ['question' => 'This is a test"'];
+
+        $response = $this ->withHeaders($headers)
+        ->json('PUT',"/api/questions/{$question->id}", $payload);
+
         $response->assertStatus(200)
             ->assertJson([
                 'id' => $question->id,

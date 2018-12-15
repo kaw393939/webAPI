@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuestionCreateRequest;
+use App\Http\Requests\QuestionDeleteRequest;
+use App\Http\Requests\QuestionEditRequest;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\QuestionsResource;
 use App\Question;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
+use JWTAuth;
+
 
 class QuestionController extends Controller
 {
@@ -33,13 +38,14 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuestionCreateRequest $request)
     {
         $input = $request->only( 'user_id', 'question');
         $user = \App\User::findOrFail($input['user_id']);
 
         try {
             $question = Question::create($input);
+            $question->user_id = $user->id;
             $question->save();
             return response()->json([
                 'id' => $question->id,
@@ -86,12 +92,12 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(QuestionEditRequest $request, $id)
     {
         $input = $request->only( 'question');
 
         try {
-            $question = \App\Question::findOrFail($id);
+            $question = Question::findOrFail($id);
             $question->question = $input['question'];
             $question->save();
 
@@ -118,7 +124,7 @@ class QuestionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(QuestionDeleteRequest $request, $id)
     {
 
         if(Question::destroy($id)) {

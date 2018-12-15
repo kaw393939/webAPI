@@ -16,14 +16,42 @@ class QuestionResource extends Resource
     public function toArray($request)
     {
         return [
-            'type'  => 'questions',
             'id'    => (string)$this->id,
+            'author' =>[
+                'firstName'=>'',
+                'lastName'=>'',
+                'avatar'=>''
+            ],
+
             'text' => (string)$this->question,
 //            'relationships' => new UsersRelationshipResource($this),
-            'relationships' => '',
-            'links'         => [
-                'self' => route('questions.show',['question' => $this->id]),
-            ]
+            'tags'=>[
+                [
+                    'id'=>'',
+                    'title'=>''
+                ]
+            ],
+            'createdAt'=>'',
+            'likes'=>'',
+            'votes'=>'',
+//           ANSWERS OBJECT CAN GO HERE
+            'answers'=> [
+                [
+                    'id'=>'',
+                    'author' =>[
+                        'firstName'=>'',
+                        'lastName'=>'',
+                        'avatar'=>'',
+                    ],
+                    'text'=>'',
+                    'createdAt'=>'',
+                ]
+            ],
+
+//            'relationships' => '',
+//            'links'         => [
+//                'self' => route('questions.show',['question' => $this->id]),
+//            ]
         ];
     }
 }

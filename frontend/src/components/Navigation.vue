@@ -43,7 +43,7 @@
 
 <script>
 import pick from "lodash/pick";
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 import { routes } from "@/router";
 import { removeAuthToken } from "@/utils/LocalStorageUtils";
@@ -76,13 +76,13 @@ const navItems = routes
 export default {
   data() {
     return {
-      drawer: null,
-      navItems
+      navItems,
+      drawer: null
     };
   },
 
   computed: {
-    ...mapGetters(["userData", "isLoggedIn", "error"]),
+    ...mapGetters(["isLoggedIn"]),
 
     navLinks: function() {
       return this.isLoggedIn
@@ -101,7 +101,6 @@ export default {
 
   methods: {
     ...mapMutations(["resetAuthUser"]),
-    ...mapActions(["logout", "clearErrors"]),
 
     handleLogout: function() {
       const handleResponse = response => {

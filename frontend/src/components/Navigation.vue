@@ -48,13 +48,13 @@ import { mapGetters, mapMutations } from "vuex";
 import { routes } from "@/router";
 import { removeAuthToken } from "@/utils/LocalStorageUtils";
 
-function filterRoutes(route) {
-  const filtered = ["/", "*", "/question/:id", "/profile/edit", "/profile"];
-  const isFilteredRoute = filtered.includes(route.href);
-  return !isFilteredRoute;
+function isNavItem(route) {
+  const navItems = ["/login", "/register"];
+
+  return navItems.includes(route.href);
 }
 
-function assignIconsAndText(route) {
+function withAdditionalAttributes(route) {
   switch (route.href) {
     case "/login":
       return { ...route, icon: "fa-sign-in-alt", text: "Login" };
@@ -65,19 +65,21 @@ function assignIconsAndText(route) {
   }
 }
 
-const navItems = routes
-  .map(route => pick(route, ["path"]))
-  .map(route => ({ href: route.path }))
-  .filter(filterRoutes)
-  .map(assignIconsAndText)
-  .concat([{ divider: true }, { icon: "fa-home", text: "Home", href: "/" }])
-  .reverse();
-
 export default {
   data() {
     return {
-      navItems,
-      drawer: null
+      drawer: null,
+
+      navItems: routes
+        .map(route => pick(route, ["path"]))
+        .map(route => ({ href: route.path }))
+        .filter(isNavItem)
+        .map(withAdditionalAttributes)
+        .concat([
+          { divider: true },
+          { icon: "fa-home", text: "Home", href: "/" }
+        ])
+        .reverse()
     };
   },
 

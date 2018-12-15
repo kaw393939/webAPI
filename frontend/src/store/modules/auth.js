@@ -50,18 +50,6 @@ const actions = {
             .catch(handleError);
     },
 
-    getUserDetails({ commit }) {
-        axios
-            .get("/api/user")
-            .then(res => {
-                commit("sendUserData", res.data.user);
-                console.log("res", res);
-            })
-            .catch(err => {
-                console.log(error);
-            });
-    },
-
     logout: ({ commit }) => {
         console.log("logout");
         commit("setLoggedState", null);

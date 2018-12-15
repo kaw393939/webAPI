@@ -85,10 +85,6 @@ export default {
     navItemsAfterAuth: [...navItemConst]
   }),
 
-  created() {
-    // this.getUser();
-  },
-
   computed: {
     ...mapGetters(["userData", "isLoggedIn", "error"]),
     afterLogin: function() {
@@ -103,10 +99,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getUserDetails", "logout", "clearErrors"]),
-    getUser: function() {
-      this.getUserDetails();
-    },
+    ...mapActions(["logout", "clearErrors"]),
+
     onLogout: function() {
       this.logout();
     }

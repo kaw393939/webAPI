@@ -104,7 +104,6 @@ export default {
     ...mapActions(["logout", "clearErrors"]),
 
     handleLogout: function() {
-      console.log("clicked!");
       const handleResponse = response => {
         removeAuthToken();
         this.resetAuthUser();

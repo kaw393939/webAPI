@@ -1,0 +1,62 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "FAQ Bot",
+        "description": "L5 Swagger API description",
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:8000",
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get list of users",
+                "description": "return list of users",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user info",
+                "description": "return user data",
+                "operationId": "getUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

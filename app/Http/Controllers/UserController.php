@@ -9,6 +9,21 @@ use App\Http\Resources\UsersResource;
 class UserController extends Controller
 {
     /**
+     *
+     * @SWG\Get (
+     *      path = "/users",
+     *      operationId = "getUsers",
+     *      tags = {"Users"},
+     *      summary  = "Get list of users",
+     *      description = "return list of users",
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation"
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *     )
+     *    )
+     *
      * Display a listing of the resource.
      *
      */
@@ -40,6 +55,29 @@ class UserController extends Controller
     }
 
     /**
+     * @SWG\Get (
+     *      path = "/users/{id}",
+     *      operationId = "getUserById",
+     *      tags = {"Users"},
+     *      summary  = "Get user info",
+     *      description = "return user data",
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation",
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *    )
+     *
+     *
+     *
+     *
      * Display the specified resource.
      *
      * @param  User $user

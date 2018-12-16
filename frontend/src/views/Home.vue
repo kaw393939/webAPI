@@ -74,11 +74,11 @@
 </style>
 
 <script>
+import get from "lodash/get";
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
-
 import { fetchQuestions } from "@/utils/FakerUtils";
 import { withFormattedDate } from "@/utils/ApiResponseUtils";
 
@@ -90,18 +90,44 @@ export default {
     PageHeading
   },
 
+  data() {
+    return {
+      isLoading: false,
+      questions: []
+    };
+  },
+
   created() {
+    const handleResponse = response => {
+      let questions = get(response, "data.data", []);
+
+      // grab first 30 for now, no pagination on API side
+      // as the time of writing this implementation
+      questions = Array.isArray(questions) ? questions.slice(0, 30) : [];
+      questions = questions.map(question =>
+        withFormattedDate(question, "createdAt.date")
+      );
+
+      console.log("questions", questions[0]);
+    };
+
+    const handleError = error => {
+      console.log("error", error);
+      this.isLoading = false;
+    };
+
+    this.isLoading = true;
+
+    axios
+      .get("api/questions")
+      .then(handleResponse)
+      .catch(handleError);
+
     fetchQuestions()
       .then(response => {
         this.questions = response.map(withFormattedDate);
       })
       .catch(console.error);
-  },
-
-  data() {
-    return {
-      questions: []
-    };
   }
 };
 </script>

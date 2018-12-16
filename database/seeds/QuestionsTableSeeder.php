@@ -17,6 +17,13 @@ class QuestionsTableSeeder extends Seeder
                 $question = factory(\App\Question::class)->make();
                 $question->user()->associate($user);
                 $question->save();
+
+                $user = \App\User::inRandomOrder()->first();
+                $answer = factory(\App\Answer::class)->make();
+                $answer->user()->associate($user);
+                $answer->question()->associate($question);
+
+                $answer->save();
             });
         }
     }

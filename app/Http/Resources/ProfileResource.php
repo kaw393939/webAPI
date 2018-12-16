@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use Illuminate\Http\Resources\Json\Resource;
 
 class ProfileResource extends Resource
@@ -17,6 +18,7 @@ class ProfileResource extends Resource
         return [
             'id'    => (string)$this->id,
             'user_id' => $this -> user_id,
+            'email' => User::find($this -> user_id)['email'],
             'first_name' => $this -> first_name,
             'last_name' => $this -> last_name,
             'bio' => $this -> bio,

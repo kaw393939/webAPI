@@ -47,6 +47,8 @@ export default {
         // delete all auth user data
         removeAuthToken();
         this.resetAuthUser();
+        delete axios.defaults.headers.common["Authorization"];
+        this.$router.push({ path: "/" });
       }
     };
 

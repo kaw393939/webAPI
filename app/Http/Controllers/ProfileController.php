@@ -64,6 +64,77 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     *  * @SWG\Post (
+     *      path = "/profiles/",
+     *      operationId = "createProfile",
+     *      tags = {"Profiles"},
+     *      summary  = "create a  user profile",
+     *      description = "Create a user's profile",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "first name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *     @SWG\Parameter(
+     *     name = "last name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio text",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -101,7 +172,7 @@ class ProfileController extends Controller
      * @SWG\Get (
      *      path = "/profiles/{id}",
      *      operationId = "getProfileById",
-     *      tags = {"Profile"},
+     *      tags = {"Profiles"},
      *      summary  = "Get profile info",
      *      description = "return profile data",
      * @SWG\Parameter(
@@ -135,6 +206,8 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     *
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -146,6 +219,91 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     *  * /**
+     *
+     * @SWG\Put (
+     *      path = "/profiles/{id}",
+     *      operationId = "editProfile",
+     *      tags = {"Profiles"},
+     *      summary  = "edit a  user profile",
+     *      description = "Edit a user's profile",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
+     *
+     *     @SWG\Parameter(
+     *     name = "email",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "email",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "first name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *     @SWG\Parameter(
+     *     name = "last name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio text",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

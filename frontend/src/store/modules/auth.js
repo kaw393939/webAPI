@@ -1,10 +1,12 @@
 import router from "../../router";
 import { setToken, getToken } from "../../utilities/localStorage";
+import { setAuthToken } from "@/utils/LocalStorageUtils";
 
 const state = {
     token: getToken(),
     error: "",
     user: "",
+    authUser: {},
     isLogged: false
 };
 
@@ -28,41 +30,40 @@ const actions = {
             });
     },
     login({ commit }, obj) {
+        const handleLoginResponse = response => {
+            const { token } = response.data;
+
+            setAuthToken(token);
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            router.push("/");
+            commit("setLoggedState", token);
+        };
+
+        const getAuthUser = () => {
+            const handleGetAuthUserResponse = ({ data }) => {
+                const { id, name, email } = data.user;
+
+                commit("setAuthUser", {
+                    data: { id, name, email }
+                });
+            };
+
+            return axios.get("api/user").then(handleGetAuthUserResponse);
+        };
+
+        const handleError = error => {
+            const { message } = error.response.data;
+            commit("sendError", message);
+        };
+
         axios
             .post("api/login", obj)
-            .then(res => {
-                console.log("login");
-                setToken(res.data.token);
-                console.log(res);
-                router.push("/");
-                commit("setLoggedState", res.data.token);
-            })
-            .catch(err => {
-                commit("sendError", err.response.data.message);
-                return err;
-            });
+            .then(handleLoginResponse)
+            .then(getAuthUser)
+            .catch(handleError);
     },
 
-    getUserDetails({ commit }) {
-        axios
-            .get("/api/user")
-            .then(res => {
-                commit("sendUserData", res.data.user);
-                console.log("res", res);
-            })
-            .catch(err => {
-                console.log(error);
-            });
-    },
-
-    logout: ({ commit }) => {
-        console.log("logout");
-        commit("setLoggedState", null);
-        localStorage.removeItem("token");
-        console.log(localStorage.getItem("token"));
-    },
-
-    clearErrors: ({commit}) => {
+    clearErrors: ({ commit }) => {
         console.log("clear");
         commit("removeErrors");
     }
@@ -79,8 +80,18 @@ const mutations = {
         if (authToken) state.isLogged = true;
         else state.isLogged = false;
     },
-    removeErrors: (state) => {
+    removeErrors: state => {
         state.error = "";
+    },
+
+    setAuthUser(state, payload) {
+        state.authUser = { ...payload.data };
+        state.isLogged = true;
+    },
+
+    resetAuthUser(state) {
+        state.authUser = {};
+        state.isLogged = false;
     }
 };
 

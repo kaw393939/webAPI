@@ -54,6 +54,15 @@
                 "summary": "logout user",
                 "description": "logout a user",
                 "operationId": "logoutUser",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "succes: true"

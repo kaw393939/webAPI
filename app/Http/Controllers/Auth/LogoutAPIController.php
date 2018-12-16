@@ -27,6 +27,14 @@ class LogoutAPIController extends Controller
      *         name="Authorization",
      *         in="header"
      *     ),
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
      *
      *      @SWG\Response(
      *          response = 200,

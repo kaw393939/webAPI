@@ -30,35 +30,37 @@ const actions = {
             });
     },
     login({ commit }, obj) {
-        const handleResponse = response => {
+        const handleLoginResponse = response => {
             const { token } = response.data;
 
             setAuthToken(token);
-            window.axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${token}`;
-
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             router.push("/");
             commit("setLoggedState", token);
         };
 
+        const getAuthUser = () => {
+            const handleGetAuthUserResponse = ({ data }) => {
+                const { id, name, email } = data.user;
+
+                commit("setAuthUser", {
+                    data: { id, name, email }
+                });
+            };
+
+            return axios.get("api/user").then(handleGetAuthUserResponse);
+        };
+
         const handleError = error => {
             const { message } = error.response.data;
-
             commit("sendError", message);
         };
 
         axios
             .post("api/login", obj)
-            .then(handleResponse)
+            .then(handleLoginResponse)
+            .then(getAuthUser)
             .catch(handleError);
-    },
-
-    logout: ({ commit }) => {
-        console.log("logout");
-        commit("setLoggedState", null);
-        localStorage.removeItem("token");
-        console.log(localStorage.getItem("token"));
     },
 
     clearErrors: ({ commit }) => {

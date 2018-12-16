@@ -105,20 +105,16 @@ export default {
     ...mapMutations(["resetAuthUser"]),
 
     handleLogout: function() {
-      const handleResponse = response => {
+      const logUserOut = () => {
         removeAuthToken();
         this.resetAuthUser();
-      };
-
-      const handleError = error => {
-        removeAuthToken();
-        this.resetAuthUser();
+        delete axios.defaults.headers.common["Authorization"];
       };
 
       axios
         .get("api/logout")
-        .then(handleResponse)
-        .catch(handleError);
+        .then(logUserOut)
+        .catch(logUserOut);
     }
   }
 };

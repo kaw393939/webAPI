@@ -17,18 +17,6 @@ const getters = {
 };
 
 const actions = {
-    signUp({ commit }, obj) {
-        return axios
-            .post("api/register", obj)
-            .then(res => {
-                console.log("signup");
-                router.push("/login");
-            })
-            .catch(err => {
-                commit("sendError", err.response.data.errors.email[0]);
-                return err;
-            });
-    },
     login({ commit }, obj) {
         const handleLoginResponse = response => {
             const { token } = response.data;

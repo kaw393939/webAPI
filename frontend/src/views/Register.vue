@@ -7,19 +7,8 @@
             <v-toolbar-title>Register</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <div class="errorMessage">{{error}}</div>
+            <div class="errorMessage" v-if="submissionErrors.length > 0">{{ submissionErrors[0] }}</div>
             <v-form>
-              <v-text-field
-                v-model.trim.lazy="name"
-                prepend-icon="person"
-                name="name"
-                label="Name"
-                type="text"
-                :error-messages="nameErrors"
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
-                required
-              ></v-text-field>
               <v-text-field
                 v-model.trim.lazy="email"
                 prepend-icon="mail"
@@ -67,140 +56,120 @@
 
 <style>
 .errorMessage {
-    color: #ff0000;
-    height: 2rem;
-    font-size: 1.2rem;
+  color: #ff0000;
+  height: 2rem;
+  font-size: 1.2rem;
 }
 </style>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
-import {
-    email,
-    maxLength,
-    minLength,
-    required,
-    sameAs
-} from "vuelidate/lib/validators";
+import { email, minLength, required, sameAs } from "vuelidate/lib/validators";
+import { getSubmissionErrors } from "@/utils/FormUtils";
 
 export default {
-    mixins: [validationMixin],
+  mixins: [validationMixin],
 
-    validations: {
-        name: { required, maxLength: maxLength(30) },
-        email: { required, email },
-        password: { required, minLength: minLength(6) },
-        passConfirm: { required, sameAsPassword: sameAs("password") }
+  validations: {
+    email: { required, email },
+    password: { required, minLength: minLength(6) },
+    passConfirm: { required, sameAsPassword: sameAs("password") }
+  },
+
+  data() {
+    return {
+      email: "",
+      password: "",
+      passConfirm: "",
+      submission: { errors: null }
+    };
+  },
+
+  computed: {
+    emailErrors() {
+      const errors = [];
+      const { email } = this.$v;
+
+      if (!email.$dirty) {
+        return errors;
+      }
+      if (!email.email) {
+        errors.push(`Must be a valid email.`);
+      }
+      if (!email.required) {
+        errors.push(`Email is required.`);
+      }
+
+      return errors;
     },
 
-    data() {
-        return {
-            name: "",
-            email: "",
-            password: "",
-            passConfirm: ""
-        };
+    passErrors() {
+      const errors = [];
+      const { password } = this.$v;
+
+      if (!password.$dirty) {
+        return errors;
+      }
+      if (!password.required) {
+        errors.push(`Password is required.`);
+      }
+      if (!password.minLength) {
+        const { min } = password.$params.minLength;
+        errors.push(`Password must be at least ${min} characters long.`);
+      }
+
+      return errors;
     },
 
-    computed: {
-        ...mapGetters(["error"]),
+    passConfirmErrors() {
+      const errors = [];
+      const { passConfirm } = this.$v;
 
-        nameErrors() {
-            const errors = [];
-            const { name } = this.$v;
+      if (!passConfirm.$dirty) {
+        return errors;
+      }
+      if (!passConfirm.required) {
+        errors.push(`Password confirmation is required.`);
+      }
+      if (!passConfirm.sameAsPassword) {
+        errors.push(`Passwords must match.`);
+      }
 
-            if (!name.$dirty) {
-                return errors;
-            }
-            if (!name.maxLength) {
-                const { max } = name.$params.maxLength;
-                errors.push(`Name must be at most ${max} characters long.`);
-            }
-            if (!name.required) {
-                errors.push(`Name is required.`);
-            }
-
-            return errors;
-        },
-
-        emailErrors() {
-            const errors = [];
-            const { email } = this.$v;
-
-            if (!email.$dirty) {
-                return errors;
-            }
-            if (!email.email) {
-                errors.push(`Must be a valid email.`);
-            }
-            if (!email.required) {
-                errors.push(`Email is required.`);
-            }
-
-            return errors;
-        },
-
-        passErrors() {
-            const errors = [];
-            const { password } = this.$v;
-
-            if (!password.$dirty) {
-                return errors;
-            }
-            if (!password.required) {
-                errors.push(`Password is required.`);
-            }
-            if (!password.minLength) {
-                const { min } = password.$params.minLength;
-                errors.push(
-                    `Password must be at least ${min} characters long.`
-                );
-            }
-
-            return errors;
-        },
-
-        passConfirmErrors() {
-            const errors = [];
-            const { passConfirm } = this.$v;
-
-            if (!passConfirm.$dirty) {
-                return errors;
-            }
-            if (!passConfirm.required) {
-                errors.push(`Password confirmation is required.`);
-            }
-            if (!passConfirm.sameAsPassword) {
-                errors.push(`Passwords must match.`);
-            }
-
-            return errors;
-        }
+      return errors;
     },
-    methods: {
-        ...mapActions(["signUp"]),
 
-        onSubmit: function() {
-            const { name, email, password, passConfirm } = this;
+    submissionErrors() {
+      const { errors } = this.submission;
 
-            if (this.$v.$invalid) {
-                return;
-            }
-
-            this.signUp({
-                name,
-                email,
-                password,
-                password_confirmation: passConfirm
-            });
-        },
-
-        clear() {
-            this.$v.$reset();
-            this.name = "";
-            this.email = "";
-        }
+      return Array.isArray(errors) ? errors : [];
     }
+  },
+  methods: {
+    onSubmit: function() {
+      const { email, password } = this;
+
+      if (this.$v.$invalid) return;
+
+      // cleanup any previous submission errors
+      this.resetSubmissionErrors();
+
+      const handleSuccess = response => {
+        this.$router.push({ path: "/login" });
+      };
+
+      const handleError = error => {
+        this.submission = { errors: getSubmissionErrors(error) };
+      };
+
+      axios
+        .post("api/register", { email, password })
+        .then(handleSuccess)
+        .catch(handleError);
+    },
+
+    resetSubmissionErrors() {
+      this.submission = { errors: null };
+    }
+  }
 };
 </script>

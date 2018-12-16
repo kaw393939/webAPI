@@ -16,6 +16,33 @@ use JWTAuth;
 class QuestionController extends Controller
 {
     /**
+     *
+     * @SWG\Get (
+     *      path = "/questions",
+     *      operationId = "getQuestions",
+     *      tags = {"Questions"},
+     *      summary  = "Get list of Questions",
+     *      description = "return list of questions",
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation"
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *     )
+     *    )
+     *
+     * Display a listing of the resource.
+     *
+     */
+
+
+
+
+
+
+
+
+    /**
      * Display a listing of the resource.
      *
      */
@@ -33,6 +60,37 @@ class QuestionController extends Controller
 
     }
     /**
+     *
+     *  /**
+     * @SWG\Get (
+     *      path = "/question/{id}",
+     *      operationId = "getQuestionById",
+     *      tags = {"Question"},
+     *      summary  = "Get question info",
+     *      description = "return question data",
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation",
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

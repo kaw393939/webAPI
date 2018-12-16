@@ -1,6 +1,7 @@
 <template>
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
+      <LoginSuccess/>
       <v-flex xs12 sm8 md5>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
@@ -45,9 +46,9 @@
 
 <style>
 .errorMessage {
-    color: #ff0000;
-    height: 2rem;
-    font-size: 1.2rem;
+  color: #ff0000;
+  height: 2rem;
+  font-size: 1.2rem;
 }
 </style>
 
@@ -55,77 +56,78 @@
 import { mapActions, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
+import LoginSuccess from "../components/LoginSuccess";
 
 export default {
-    mixins: [validationMixin],
+  mixins: [validationMixin],
 
-    validations: {
-        email: { required, email },
-        password: { required }
+  validations: {
+    email: { required, email },
+    password: { required }
+  },
+
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+
+  computed: {
+    ...mapGetters(["error"]),
+
+    emailErrors() {
+      const errors = [];
+      const { email } = this.$v;
+
+      if (!email.$dirty) {
+        return errors;
+      }
+      if (!email.email) {
+        errors.push(`Must be a valid email.`);
+      }
+      if (!email.required) {
+        errors.push(`Email is required.`);
+      }
+
+      return errors;
     },
 
-    data() {
-        return {
-            email: "",
-            password: ""
-        };
-    },
+    passErrors() {
+      const errors = [];
+      const { password } = this.$v;
 
-    computed: {
-        ...mapGetters(["error"]),
+      if (!password.$dirty) {
+        return errors;
+      }
+      if (!password.required) {
+        errors.push(`Password is required.`);
+      }
 
-        emailErrors() {
-            const errors = [];
-            const { email } = this.$v;
-
-            if (!email.$dirty) {
-                return errors;
-            }
-            if (!email.email) {
-                errors.push(`Must be a valid email.`);
-            }
-            if (!email.required) {
-                errors.push(`Email is required.`);
-            }
-
-            return errors;
-        },
-
-        passErrors() {
-            const errors = [];
-            const { password } = this.$v;
-
-            if (!password.$dirty) {
-                return errors;
-            }
-            if (!password.required) {
-                errors.push(`Password is required.`);
-            }
-
-            return errors;
-        }
-    },
-    methods: {
-        ...mapActions(["login"]),
-
-        onSubmit: function() {
-            const { email, password } = this;
-
-            if (this.$v.$invalid) {
-                return;
-            }
-
-            this.login({
-                email,
-                password
-            });
-        },
-
-        clear() {
-            this.$v.$reset();
-            this.name = "";
-            this.email = "";
-        }
+      return errors;
     }
+  },
+  methods: {
+    ...mapActions(["login"]),
+
+    onSubmit: function() {
+      const { email, password } = this;
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      this.login({
+        email,
+        password
+      });
+    },
+
+    clear() {
+      this.$v.$reset();
+      this.name = "";
+      this.email = "";
+    }
+  }
 };
 </script>

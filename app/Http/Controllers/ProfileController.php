@@ -335,6 +335,52 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     * * @SWG\Delete (
+     *      path = "/profiles/{id}",
+     *      operationId = "deleteProfile",
+     *      tags = {"Profiles"},
+     *      summary  = "delete a  user profile",
+     *      description = "Delete a user's profile",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Remove the specified resource from storage.
      *
      * @param  int  $id

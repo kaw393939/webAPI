@@ -1,89 +1,13 @@
-import router from "../../router";
-import { setToken, getToken } from "../../utilities/localStorage";
-import { setAuthToken } from "@/utils/LocalStorageUtils";
-
 const state = {
-    token: getToken(),
-    error: "",
-    user: "",
     authUser: {},
     isLogged: false
 };
 
 const getters = {
-    isLoggedIn: state => state.isLogged,
-    error: state => state.error,
-    userData: state => state.user
-};
-
-const actions = {
-    signUp({ commit }, obj) {
-        return axios
-            .post("api/register", obj)
-            .then(res => {
-                console.log("signup");
-                router.push("/login");
-            })
-            .catch(err => {
-                commit("sendError", err.response.data.errors.email[0]);
-                return err;
-            });
-    },
-    login({ commit }, obj) {
-        const handleLoginResponse = response => {
-            const { token } = response.data;
-
-            setAuthToken(token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            router.push("/");
-            commit("setLoggedState", token);
-        };
-
-        const getAuthUser = () => {
-            const handleGetAuthUserResponse = ({ data }) => {
-                const { id, name, email } = data.user;
-
-                commit("setAuthUser", {
-                    data: { id, name, email }
-                });
-            };
-
-            return axios.get("api/user").then(handleGetAuthUserResponse);
-        };
-
-        const handleError = error => {
-            const { message } = error.response.data;
-            commit("sendError", message);
-        };
-
-        axios
-            .post("api/login", obj)
-            .then(handleLoginResponse)
-            .then(getAuthUser)
-            .catch(handleError);
-    },
-
-    clearErrors: ({ commit }) => {
-        console.log("clear");
-        commit("removeErrors");
-    }
+    isLoggedIn: state => state.isLogged
 };
 
 const mutations = {
-    sendError: (state, error) => {
-        state.error = error;
-    },
-    sendUserData: (state, userData) => {
-        userData ? (state.user = userData) : (state.user = "");
-    },
-    setLoggedState(state, authToken) {
-        if (authToken) state.isLogged = true;
-        else state.isLogged = false;
-    },
-    removeErrors: state => {
-        state.error = "";
-    },
-
     setAuthUser(state, payload) {
         state.authUser = { ...payload.data };
         state.isLogged = true;
@@ -98,6 +22,5 @@ const mutations = {
 export default {
     state,
     getters,
-    actions,
     mutations
 };

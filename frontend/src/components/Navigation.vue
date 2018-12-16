@@ -112,7 +112,7 @@ export default {
       };
 
       axios
-        .get("api/logout")
+        .post("api/logout")
         .then(logUserOut)
         .catch(logUserOut);
     }

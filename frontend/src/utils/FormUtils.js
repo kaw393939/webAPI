@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import isNil from "lodash/isNil";
 import isError from "lodash/isError";
 
 export function getSubmissionErrors(error) {
@@ -16,13 +17,14 @@ export function getSubmissionErrors(error) {
 
     const response = get(error, "response", null);
 
+    console.log("response", response);
+
     const isValidationError =
         response && response.status === StatusCode.UNPROCESSABLE_ENTITY;
+
     if (isValidationError) {
         // handle Laravel validation errors
         const { errors } = get(response, "data", {});
-
-        console.log("response", response);
 
         const validationErrors = errors
             ? Object.values(errors).map(error => error.pop())
@@ -34,8 +36,13 @@ export function getSubmissionErrors(error) {
     const isNotAuthorized =
         (response && response.status === StatusCode.FORBIDDEN) ||
         (response && response.status === StatusCode.UNAUTHORIZED);
+
     if (isNotAuthorized) {
-        const errorMessage = ["You are not authorized to make this request."];
+        const { message } = get(response, "data", {});
+
+        const errorMessage = isNil(message)
+            ? ["You are not authorized to make this request."]
+            : [message];
 
         return errorMessage;
     }

@@ -320,7 +320,7 @@
         "/questions/{id}": {
             "get": {
                 "tags": [
-                    "Question"
+                    "Questions"
                 ],
                 "summary": "Get question info",
                 "description": "return question data",

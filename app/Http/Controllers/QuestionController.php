@@ -65,7 +65,7 @@ class QuestionController extends Controller
      * @SWG\Get (
      *      path = "/questions/{id}",
      *      operationId = "getQuestionById",
-     *      tags = {"Question"},
+     *      tags = {"Questions"},
      *      summary  = "Get question info",
      *      description = "return question data",
      * @SWG\Parameter(

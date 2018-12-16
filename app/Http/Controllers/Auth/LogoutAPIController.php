@@ -12,6 +12,35 @@ use App\User;
 
 class LogoutAPIController extends Controller
 {
+    /**
+     *
+     * @SWG\Post (
+     *      path = "/logout",
+     *      operationId = "logoutUser",
+     *      tags = {"logout"},
+     *      summary  = "logout user",
+     *      description = "logout a user",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     * Display a listing of the resource.
+     *
+     */
+
+
     public function logout(Request $request)
     {
 

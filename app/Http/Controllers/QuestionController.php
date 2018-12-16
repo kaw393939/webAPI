@@ -63,7 +63,7 @@ class QuestionController extends Controller
      *
      *  /**
      * @SWG\Get (
-     *      path = "/question/{id}",
+     *      path = "/questions/{id}",
      *      operationId = "getQuestionById",
      *      tags = {"Question"},
      *      summary  = "Get question info",

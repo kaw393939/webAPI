@@ -135,6 +135,85 @@ class ProfileController extends Controller
     }
 
     /**
+     *
+     * /**
+     *
+     * @SWG\Post (
+     *      path = "/profiles/{id}",
+     *      operationId = "editProfile",
+     *      tags = {"Profile"},
+     *      summary  = "edit a  user profile",
+     *      description = "Edit a user's profile",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     *
+     *     @SWG\Parameter(
+     *     name = "email",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "email",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "first name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *     @SWG\Parameter(
+     *     name = "last name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio text",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

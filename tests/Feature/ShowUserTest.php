@@ -13,16 +13,15 @@ class ShowUserTest extends TestCase
      *
      * @return void
      */
+    use RefreshDatabase;
+
     public function setUp()
     {
         parent::setUp();
-        //$this->artisan('migrate', ['param' => '--seed']);
-        //$this->artisan('migrate:refresh');
-        //$this->artisan('key:generate');
-
+      
     }
 
-
+  
 
     public function testsShowUsersSuccessfullyTest()
     {
@@ -31,17 +30,8 @@ class ShowUserTest extends TestCase
         $response = $this ->json('GET',"/api/users/");
 
 
-        $response->assertStatus(200)
-            ->assertJson([
-                'data' =>[[
-                    'type'=>'users',
-
-                    ]]
-
-           ]);
+        $response->assertStatus(200);
     }
-
-
 
     public function testshowUserSuccessfullyTest()
     {

@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Question;
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
+use App\User;
 
-class RegisterRequest extends FormRequest
+class QuestionEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +16,10 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = JWTAuth::parseToken()->authenticate();
+        $questionId = $this->route('question');
+        $question = Question::findorfail($questionId);
+        return $user->id == $question->user_id;
     }
 
     /**
@@ -24,8 +30,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:10',
+            'question' => 'required|string',
         ];
     }
 }

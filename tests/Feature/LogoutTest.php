@@ -29,11 +29,9 @@ class LogoutTest extends TestCase
         $this->expectsEvents(LogOutEvent::class);
 
         $payload = [
-            'name' => 'John',
             'email' => 'john@toptal.com',
             'password' => 'toptal123',
         ];
-
         $this->json('post', '/api/register', $payload);
 
         $payload = ['email' => 'john@toptal.com', 'password' => 'toptal123'];
@@ -46,7 +44,7 @@ class LogoutTest extends TestCase
             'Authorization' => 'Bearer ' . $response->json("token"),
         ];
         $this->withHeaders($headers)
-            ->json('get', '/api/logout')
+            ->json('post', '/api/logout')
             ->assertStatus(200)
             ->assertJsonStructure(
                 [

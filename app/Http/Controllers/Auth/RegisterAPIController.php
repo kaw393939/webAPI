@@ -17,10 +17,9 @@ class RegisterAPIController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $input = $request->only('name', 'email', 'password', 'bio');
+        $input = $request->only( 'email', 'password');
         $user = User::create($input);
         $user->password = Hash::make($input['password']);
-        $user->bio = $input['bio'];
         $user->save();
 
         $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);

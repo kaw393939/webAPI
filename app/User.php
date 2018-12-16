@@ -12,7 +12,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'bio',
+        'email', 'password',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -41,6 +41,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function profile() {
+        return $this->hasOne('App\Profile');
+    }
     public function questions()
     {
         return $this->hasMany('App\Question');

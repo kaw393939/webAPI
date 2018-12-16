@@ -2,18 +2,27 @@
 
 namespace App\Http\Requests;
 
+use App\Profile;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
 
-class RegisterRequest extends FormRequest
+class ProfileCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
+     * @throws \Tymon\JWTAuth\Exceptions\JWTException
      */
     public function authorize()
     {
-        return true;
+        if (JWTAuth::parseToken()->authenticate()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -24,8 +33,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:10',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
         ];
     }
 }

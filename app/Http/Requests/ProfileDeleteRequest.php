@@ -2,18 +2,25 @@
 
 namespace App\Http\Requests;
 
+use App\Profile;
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
 
-class RegisterRequest extends FormRequest
+class ProfileDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
+     * @throws \Tymon\JWTAuth\Exceptions\JWTException
      */
     public function authorize()
     {
-        return true;
+        $user = JWTAuth::parseToken()->authenticate();
+        $profileId = $this->route('profile');
+        $profile = Profile::findOrFail($profileId);
+        return $user->id == $profile['user_id'];
     }
 
     /**
@@ -24,8 +31,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:10',
+            //
         ];
     }
 }

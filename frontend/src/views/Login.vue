@@ -54,7 +54,7 @@
 <script>
 import { mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, minLength } from "vuelidate/lib/validators";
 import get from "lodash/get";
 import { getSubmissionErrors } from "@/utils/FormUtils";
 import { setAuthToken } from "@/utils/LocalStorageUtils";
@@ -64,7 +64,7 @@ export default {
 
   validations: {
     email: { required, email },
-    password: { required }
+    password: { required, minLength: minLength(8) }
   },
 
   data() {
@@ -102,6 +102,10 @@ export default {
       }
       if (!password.required) {
         errors.push(`Password is required.`);
+      }
+      if (!password.minLength) {
+        const { min } = password.$params.minLength;
+        errors.push(`Password must be at least ${min} characters long.`);
       }
 
       return errors;

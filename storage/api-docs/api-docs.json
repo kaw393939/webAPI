@@ -132,6 +132,54 @@
                 }
             }
         },
+        "/profiles/": {
+            "post": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "create a  user profile",
+                "description": "Create a user's profile",
+                "operationId": "createProfile",
+                "parameters": [
+                    {
+                        "name": "first name",
+                        "in": "formData",
+                        "description": "first name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last name",
+                        "in": "formData",
+                        "description": "last name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bio",
+                        "in": "formData",
+                        "description": "bio text",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
         "/profiles/{id}": {
             "get": {
                 "tags": [
@@ -166,6 +214,13 @@
                 "description": "Edit a user's profile",
                 "operationId": "editProfile",
                 "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "email",
                         "in": "formData",

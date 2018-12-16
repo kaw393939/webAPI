@@ -235,6 +235,13 @@ class ProfileController extends Controller
      *         name="Authorization",
      *         in="header"
      *     ),
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
      *
      *     @SWG\Parameter(
      *     name = "email",

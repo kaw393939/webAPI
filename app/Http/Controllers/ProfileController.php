@@ -15,7 +15,36 @@ use JWTAuth;
 
 class ProfileController extends Controller
 {
+
+
+
+
     /**
+     *
+     * @SWG\Get (
+     *      path = "/profiles",
+     *      operationId = "getProfiles",
+     *      tags = {"Profiles"},
+     *      summary  = "Get list of Profiles",
+     *      description = "return list of profiles",
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation"
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *     )
+     *    )
+     *
+     * Display a listing of the resource.
+     *
+     */
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
      * Display a listing of the resource.
      *
      */
@@ -67,6 +96,34 @@ class ProfileController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * /**
+     * @SWG\Get (
+     *      path = "/profiles/{id}",
+     *      operationId = "getProfileById",
+     *      tags = {"Profile"},
+     *      summary  = "Get profile info",
+     *      description = "return profile data",
+     * @SWG\Parameter(
+     *     name = "id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "id",
+     *     required =true,
+     *     ),
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation",
+     *      ),
+     *     @SWG\Response(response = 400, description = "Bad request"),
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      *
      * @param  User $user
      * @return ProfileResource

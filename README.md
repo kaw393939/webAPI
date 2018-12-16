@@ -51,6 +51,7 @@ Create a minified bundle of your front-end code:
 cd frontend
 npm install
 npm run build
+npm run build:win # alternatively, when using command prompt
 ```
 
 Start your development server in the root directory:

@@ -64,7 +64,13 @@
 
 <script>
 import { validationMixin } from "vuelidate";
-import { email, minLength, required, sameAs } from "vuelidate/lib/validators";
+import {
+  email,
+  minLength,
+  maxLength,
+  required,
+  sameAs
+} from "vuelidate/lib/validators";
 import { getSubmissionErrors } from "@/utils/FormUtils";
 
 export default {
@@ -72,7 +78,7 @@ export default {
 
   validations: {
     email: { required, email },
-    password: { required, minLength: minLength(6) },
+    password: { required, minLength: minLength(8), maxLength: maxLength(60) },
     passConfirm: { required, sameAsPassword: sameAs("password") }
   },
 
@@ -113,9 +119,13 @@ export default {
       if (!password.required) {
         errors.push(`Password is required.`);
       }
-      if (!password.minLength) {
-        const { min } = password.$params.minLength;
-        errors.push(`Password must be at least ${min} characters long.`);
+      if (!password.minLength || !password.maxLength) {
+        const { minLength, maxLength } = password.$params;
+        errors.push(
+          `Password must be between ${minLength.min} and ${
+            maxLength.max
+          } characters long.`
+        );
       }
 
       return errors;

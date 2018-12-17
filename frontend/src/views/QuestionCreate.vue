@@ -43,9 +43,7 @@
         <h2 class="headline centerText feedbackContainerRow">Your question was created successfully!</h2>
       </v-flex>
       <v-flex xs12 class="displayFlex" justify-center>
-        <router-link to="/">
-          <v-btn color="primary navButton">Home</v-btn>
-        </router-link>
+        <v-btn color="primary navButton" to="/">Home</v-btn>
       </v-flex>
     </v-layout>
   </v-container>

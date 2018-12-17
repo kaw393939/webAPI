@@ -27,6 +27,10 @@ export const routes = [
         component: () => import("./views/UserProfile.vue")
     },
     {
+        path: "/question",
+        component: () => import("./views/QuestionCreate.vue")
+    },
+    {
         path: "/question/:id",
         component: () => import("./views/Question.vue")
     },

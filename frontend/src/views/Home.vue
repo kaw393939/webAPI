@@ -86,14 +86,17 @@
 
 <script>
 import { mapGetters } from "vuex";
+import get from "lodash/get";
 
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
-
 import { fetchQuestions } from "@/utils/FakerUtils";
-import { withFormattedDate } from "@/utils/ApiResponseUtils";
+import {
+  withFormattedDate,
+  withQuestionAnswerCount
+} from "@/utils/ApiResponseUtils";
 
 export default {
   components: {
@@ -108,7 +111,40 @@ export default {
     };
   },
 
+  data() {
+    return {
+      isLoading: false,
+      questions: []
+    };
+  },
+
   created() {
+    const handleResponse = response => {
+      let questions = get(response, "data.data", []);
+
+      // grab first 30 for now, no pagination on API side
+      // as the time of writing this implementation
+      questions = Array.isArray(questions) ? questions.slice(0, 30) : [];
+      questions = questions.map(question =>
+        withFormattedDate(question, "createdAt.date")
+      );
+      questions = questions.map(question => withQuestionAnswerCount(question));
+
+      console.log("questions", questions[0]);
+    };
+
+    const handleError = error => {
+      console.log("error", error);
+      this.isLoading = false;
+    };
+
+    this.isLoading = true;
+
+    axios
+      .get("api/questions")
+      .then(handleResponse)
+      .catch(handleError);
+
     fetchQuestions()
       .then(response => {
         this.questions = response.map(withFormattedDate).map(question => ({

@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-// import { getToken } from "./utilities/localStorage";
 import { getAuthToken } from "./utils/LocalStorageUtils";
 
 /**

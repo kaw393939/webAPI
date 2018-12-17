@@ -3,7 +3,7 @@
     <page-heading>New Questions</page-heading>
     <v-layout justify-center wrap>
       <template v-for="question in questions">
-        <card :key="question.id">
+        <card :key="question.id" :path="question.path" classes="card">
           <card-header>
             <v-flex xs6 class="cardHeader__left">
               <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
@@ -46,10 +46,21 @@
         </card>
       </template>
     </v-layout>
+
+    <v-btn v-if="userAuthenticated" fab fixed bottom right to="/question" color="primary">
+      <v-icon>add</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
 <style scoped>
+.card {
+  transition: transform 0.5s ease-in-out;
+}
+.card:hover {
+  transform: scale(1.025);
+}
+
 .cardHeader__right {
   text-align: right;
 }
@@ -74,7 +85,8 @@
 </style>
 
 <script>
-import get from "lodash/get";
+import { mapGetters } from "vuex";
+
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
@@ -88,6 +100,11 @@ export default {
     CardHeader,
     CardFooter,
     PageHeading
+  },
+  data() {
+    return {
+      questions: []
+    };
   },
 
   data() {
@@ -125,9 +142,20 @@ export default {
 
     fetchQuestions()
       .then(response => {
-        this.questions = response.map(withFormattedDate);
+        this.questions = response.map(withFormattedDate).map(question => ({
+          ...question,
+          path: `/question/${question.id}`
+        }));
       })
       .catch(console.error);
+  },
+
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+
+    userAuthenticated() {
+      return this.isLoggedIn ? true : false;
+    }
   }
 };
 </script>

@@ -23,8 +23,8 @@ Route::resource('users','UserController');
 
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::post('logout', 'Auth\LogoutAPIController@logout')->name('logout');
-    Route::get('user', 'ProfileController@showProfile')->name('user');
-    Route::post('create', 'ProfileController@createProfile')->name('create');
-    Route::post('edit', 'ProfileController@editProfile')->name('edit');
-    Route::post('update', 'ProfileController@updateProfile')->name('update');
+    Route::get('user', 'Auth\GetAuthUserAPIController@getAuthUser')->name('user');
+//    Route::post('create', 'ProfileController@createProfile')->name('create');
+//    Route::post('edit', 'ProfileController@editProfile')->name('edit');
+//    Route::post('update', 'ProfileController@updateProfile')->name('update');
 });

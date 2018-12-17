@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JWTAuth;
 
-class EditUserProfileRequest extends FormRequest
+class QuestionDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,10 @@ class EditUserProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = JWTAuth::parseToken()->authenticate();
+        $questionId = $this->route('question');
+        $question = \App\Question::findorfail($questionId);
+        return $user->id == $question->user_id;
     }
 
     /**
@@ -24,11 +28,7 @@ class EditUserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|integer',
-            'name' => 'required|string',
-            'email' => 'required|string',
-            'bio' => 'required|string',
-            'token' => 'required|string',
+            //
         ];
     }
 }

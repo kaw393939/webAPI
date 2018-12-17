@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Events\RegistrationEvent;
 
 
 class RegisterTest extends TestCase
@@ -28,11 +29,12 @@ class RegisterTest extends TestCase
 
     public function testRegistersSuccessfullyTest()
     {
+        $this->expectsEvents(RegistrationEvent::class);
+
         $payload = [
-            'name' => 'John',
-            'email' => 'john@toptal.com',
+            'name' => 'frank',
+            'email' => 'frank@toptal.com',
             'password' => 'toptal123',
-            'bio' => 'something',
         ];
 
         $this->json('post', '/api/register', $payload)
@@ -52,7 +54,6 @@ class RegisterTest extends TestCase
             ->assertStatus(422)
             ->assertJson([
                 'errors' => [
-                    'name' => ['The name field is required.'],
                     'email' => ['The email field is required.'],
                     'password' => ['The password field is required.'],
                 ]

@@ -16,8 +16,15 @@ use Illuminate\Http\Request;
 Route::post('login', 'Auth\LoginAPIController@login')->name('login');
 Route::post('register', 'Auth\RegisterAPIController@register')->name('register');
 
+
+Route::resource('questions', 'QuestionController');
+Route::resource('profiles', 'ProfileController');
+Route::resource('users','UserController');
+
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('logout', 'Auth\LogoutAPIController@logout')->name('logout');
-    Route::get('user', 'Auth\GetAuthUserAPIController@getAuthUser')->name('user');
-    Route::post('edit-profile', 'Auth\GetAuthUserAPIController@editAuthUser')->name('edit-profile');
+    Route::post('logout', 'Auth\LogoutAPIController@logout')->name('logout');
+    Route::get('user', 'ProfileController@showProfile')->name('user');
+    Route::post('create', 'ProfileController@createProfile')->name('create');
+    Route::post('edit', 'ProfileController@editProfile')->name('edit');
+    Route::post('update', 'ProfileController@updateProfile')->name('update');
 });

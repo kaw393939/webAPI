@@ -16,6 +16,7 @@ class QuestionResource extends Resource
     {
         $user = \App\User::findOrFail($this->user_id);
         $profile = \App\Profile::findOrFail($user->id);
+        $answers = \App\Answer::where('question_id', $this->id)->get();
 
         return [
             'id'    => (string)$this->id,
@@ -37,8 +38,8 @@ class QuestionResource extends Resource
             'likes'=>'',
             'votes'=>'',
 //           ANSWERS OBJECT CAN GO HERE
-            'answers'=> [
-                'data' => new AnswerResource($this),
+            'answers'=> AnswerResource::collection($answers),
+//                'data' => new AnswersResource(AnswerResource::collection($answers)),
 //                [
 //                    'id'=>'',
 //                    'author' =>[
@@ -49,7 +50,7 @@ class QuestionResource extends Resource
 //                    'text'=>'',
 //                    'createdAt'=>'',
 //                ]
-            ],
+
 
 //            'relationships' => '',
 //            'links'         => [

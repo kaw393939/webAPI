@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 
-class AnswersResources extends resource
+class AnswersResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class AnswersResources extends resource
     public function toArray($request)
     {
         return [
-            'data' => QuestionResource::collection($this->collection),
+            AnswerResource::collection($this->collection),
         ];
     }
 
@@ -34,8 +34,7 @@ class AnswersResources extends resource
         $included = $answers->merge($answers)->unique();
         return [
             'links' => [
- //               'self' => route('answers.index'),
-                'self' => '',
+                'self' => route('answers.index'),
             ],
             'included' => $this->withIncluded($included),
         ];

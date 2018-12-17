@@ -47,7 +47,7 @@
       </template>
     </v-layout>
 
-    <v-btn fab fixed bottom right to="/question" color="primary">
+    <v-btn v-if="userAuthenticated" fab fixed bottom right to="/question" color="primary">
       <v-icon>add</v-icon>
     </v-btn>
   </v-container>
@@ -85,6 +85,8 @@
 </style>
 
 <script>
+import { mapGetters } from "vuex";
+
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
@@ -100,6 +102,11 @@ export default {
     CardFooter,
     PageHeading
   },
+  data() {
+    return {
+      questions: []
+    };
+  },
 
   created() {
     fetchQuestions()
@@ -112,10 +119,12 @@ export default {
       .catch(console.error);
   },
 
-  data() {
-    return {
-      questions: []
-    };
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+
+    userAuthenticated() {
+      return this.isLoggedIn ? true : false;
+    }
   }
 };
 </script>

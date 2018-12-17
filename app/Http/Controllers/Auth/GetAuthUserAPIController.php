@@ -31,33 +31,4 @@ class GetAuthUserAPIController extends Controller
                 ]
         ], 200);
     }
-
-    public function editAuthUser(ProfileUpdateRequest $request)
-    {
-        $currentUser = JWTAuth::authenticate($request->token);
-        $profile = $request;
-
-            $user = User::find($currentUser->id);
-            $this->saveEditedUser($user, $profile);
-            return response()->json([
-                'code'   => 200,
-                'success' => true,
-                'message'=> "Profile Updated",
-            ], 200);
-
-            /*
-        return response()->json([
-            'code'   => 401,
-            'success' => "false",
-            'message'=> "You are unauthorized to edit this profile",
-        ], 401);
-        */
-    }
-
-    public function saveEditedUser($user, $profile) {
-        $user->name = $profile->name;
-        $user->email = $profile->email;
-        $user->bio = $profile->bio;
-        $user->save();
-    }
 }

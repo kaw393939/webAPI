@@ -86,13 +86,17 @@
 
 <script>
 import { mapGetters } from "vuex";
+import get from "lodash/get";
 
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
 import { fetchQuestions } from "@/utils/FakerUtils";
-import { withFormattedDate } from "@/utils/ApiResponseUtils";
+import {
+  withFormattedDate,
+  withQuestionAnswerCount
+} from "@/utils/ApiResponseUtils";
 
 export default {
   components: {
@@ -124,6 +128,7 @@ export default {
       questions = questions.map(question =>
         withFormattedDate(question, "createdAt.date")
       );
+      questions = questions.map(question => withQuestionAnswerCount(question));
 
       console.log("questions", questions[0]);
     };

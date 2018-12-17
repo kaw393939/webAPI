@@ -11,3 +11,13 @@ export function withFormattedDate(item, path) {
         createdAtFormatted
     };
 }
+
+export function withQuestionAnswerCount(item, path) {
+    const answers = path ? get(item, path, []) : item.answers;
+    const answerCount = answers.length;
+
+    return {
+        ...item,
+        answerCount
+    };
+}

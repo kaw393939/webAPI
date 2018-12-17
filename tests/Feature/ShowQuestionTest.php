@@ -24,8 +24,12 @@ class ShowQuestionTest extends TestCase
     {
         $user = factory(\App\User::class)->make();
         $user->save();
+        $profile = factory(\App\Profile::class)->create();
+        $profile->user()->associate($user);
+        $profile->save();
         $question = factory(Question::class)->create();
         $question->user()->associate($user);
+        $question->save();
 
         $response = $this ->json('GET',"/api/questions/");
         $response->assertStatus(200);
@@ -39,8 +43,12 @@ class ShowQuestionTest extends TestCase
     {
         $user = factory(\App\User::class)->make();
         $user->save();
+        $profile = factory(\App\Profile::class)->create();
+        $profile->user()->associate($user);
+        $profile->save();
         $question = factory(Question::class)->create();
         $question->user()->associate($user);
+        $question->save();
         $response = $this ->json('GET',"/api/questions/{$question->id}");
         $response->assertStatus(200);
 //            ->assertJson([

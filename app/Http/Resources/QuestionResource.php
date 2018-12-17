@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 class QuestionResource extends Resource
@@ -15,11 +14,14 @@ class QuestionResource extends Resource
      */
     public function toArray($request)
     {
+        $user = \App\User::findOrFail($this->user_id);
+        $profile = \App\Profile::findOrFail($user->id);
+
         return [
             'id'    => (string)$this->id,
             'author' =>[
-                'firstName'=>'',
-                'lastName'=>'',
+                'firstName'=>$profile->first_name,
+                'lastName'=>$profile->last_name,
                 'avatar'=>''
             ],
 
@@ -36,16 +38,17 @@ class QuestionResource extends Resource
             'votes'=>'',
 //           ANSWERS OBJECT CAN GO HERE
             'answers'=> [
-                [
-                    'id'=>'',
-                    'author' =>[
-                        'firstName'=>'',
-                        'lastName'=>'',
-                        'avatar'=>'',
-                    ],
-                    'text'=>'',
-                    'createdAt'=>'',
-                ]
+                'data' => new AnswerResource($this),
+//                [
+//                    'id'=>'',
+//                    'author' =>[
+//                        'firstName'=>'',
+//                        'lastName'=>'',
+//                        'avatar'=>'',
+//                    ],
+//                    'text'=>'',
+//                    'createdAt'=>'',
+//                ]
             ],
 
 //            'relationships' => '',

@@ -45,6 +45,26 @@ php artisan key:generate
 php artisan jwt:secret
 ```
 
+
+In order to use the Swagger API make sure to include:
+```sh
+L5_SWAGGER_GENERATE_ALWAYS=true
+SWAGGER_VERSION=2.0
+```
+The Swagger Api can be found at:
+```sh
+http://127.0.0.1:8000/api/documentation
+```
+For routes that require the auth token in Swagger make sure:
+```sh
+to include "Bearer" before placing the value of the token
+
+eg. Bearer "TOKEN_VALUE"
+```
+
+
+
+
 Create a minified bundle of your front-end code:
 
 ```sh

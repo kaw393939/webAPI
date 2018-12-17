@@ -3,7 +3,7 @@
     <page-heading>New Questions</page-heading>
     <v-layout justify-center wrap>
       <template v-for="question in questions">
-        <card :key="question.id">
+        <card :key="question.id" :path="question.path" classes="card">
           <card-header>
             <v-flex xs6 class="cardHeader__left">
               <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
@@ -54,6 +54,13 @@
 </template>
 
 <style scoped>
+.card {
+  transition: transform 0.5s ease-in-out;
+}
+.card:hover {
+  transform: scale(1.025);
+}
+
 .cardHeader__right {
   text-align: right;
 }
@@ -97,7 +104,10 @@ export default {
   created() {
     fetchQuestions()
       .then(response => {
-        this.questions = response.map(withFormattedDate);
+        this.questions = response.map(withFormattedDate).map(question => ({
+          ...question,
+          path: `/question/${question.id}`
+        }));
       })
       .catch(console.error);
   },

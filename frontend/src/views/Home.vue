@@ -46,6 +46,10 @@
         </card>
       </template>
     </v-layout>
+
+    <v-btn fab fixed bottom right to="/question" color="primary">
+      <v-icon>add</v-icon>
+    </v-btn>
   </v-container>
 </template>
 

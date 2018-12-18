@@ -32,6 +32,7 @@ export const routes = [
     },
     {
         path: "/profile/:id/edit",
+        beforeEnter: ifNotAuthenticated,
         component: () => import("./views/UserProfileEdit.vue")
     },
     {

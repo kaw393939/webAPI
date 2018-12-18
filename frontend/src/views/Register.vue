@@ -10,11 +10,33 @@
             <div class="errorMessage" v-if="submissionErrors.length > 0">{{ submissionErrors[0] }}</div>
             <v-form>
               <v-text-field
+                v-model.trim.lazy="firstName"
+                prepend-icon="account_circle"
+                name="firstName"
+                label="First Name"
+                type="text"
+                :error-messages="firstNameErrors"
+                @input="$v.firstName.$touch()"
+                @blur="$v.firstName.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="lastName"
+                prepend-icon="account_circle"
+                name="lastName"
+                label="Last Name"
+                type="text"
+                :error-messages="lastNameErrors"
+                @input="$v.lastName.$touch()"
+                @blur="$v.lastName.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
                 v-model.trim.lazy="email"
                 prepend-icon="mail"
                 name="email"
                 label="Email"
-                type="text"
+                type="email"
                 :error-messages="emailErrors"
                 @input="$v.email.$touch()"
                 @blur="$v.email.$touch()"
@@ -42,6 +64,21 @@
                 @blur="$v.passConfirm.$touch()"
                 required
               ></v-text-field>
+              <v-textarea
+                v-model.trim.lazy="bio"
+                name="bio"
+                value
+                prepend-icon="assignment"
+                placeholder="Enter your bio here..."
+                rows="3"
+                :error-messages="bioErrors"
+                @input="$v.bio.$touch()"
+                @blur="$v.bio.$touch()"
+                no-resize
+                counter
+                required
+                clearable
+              ></v-textarea>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -79,19 +116,53 @@ export default {
   validations: {
     email: { required, email },
     password: { required, minLength: minLength(8), maxLength: maxLength(60) },
-    passConfirm: { required, sameAsPassword: sameAs("password") }
+    passConfirm: { required, sameAsPassword: sameAs("password") },
+    firstName: { required },
+    lastName: { required },
+    bio: { required }
   },
 
   data() {
     return {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       passConfirm: "",
+      bio: "",
       submission: { errors: null }
     };
   },
 
   computed: {
+    firstNameErrors() {
+      const errors = [];
+      const { firstName } = this.$v;
+
+      if (!firstName.$dirty) {
+        return errors;
+      }
+      if (!firstName.required) {
+        errors.push(`First name is required.`);
+      }
+
+      return errors;
+    },
+
+    lastNameErrors() {
+      const errors = [];
+      const { lastName } = this.$v;
+
+      if (!lastName.$dirty) {
+        return errors;
+      }
+      if (!lastName.required) {
+        errors.push(`Last name is required.`);
+      }
+
+      return errors;
+    },
+
     emailErrors() {
       const errors = [];
       const { email } = this.$v;
@@ -148,6 +219,20 @@ export default {
       return errors;
     },
 
+    bioErrors() {
+      const errors = [];
+      const { bio } = this.$v;
+
+      if (!bio.$dirty) {
+        return errors;
+      }
+      if (!bio.required) {
+        errors.push(`Bio is required.`);
+      }
+
+      return errors;
+    },
+
     submissionErrors() {
       const { errors } = this.submission;
 
@@ -156,7 +241,7 @@ export default {
   },
   methods: {
     onSubmit: function() {
-      const { email, password } = this;
+      const { firstName, lastName, email, password, bio } = this;
 
       if (this.$v.$invalid) return;
 
@@ -172,7 +257,13 @@ export default {
       };
 
       axios
-        .post("api/register", { email, password })
+        .post("api/register", {
+          email,
+          password,
+          firstName,
+          lastName,
+          bio
+        })
         .then(handleSuccess)
         .catch(handleError);
     },

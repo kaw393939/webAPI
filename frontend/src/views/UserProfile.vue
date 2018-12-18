@@ -12,8 +12,8 @@
             <v-flex class="infoCardRow">
               <p class="headline font-weight-bold infoCardUserName">{{ name }}</p>
             </v-flex>
-            <v-flex class="infoCardRow">
-              <v-btn color="blue-grey" @click="edit" class="white--text">EDIT PROFILE</v-btn>
+            <v-flex class="infoCardRow" v-if="isLoggedIn">
+              <v-btn class="white--text" :to="editProfileLink">EDIT PROFILE</v-btn>
             </v-flex>
           </v-layout>
         </v-card>
@@ -131,7 +131,7 @@
 
 <script>
 import faker from "faker";
-
+import { mapGetters } from "vuex";
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
@@ -169,6 +169,23 @@ export default {
       //    attempt to take the user to edit-profile route after checking for token in the storage
       //    if the user is authorized, user is guided to edit-profile page with its information pre-populated
       //    otherwise 401 error thrown out
+    }
+  },
+
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+
+    showEditProfileButton() {
+      // TODO: return true or false based on whether
+      // user is allowed to edit this profile or not
+    },
+
+    editProfileLink() {
+      // TODO: get userId from store when ready
+      // const userId = this.authUser.id
+      const userId = 1;
+
+      return `/profile/${userId}/edit`;
     }
   }
 };

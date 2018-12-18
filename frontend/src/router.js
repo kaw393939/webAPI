@@ -27,12 +27,13 @@ export const routes = [
         component: () => import("./views/Register.vue")
     },
     {
-        path: "/profile/edit",
-        component: () => import("./views/EditProfile.vue")
+        path: "/profile/:id",
+        component: () => import("./views/UserProfile.vue")
     },
     {
-        path: "/profile",
-        component: () => import("./views/UserProfile.vue")
+        path: "/profile/:id/edit",
+        beforeEnter: ifNotAuthenticated,
+        component: () => import("./views/UserProfileEdit.vue")
     },
     {
         path: "/question",

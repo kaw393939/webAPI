@@ -1,15 +1,15 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import EditProfile from "@/views/EditProfile.vue";
+import UserProfileEdit from "@/views/UserProfileEdit.vue";
 
-describe("EditProfile", () => {
+describe("UserProfileEdit", () => {
     let wrapper;
 
     beforeEach(() => {
         Vue.use(Vuetify);
         Vue.config.silent = true;
-        wrapper = mount(EditProfile);
+        wrapper = mount(UserProfileEdit);
     });
 
     test("is a Vue instance", () => {

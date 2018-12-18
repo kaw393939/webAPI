@@ -114,6 +114,191 @@
                 }
             }
         },
+        "/profiles": {
+            "get": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "Get list of Profiles",
+                "description": "return list of profiles",
+                "operationId": "getProfiles",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/profiles/": {
+            "post": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "create a  user profile",
+                "description": "Create a user's profile",
+                "operationId": "createProfile",
+                "parameters": [
+                    {
+                        "name": "first name",
+                        "in": "formData",
+                        "description": "first name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last name",
+                        "in": "formData",
+                        "description": "last name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bio",
+                        "in": "formData",
+                        "description": "bio text",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
+        "/profiles/{id}": {
+            "get": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "Get profile info",
+                "description": "return profile data",
+                "operationId": "getProfileById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "edit a  user profile",
+                "description": "Edit a user's profile",
+                "operationId": "editProfile",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "first name",
+                        "in": "formData",
+                        "description": "first name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last name",
+                        "in": "formData",
+                        "description": "last name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bio",
+                        "in": "formData",
+                        "description": "bio text",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Profiles"
+                ],
+                "summary": "delete a  user profile",
+                "description": "Delete a user's profile",
+                "operationId": "deleteProfile",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
         "/questions": {
             "get": {
                 "tags": [

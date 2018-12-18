@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewQuestionEvent;
 use App\Http\Requests\QuestionCreateRequest;
 use App\Http\Requests\QuestionDeleteRequest;
 use App\Http\Requests\QuestionEditRequest;
@@ -105,6 +106,9 @@ class QuestionController extends Controller
             $question = Question::create($input);
             $question->user_id = $user->id;
             $question->save();
+
+            event(new NewQuestionEvent($question));
+
             return response()->json([
                 'id' => $question->id,
                 'code' => 200,

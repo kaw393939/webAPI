@@ -6,8 +6,9 @@ use App\Events\NewQuestionEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use App\User;
 
-class NewQuestionLisetner
+class NewQuestionListener
 {
     /**
      * Create the event listener.
@@ -27,6 +28,6 @@ class NewQuestionLisetner
      */
     public function handle(NewQuestionEvent $event)
     {
-        Log::notice('A New Question Has Been Asked.');
+        Log::notice($event->question->user().' has asked a question: '.$event->question->getQuestion());
     }
 }

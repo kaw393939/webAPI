@@ -19,14 +19,14 @@ class SuccessfulRegistrationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                     ->clickLink('Register')
-                    ->type('firstName', 'Kyle')
-                    ->type('lastName', 'Payne')
-                    ->type('email', 'kjp44@njit.edu')
-                    ->type('password', 'secretsecret')
-                    ->type('passwordConf', 'secretsecret')
+                    ->type('firstName', 'John')
+                    ->type('lastName', 'Doe')
+                    ->type('email', 'johndoe@email.com')
+                    ->type('password', 'your_password')
+                    ->type('passwordConf', 'your_password')
                     ->type('bio', 'Lorem ipseum.')
                     ->press('REGISTER');
-            $browser->pause(1)
+            $browser->pause(1000)
                     ->assertPathIs('/login');
         });
     }

@@ -27,4 +27,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 //    Route::post('create', 'ProfileController@createProfile')->name('create');
 //    Route::post('edit', 'ProfileController@editProfile')->name('edit');
 //    Route::post('update', 'ProfileController@updateProfile')->name('update');
+    Route::post('/questions/{question}/answers', 'AnswerController@store');
+    Route::put('/questions/{question}/answers/{answer}', 'AnswerController@update');
+    Route::delete('/questions/{question}/answers/{answer}', 'AnswerController@destroy');
 });

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Http\Requests\AnswerCreateRequest;
+use App\Http\Requests\AnswerDeleteRequest;
+use App\Http\Requests\AnswerUpdateRequest;
 use App\Http\Resources\AnswerResource;
 use App\Http\Resources\AnswersResource;
+use App\User;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class AnswerController extends Controller
 {
@@ -35,9 +40,31 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnswerCreateRequest $request)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        $input = $request->only('answer');
+        $questionId = $request->route('question');
+
+        try {
+            $answer = Answer::create($input);
+            $answer->user_id = $user->id;
+            $answer->question_id = $questionId;
+            $answer->save();
+            return response()->json([
+                'id' => $answer->id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Create Success",
+            ], 200);
+        }
+        catch(\Exception $exception) {
+            return response()->json([
+                'code' => 404,
+                'status' => false,
+                'message' => "Create Fail",
+            ], 404);
+        }
     }
 
     /**
@@ -70,9 +97,32 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AnswerUpdateRequest $request)
     {
-        //
+        $input = $request->only( 'answer');
+        $id = $request->route('answer');
+        $questionId = $request->route('question');
+
+        try {
+            $answer = Answer::where('id', $id)
+                ->where('question_id', $questionId)
+                ->first();
+            $answer->answer = $input['answer'];
+            $answer->save();
+
+            return response()->json([
+                'code' => 200,
+                'status' => true,
+                'message' => "Answer Updated",
+            ], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json([
+                'code' => 404,
+                'status' => true,
+                'message' => "Answer Update Failed",
+            ], 404);
+        }
     }
 
     /**
@@ -81,8 +131,31 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(AnswerDeleteRequest $request)
     {
-        //
+        $id = $request->route('answer');
+        $questionId = $request->route('question');
+        $answer = Answer::where('id', $id)
+            ->where('question_id', $questionId)
+            ->first();
+
+        if($answer) {
+            Answer::destroy($id);
+            return response()->json([
+                'id' => $id,
+                'code' => 200,
+                'status' => true,
+                'message' => "Delete Success",
+            ], 200);
+        }
+        else {
+
+            return response()->json([
+                'id' => $id,
+                'code' => 404,
+                'status' => false,
+                'message' => "Delete Fail",
+            ], 404);
+        }
     }
 }

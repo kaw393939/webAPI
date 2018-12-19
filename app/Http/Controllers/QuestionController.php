@@ -18,25 +18,6 @@ use JWTAuth;
 
 class QuestionController extends Controller
 {
-    /**
-     *
-     * @SWG\Get (
-     *      path = "/questions",
-     *      operationId = "getQuestions",
-     *      tags = {"Questions"},
-     *      summary  = "Get list of Questions",
-     *      description = "return list of questions",
-     *      @SWG\Response(
-     *          response = 200,
-     *          description = "successful operation"
-     *      ),
-     *     @SWG\Response(response = 400, description = "Bad request"),
-     *     )
-     *    )
-     *
-     * Display a listing of the resource.
-     *
-     */
 
 
 

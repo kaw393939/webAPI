@@ -374,24 +374,6 @@
                 }
             }
         },
-        "/questions": {
-            "get": {
-                "tags": [
-                    "Questions"
-                ],
-                "summary": "Get list of Questions",
-                "description": "return list of questions",
-                "operationId": "getQuestions",
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "400": {
-                        "description": "Bad request"
-                    }
-                }
-            }
-        },
         "/questions/{id}": {
             "get": {
                 "tags": [

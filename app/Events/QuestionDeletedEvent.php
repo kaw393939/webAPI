@@ -9,9 +9,8 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use App\Question;
 
-class NewQuestionEvent
+class QuestionDeletedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -22,7 +21,7 @@ class NewQuestionEvent
      */
     public function __construct(Question $question)
     {
-        $this->$question=$question;
+        $this->question=$question;
     }
 
     /**

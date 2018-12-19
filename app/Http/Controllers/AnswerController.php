@@ -33,7 +33,6 @@ class AnswerController extends Controller
     {
         //
     }
-
     /**
      *  *  * @SWG\Post (
      *      path = "/questions/{questionId}/answers",

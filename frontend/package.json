@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
-        "build": "rm -rf ../public/{js,css,img} && vue-cli-service build --no-clean",
+        "build": "vue-cli-service build --no-clean",
         "build:win": "del /S ..\\public\\js ..\\public\\css ..\\public\\img && vue-cli-service build --no-clean",
         "lint": "vue-cli-service lint",
         "test:e2e": "vue-cli-service test:e2e",
@@ -21,7 +21,7 @@
         "vue": "^2.5.21",
         "vue-router": "^3.0.1",
         "vuelidate": "^0.7.4",
-        "vuetify": "^1.3.14",
+        "vuetify": "^1.3.15",
         "vuex": "^3.0.1"
     },
     "devDependencies": {
@@ -38,6 +38,7 @@
         "babel-jest": "^23.6.0",
         "eslint": "^5.10.0",
         "eslint-plugin-vue": "^5.0.0",
+        "flush-promises": "^1.0.2",
         "lint-staged": "^7.2.2",
         "vue-template-compiler": "^2.5.21"
     },

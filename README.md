@@ -46,7 +46,7 @@ php artisan jwt:secret
 ```
 
 
-In order to use the Swagger API make sure to include:
+In order to use the Swagger API make sure that your .env includes:
 ```sh
 L5_SWAGGER_GENERATE_ALWAYS=true
 SWAGGER_VERSION=2.0

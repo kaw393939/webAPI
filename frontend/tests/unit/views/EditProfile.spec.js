@@ -1,16 +1,15 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import Login from "@/views/Login.vue";
+import EditProfile from "@/views/EditProfile.vue";
 
-describe("Login", () => {
+describe("EditProfile", () => {
     let wrapper;
 
     beforeEach(() => {
         Vue.use(Vuetify);
         Vue.config.silent = true;
-
-        wrapper = mount(Login);
+        wrapper = mount(EditProfile);
     });
 
     test("is a Vue instance", () => {
@@ -20,24 +19,30 @@ describe("Login", () => {
         expect(actual).toBe(expected);
     });
 
-    test("it renders a form", () => {
+    test("renders a form", () => {
         const expected = true;
         const actual = wrapper.find(".v-form").exists();
 
         expect(actual).toBe(expected);
     });
 
-    test("it renders input fields", () => {
-        const expected = 2;
+    test("renders 3 form elements", () => {
+        const expected = 3;
         const actual = wrapper.findAll(".v-text-field").length;
 
         expect(actual).toBe(expected);
     });
 
-    test("it renders a submit button", () => {
+    test("renders a submission button", () => {
         const expected = true;
         const actual = wrapper.find(".v-btn").exists();
 
         expect(actual).toBe(expected);
     });
+
+    // test("should render a paragraph element to display form acceptance/rejection", () => {
+    //     const expected = true;
+    //     const actual = wrapper.find("p").exists();
+    //     expect(actual).toBe(expected);
+    // });
 });

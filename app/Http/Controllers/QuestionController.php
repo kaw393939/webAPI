@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewQuestionEvent;
+use App\Events\QuestionEditedEvent;
 use App\Http\Requests\QuestionCreateRequest;
 use App\Http\Requests\QuestionDeleteRequest;
 use App\Http\Requests\QuestionEditRequest;
@@ -163,6 +164,8 @@ class QuestionController extends Controller
             $question->question = $input['question'];
             $question->save();
 
+            event(new QuestionEditedEvent($question));
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,
@@ -190,6 +193,9 @@ class QuestionController extends Controller
     {
 
         if(Question::destroy($id)) {
+
+            event(new QuestionDeletedEvent(Question::findOrFail($id)));
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,

@@ -11,7 +11,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Question;
 
-class NewQuestionEvent
+class QuestionEditedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

@@ -45,6 +45,11 @@ export const routes = [
         component: () => import("./views/Question.vue")
     },
     {
+        path: "/question-answer",
+        beforeEnter: ifNotAuthenticated,
+        component: () => import("./views/QuestionAnswer.vue")
+    },
+    {
         path: "*",
         component: () => import("./views/NotFound.vue")
     }

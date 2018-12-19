@@ -1,16 +1,16 @@
 import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import QuestionCreate from "@/views/QuestionCreate.vue";
+import QuestionAnswer from "@/views/QuestionAnswer.vue";
 import PageHeading from "@/components/PageHeading.vue";
 
-describe("QuestionCreate", () => {
+describe("QuestionAnswer", () => {
     let wrapper;
 
     beforeEach(() => {
         Vue.use(Vuetify);
         Vue.config.silent = true;
-        wrapper = mount(QuestionCreate, {
+        wrapper = mount(QuestionAnswer, {
             stubs: {
                 "page-heading": PageHeading
             }
@@ -31,7 +31,7 @@ describe("QuestionCreate", () => {
         expect(actual).toBe(expected);
     });
 
-    test("renders input area for question", () => {
+    test("renders input area for answer", () => {
         const expected = true;
         const actual = wrapper.find(".v-textarea").exists();
 

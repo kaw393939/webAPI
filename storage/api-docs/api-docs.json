@@ -46,6 +46,47 @@
                 }
             }
         },
+        "/questions/{questionId}/answers/{answerId}": {
+            "put": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Edit an answer for a particular question",
+                "description": "Edit a answer for a particular question",
+                "operationId": "editAnswer",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "Id of a given question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "Id of an answer for a given question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": [

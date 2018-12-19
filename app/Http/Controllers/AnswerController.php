@@ -144,13 +144,55 @@ class AnswerController extends Controller
 
     /**
      *
+     *  /**
      *
+     *  * /**
      *
+     * @SWG\Put (
+     *      path = "/questions/{questionId}/answers/{answerId}",
+     *      operationId = "editAnswer",
+     *      tags = {"Answers"},
+     *      summary  = "Edit an answer for a particular question",
+     *      description = "Edit a answer for a particular question",
      *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "questionId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Id of a given question",
+     *     required =true,
+     *     ),
      *
+     *     @SWG\Parameter(
+     *     name = "answerId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Id of an answer for a given question",
+     *     required =true,
+     *     ),
      *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
      *
+     *     ),
      *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
      *
      * Update the specified resource in storage.
      *

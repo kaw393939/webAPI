@@ -2,13 +2,19 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import QuestionCreate from "@/views/QuestionCreate.vue";
+import PageHeading from "@/components/PageHeading.vue";
 
 describe("QuestionCreate", () => {
     let wrapper;
 
     beforeEach(() => {
         Vue.use(Vuetify);
-        wrapper = mount(QuestionCreate);
+        Vue.config.silent = true;
+        wrapper = mount(QuestionCreate, {
+            stubs: {
+                "page-heading": PageHeading
+            }
+        });
     });
 
     test("is a Vue instance", () => {
@@ -38,5 +44,4 @@ describe("QuestionCreate", () => {
 
         expect(actual).toBe(expected);
     });
-
 });

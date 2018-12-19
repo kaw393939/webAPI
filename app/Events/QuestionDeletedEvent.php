@@ -19,7 +19,7 @@ class QuestionDeletedEvent
      *
      * @return void
      */
-    public function __construct(Question $question)
+    public function __construct($question)
     {
         $this->question=$question;
     }

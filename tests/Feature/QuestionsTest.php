@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Events\NewQuestionEvent;
+use App\Events\QuestionDeletedEvent;
 use App\Events\QuestionEditedEvent;
 use DB;
 use Tests\TestCase;
@@ -20,6 +21,8 @@ class QuestionsTest extends TestCase
 
     public function testDeleteQuestion()
     {
+        $this->expectsEvents(QuestionDeletedEvent::class);
+
         $user = factory(\App\User::class)->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),

@@ -13,7 +13,7 @@ class SuccessfulRegistrationTest extends DuskTestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testSuccessfulRegistration()
     {
         $this->artisan('migrate:refresh');
         $this->browse(function (Browser $browser) {

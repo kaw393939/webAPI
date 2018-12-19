@@ -37,7 +37,7 @@ class AnswerController extends Controller
      *  *  * @SWG\Post (
      *      path = "/questions/{questionId}/answers",
      *      operationId = "create answer for  question with given Id",
-     *      tags = {"answers"},
+     *      tags = {"Answers"},
      *      summary  = "create a  answer ",
      *      description = "Create a an answer for a specific question",
      *
@@ -229,6 +229,65 @@ class AnswerController extends Controller
     }
 
     /**
+     *
+     * /**
+     *
+     *  /**
+     *
+     * * @SWG\Delete (
+     *      path = "/questions/{questionId}/answers/{answerId}",
+     *      operationId = "deleteAnswer",
+     *      tags = {"Answers"},
+     *      summary  = "delete an answer for a given question",
+     *      description = "Delete an answer for a given question",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "questionId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "question Id",
+     *     required =true,
+     *     ),
+     *
+     *
+     *  @SWG\Parameter(
+     *     name = "answerId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Answer Id",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Remove the specified resource from storage.
      *
      * @param  int  $id

@@ -35,6 +35,59 @@ class AnswerController extends Controller
     }
 
     /**
+     *  *  * @SWG\Post (
+     *      path = "/questions/{questionId}/answers",
+     *      operationId = "create answer for  question with given Id",
+     *      tags = {"answers"},
+     *      summary  = "create a  answer ",
+     *      description = "Create a an answer for a specific question",
+     *
+     *       @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     *
+     *
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "question Id",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Id of question",
+     *     required =true,
+     *     ),
+     *
+     *          @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *
+     *
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,6 +144,15 @@ class AnswerController extends Controller
     }
 
     /**
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

@@ -20,7 +20,7 @@ class SuccessfulLoginTest extends DuskTestCase
         $this->artisan('migrate:refresh');
         $this->browse(function (Browser $browser) {
             $user = new User;
-            $user->email = 'test@example.com';
+            $user->email = 'john_doe@email.com';
             $user->password = bcrypt('your_password');
             $user->save();
             $browser->visit('/')

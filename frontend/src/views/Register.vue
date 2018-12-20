@@ -260,8 +260,8 @@ export default {
         .post("api/register", {
           email,
           password,
-          firstName,
-          lastName,
+          first_name: firstName,
+          last_name: lastName,
           bio
         })
         .then(handleSuccess)

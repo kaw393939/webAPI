@@ -25,7 +25,7 @@ export default {
     if (!authToken) return;
 
     const handleResponse = response => {
-      const { user } = get(response, "data.user", {});
+      const { user } = get(response, "data", {});
 
       this.setAuthUser({
         data: {

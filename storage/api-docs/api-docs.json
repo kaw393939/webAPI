@@ -22,16 +22,9 @@
                 "operationId": "create answer for  question with given Id",
                 "parameters": [
                     {
-                        "name": "question Id",
+                        "name": "questionId",
                         "in": "path",
                         "description": "Id of question",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "answer ",
-                        "in": "path",
-                        "description": "answer for question",
                         "required": true,
                         "type": "string"
                     },
@@ -39,6 +32,13 @@
                         "name": "Authorization",
                         "in": "header",
                         "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answer",
+                        "in": "formData",
+                        "description": "answer text",
                         "required": true,
                         "type": "string"
                     }
@@ -73,6 +73,13 @@
                         "name": "answerId",
                         "in": "path",
                         "description": "Id of an answer for a given question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answer",
+                        "in": "formData",
+                        "description": "answer text",
                         "required": true,
                         "type": "string"
                     },
@@ -206,14 +213,14 @@
                     {
                         "name": "first_name",
                         "in": "formData",
-                        "description": "name",
+                        "description": "first name",
                         "required": true,
                         "type": "string"
                     },
                     {
                         "name": "last_name",
                         "in": "formData",
-                        "description": "name",
+                        "description": "last name",
                         "required": true,
                         "type": "string"
                     },
@@ -227,7 +234,7 @@
                     {
                         "name": "bio",
                         "in": "formData",
-                        "description": "email",
+                        "description": "bio",
                         "required": true,
                         "type": "string"
                     },

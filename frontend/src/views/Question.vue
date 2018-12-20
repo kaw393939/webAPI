@@ -51,7 +51,7 @@
 
           <card-footer>
             <template v-for="tag in question.tags">
-              <v-chip label outline small color="white" :key="tag">{{ tag.title }}</v-chip>
+              <v-chip label outline small color="white" :key="tag.id">{{ tag.title }}</v-chip>
             </template>
           </card-footer>
         </card>
@@ -62,7 +62,7 @@
           <p class="headline">{{ answers.length }} Answers</p>
         </v-flex>
         <v-flex xs6 class="addAnswerButtonWrapper">
-          <v-btn fab dark small color="blue darken-2">
+          <v-btn fab dark small color="blue darken-2" v-if="allowCreatingAnswer">
             <v-icon dark>add</v-icon>
           </v-btn>
         </v-flex>
@@ -155,13 +155,12 @@ import flow from "lodash/flow";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import isNil from "lodash/isNil";
+import { mapGetters } from "vuex";
 
 import Card from "@/components/Card.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import PageHeading from "@/components/PageHeading.vue";
-
-import { fetchQuestion } from "@/utils/FakerUtils";
 
 export default {
   components: {
@@ -183,10 +182,12 @@ export default {
 
     if (isNil(id)) return;
 
-    const handleResponse = question => {
+    const handleResponse = response => {
+      const question = get(response, "data", {});
+
       const withFormattedDate = item => ({
         ...item,
-        createdAtFormatted: `${distanceInWordsToNow(item.createdAt)} ago`
+        createdAtFormatted: `${distanceInWordsToNow(item.createdAt.date)} ago`
       });
       const withAuthorFullName = item => ({
         ...item,
@@ -195,8 +196,26 @@ export default {
           fullName: `${item.author.firstName} ${item.author.lastName}`
         }
       });
+      const withMissingAvatar = item => ({
+        ...item,
+        author: {
+          ...item.author,
+          avatar:
+            item.avatar ||
+            "https://s3.amazonaws.com/uifaces/faces/twitter/ruehldesign/128.jpg"
+        }
+      });
+      const withLinkToCreateAnswerPage = item => ({
+        ...item,
+        createAnswerLink: `/question/${item.id}/answer`
+      });
 
-      const withFormattedAttrs = flow([withFormattedDate, withAuthorFullName]);
+      const withFormattedAttrs = flow([
+        withFormattedDate,
+        withAuthorFullName,
+        withMissingAvatar,
+        withLinkToCreateAnswerPage
+      ]);
 
       return {
         ...withFormattedAttrs(question),
@@ -209,13 +228,22 @@ export default {
       this.question = question;
     };
 
-    fetchQuestion(id)
+    axios
+      .get(`/api/questions/${id}`)
       .then(handleResponse)
       .then(setState)
       .catch(console.error);
   },
 
   computed: {
+    ...mapGetters(["isLoggedIn"]),
+
+    allowCreatingAnswer() {
+      // console.log("question", this.question);
+
+      return this.isLoggedIn;
+    },
+
     questionDidFetch() {
       return !isEmpty(this.question);
     },

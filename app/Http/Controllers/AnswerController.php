@@ -33,12 +33,11 @@ class AnswerController extends Controller
     {
         //
     }
-
     /**
      *  *  * @SWG\Post (
      *      path = "/questions/{questionId}/answers",
      *      operationId = "create answer for  question with given Id",
-     *      tags = {"answers"},
+     *      tags = {"Answers"},
      *      summary  = "create a  answer ",
      *      description = "Create a an answer for a specific question",
      *
@@ -53,13 +52,14 @@ class AnswerController extends Controller
      *
      *
      *     @SWG\Parameter(
-     *     name = "question Id",
+     *     name = "questionId",
      *     in = "path",
      *     type = "string",
      *     description = "Id of question",
      *     required =true,
      *     ),
      *
+
      *          @SWG\Parameter(
      *     name = "Authorization",
      *     in = "header",
@@ -68,9 +68,13 @@ class AnswerController extends Controller
      *     required =true,
      *
      *     ),
-     *
-     *
-     *
+     *     @SWG\Parameter(
+     *     name = "answer",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "answer text",
+     *     required =true,
+     *     ),
      *
      *      @SWG\Response(
      *          response = 200,
@@ -145,14 +149,9 @@ class AnswerController extends Controller
 
     /**
      *
+     *  /**
      *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
+
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -188,6 +187,17 @@ class AnswerController extends Controller
     }
 
     /**
+     *
+     * /**
+     *
+     *  /**
+
+     *
+     *
+     *
+     *
+     *
+     *
      * Remove the specified resource from storage.
      *
      * @param  int  $id

@@ -1,9 +1,17 @@
 import Vue from "vue";
 import Router from "vue-router";
-
+import store from "@/store/";
 import Home from "./views/Home.vue";
 
 Vue.use(Router);
+
+function ifNotAuthenticated(to, from, next) {
+    if (!store.getters.isLoggedIn) {
+        next({ path: "/" });
+        return;
+    }
+    next();
+}
 
 export const routes = [
     {
@@ -19,12 +27,18 @@ export const routes = [
         component: () => import("./views/Register.vue")
     },
     {
-        path: "/profile/edit",
-        component: () => import("./views/EditProfile.vue")
+        path: "/profile/:id",
+        component: () => import("./views/UserProfile.vue")
     },
     {
-        path: "/profile",
-        component: () => import("./views/UserProfile.vue")
+        path: "/profile/:id/edit",
+        beforeEnter: ifNotAuthenticated,
+        component: () => import("./views/UserProfileEdit.vue")
+    },
+    {
+        path: "/question",
+        beforeEnter: ifNotAuthenticated,
+        component: () => import("./views/QuestionCreate.vue")
     },
     {
         path: "/question/:id",

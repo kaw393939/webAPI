@@ -12,6 +12,134 @@
         "https"
     ],
     "paths": {
+        "/questions/{questionId}/answers": {
+            "post": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "create a  answer ",
+                "description": "Create a an answer for a specific question",
+                "operationId": "create answer for  question with given Id",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "Id of question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answer",
+                        "in": "formData",
+                        "description": "answer text",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
+        "/questions/{questionId}/answers/{answerId}": {
+            "put": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Edit an answer for a particular question",
+                "description": "Edit a answer for a particular question",
+                "operationId": "editAnswer",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "Id of a given question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "Id of an answer for a given question",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answer",
+                        "in": "formData",
+                        "description": "answer text",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "delete an answer for a given question",
+                "description": "Delete an answer for a given question",
+                "operationId": "deleteAnswer",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "question Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "Answer Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer TOKEN",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes: true"
+                    },
+                    "422": {
+                        "description": "The given data was invalid"
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "tags": [
@@ -83,9 +211,16 @@
                 "operationId": "registerUser",
                 "parameters": [
                     {
-                        "name": "name",
+                        "name": "first_name",
                         "in": "formData",
-                        "description": "name",
+                        "description": "first name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "formData",
+                        "description": "last name",
                         "required": true,
                         "type": "string"
                     },
@@ -93,6 +228,13 @@
                         "name": "email",
                         "in": "formData",
                         "description": "email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bio",
+                        "in": "formData",
+                        "description": "bio",
                         "required": true,
                         "type": "string"
                     },
@@ -295,24 +437,6 @@
                     },
                     "422": {
                         "description": "The given data was invalid"
-                    }
-                }
-            }
-        },
-        "/questions": {
-            "get": {
-                "tags": [
-                    "Questions"
-                ],
-                "summary": "Get list of Questions",
-                "description": "return list of questions",
-                "operationId": "getQuestions",
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "400": {
-                        "description": "Bad request"
                     }
                 }
             }

@@ -7,17 +7,28 @@
             <v-toolbar-title>Register</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <div class="errorMessage">{{error}}</div>
+            <div class="errorMessage" v-if="submissionErrors.length > 0">{{ submissionErrors[0] }}</div>
             <v-form>
               <v-text-field
-                v-model.trim.lazy="name"
-                prepend-icon="person"
-                name="name"
-                label="Name"
+                v-model.trim.lazy="firstName"
+                prepend-icon="account_circle"
+                name="firstName"
+                label="First Name"
                 type="text"
-                :error-messages="nameErrors"
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
+                :error-messages="firstNameErrors"
+                @input="$v.firstName.$touch()"
+                @blur="$v.firstName.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="lastName"
+                prepend-icon="account_circle"
+                name="lastName"
+                label="Last Name"
+                type="text"
+                :error-messages="lastNameErrors"
+                @input="$v.lastName.$touch()"
+                @blur="$v.lastName.$touch()"
                 required
               ></v-text-field>
               <v-text-field
@@ -25,7 +36,7 @@
                 prepend-icon="mail"
                 name="email"
                 label="Email"
-                type="text"
+                type="email"
                 :error-messages="emailErrors"
                 @input="$v.email.$touch()"
                 @blur="$v.email.$touch()"
@@ -53,6 +64,21 @@
                 @blur="$v.passConfirm.$touch()"
                 required
               ></v-text-field>
+              <v-textarea
+                v-model.trim.lazy="bio"
+                name="bio"
+                value
+                prepend-icon="assignment"
+                placeholder="Enter your bio here..."
+                rows="3"
+                :error-messages="bioErrors"
+                @input="$v.bio.$touch()"
+                @blur="$v.bio.$touch()"
+                no-resize
+                counter
+                required
+                clearable
+              ></v-textarea>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -67,140 +93,184 @@
 
 <style>
 .errorMessage {
-    color: #ff0000;
-    height: 2rem;
-    font-size: 1.2rem;
+  color: #ff0000;
+  height: 2rem;
+  font-size: 1.2rem;
 }
 </style>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import {
-    email,
-    maxLength,
-    minLength,
-    required,
-    sameAs
+  email,
+  minLength,
+  maxLength,
+  required,
+  sameAs
 } from "vuelidate/lib/validators";
+import { getSubmissionErrors } from "@/utils/FormUtils";
 
 export default {
-    mixins: [validationMixin],
+  mixins: [validationMixin],
 
-    validations: {
-        name: { required, maxLength: maxLength(30) },
-        email: { required, email },
-        password: { required, minLength: minLength(6) },
-        passConfirm: { required, sameAsPassword: sameAs("password") }
+  validations: {
+    email: { required, email },
+    password: { required, minLength: minLength(8), maxLength: maxLength(60) },
+    passConfirm: { required, sameAsPassword: sameAs("password") },
+    firstName: { required },
+    lastName: { required },
+    bio: { required }
+  },
+
+  data() {
+    return {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      passConfirm: "",
+      bio: "",
+      submission: { errors: null }
+    };
+  },
+
+  computed: {
+    firstNameErrors() {
+      const errors = [];
+      const { firstName } = this.$v;
+
+      if (!firstName.$dirty) {
+        return errors;
+      }
+      if (!firstName.required) {
+        errors.push(`First name is required.`);
+      }
+
+      return errors;
     },
 
-    data() {
-        return {
-            name: "",
-            email: "",
-            password: "",
-            passConfirm: ""
-        };
+    lastNameErrors() {
+      const errors = [];
+      const { lastName } = this.$v;
+
+      if (!lastName.$dirty) {
+        return errors;
+      }
+      if (!lastName.required) {
+        errors.push(`Last name is required.`);
+      }
+
+      return errors;
     },
 
-    computed: {
-        ...mapGetters(["error"]),
+    emailErrors() {
+      const errors = [];
+      const { email } = this.$v;
 
-        nameErrors() {
-            const errors = [];
-            const { name } = this.$v;
+      if (!email.$dirty) {
+        return errors;
+      }
+      if (!email.email) {
+        errors.push(`Must be a valid email.`);
+      }
+      if (!email.required) {
+        errors.push(`Email is required.`);
+      }
 
-            if (!name.$dirty) {
-                return errors;
-            }
-            if (!name.maxLength) {
-                const { max } = name.$params.maxLength;
-                errors.push(`Name must be at most ${max} characters long.`);
-            }
-            if (!name.required) {
-                errors.push(`Name is required.`);
-            }
-
-            return errors;
-        },
-
-        emailErrors() {
-            const errors = [];
-            const { email } = this.$v;
-
-            if (!email.$dirty) {
-                return errors;
-            }
-            if (!email.email) {
-                errors.push(`Must be a valid email.`);
-            }
-            if (!email.required) {
-                errors.push(`Email is required.`);
-            }
-
-            return errors;
-        },
-
-        passErrors() {
-            const errors = [];
-            const { password } = this.$v;
-
-            if (!password.$dirty) {
-                return errors;
-            }
-            if (!password.required) {
-                errors.push(`Password is required.`);
-            }
-            if (!password.minLength) {
-                const { min } = password.$params.minLength;
-                errors.push(
-                    `Password must be at least ${min} characters long.`
-                );
-            }
-
-            return errors;
-        },
-
-        passConfirmErrors() {
-            const errors = [];
-            const { passConfirm } = this.$v;
-
-            if (!passConfirm.$dirty) {
-                return errors;
-            }
-            if (!passConfirm.required) {
-                errors.push(`Password confirmation is required.`);
-            }
-            if (!passConfirm.sameAsPassword) {
-                errors.push(`Passwords must match.`);
-            }
-
-            return errors;
-        }
+      return errors;
     },
-    methods: {
-        ...mapActions(["signUp"]),
 
-        onSubmit: function() {
-            const { name, email, password, passConfirm } = this;
+    passErrors() {
+      const errors = [];
+      const { password } = this.$v;
 
-            if (this.$v.$invalid) {
-                return;
-            }
+      if (!password.$dirty) {
+        return errors;
+      }
+      if (!password.required) {
+        errors.push(`Password is required.`);
+      }
+      if (!password.minLength || !password.maxLength) {
+        const { minLength, maxLength } = password.$params;
+        errors.push(
+          `Password must be between ${minLength.min} and ${
+            maxLength.max
+          } characters long.`
+        );
+      }
 
-            this.signUp({
-                name,
-                email,
-                password,
-                password_confirmation: passConfirm
-            });
-        },
+      return errors;
+    },
 
-        clear() {
-            this.$v.$reset();
-            this.name = "";
-            this.email = "";
-        }
+    passConfirmErrors() {
+      const errors = [];
+      const { passConfirm } = this.$v;
+
+      if (!passConfirm.$dirty) {
+        return errors;
+      }
+      if (!passConfirm.required) {
+        errors.push(`Password confirmation is required.`);
+      }
+      if (!passConfirm.sameAsPassword) {
+        errors.push(`Passwords must match.`);
+      }
+
+      return errors;
+    },
+
+    bioErrors() {
+      const errors = [];
+      const { bio } = this.$v;
+
+      if (!bio.$dirty) {
+        return errors;
+      }
+      if (!bio.required) {
+        errors.push(`Bio is required.`);
+      }
+
+      return errors;
+    },
+
+    submissionErrors() {
+      const { errors } = this.submission;
+
+      return Array.isArray(errors) ? errors : [];
     }
+  },
+  methods: {
+    onSubmit: function() {
+      const { firstName, lastName, email, password, bio } = this;
+
+      if (this.$v.$invalid) return;
+
+      // cleanup any previous submission errors
+      this.resetSubmissionErrors();
+
+      const handleSuccess = response => {
+        this.$router.push({ path: "/login" });
+      };
+
+      const handleError = error => {
+        this.submission = { errors: getSubmissionErrors(error) };
+      };
+
+      axios
+        .post("api/register", {
+          email,
+          password,
+          firstName,
+          lastName,
+          bio
+        })
+        .then(handleSuccess)
+        .catch(handleError);
+    },
+
+    resetSubmissionErrors() {
+      this.submission = { errors: null };
+    }
+  }
 };
 </script>

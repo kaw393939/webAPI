@@ -1,14 +1,13 @@
 <template>
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
-      <LoginSuccess/>
       <v-flex xs12 sm8 md5>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <div class=".errorMessage">{{error}}</div>
+            <div class="errorMessage" v-if="submissionErrors.length > 0">{{ submissionErrors[0] }}</div>
             <v-form>
               <v-text-field
                 v-model.trim.lazy="email"
@@ -53,33 +52,29 @@
 </style>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapMutations } from "vuex";
 import { validationMixin } from "vuelidate";
-import { required, email } from "vuelidate/lib/validators";
-import LoginSuccess from "../components/LoginSuccess";
-
+import { required, email, minLength } from "vuelidate/lib/validators";
+import get from "lodash/get";
+import { getSubmissionErrors } from "@/utils/FormUtils";
+import { setAuthToken } from "@/utils/LocalStorageUtils";
 export default {
   mixins: [validationMixin],
-
   validations: {
     email: { required, email },
-    password: { required }
+    password: { required, minLength: minLength(8) }
   },
-
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      submission: { errors: null }
     };
   },
-
   computed: {
-    ...mapGetters(["error"]),
-
     emailErrors() {
       const errors = [];
       const { email } = this.$v;
-
       if (!email.$dirty) {
         return errors;
       }
@@ -89,44 +84,70 @@ export default {
       if (!email.required) {
         errors.push(`Email is required.`);
       }
-
       return errors;
     },
-
     passErrors() {
       const errors = [];
       const { password } = this.$v;
-
       if (!password.$dirty) {
         return errors;
       }
       if (!password.required) {
         errors.push(`Password is required.`);
       }
-
+      if (!password.minLength) {
+        const { min } = password.$params.minLength;
+        errors.push(`Password must be at least ${min} characters long.`);
+      }
       return errors;
+    },
+    submissionErrors() {
+      const { errors } = this.submission;
+      return Array.isArray(errors) ? errors : [];
     }
   },
   methods: {
-    ...mapActions(["login"]),
-
+    ...mapMutations(["setAuthUser"]),
     onSubmit: function() {
       const { email, password } = this;
-
-      if (this.$v.$invalid) {
-        return;
-      }
-
-      this.login({
-        email,
-        password
-      });
+      if (this.$v.$invalid) return;
+      // cleanup any previous submission errors
+      this.resetSubmissionErrors();
+      const handleSuccess = response => {
+        const token = get(response, "data.token", null);
+        if (!token) return;
+        setAuthToken(token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        // move this getAuthUser when API route gets fixed
+        this.setAuthUser({
+          data: {
+            id: 1,
+            name: "John",
+            email: "Doe"
+          }
+        });
+        this.$router.push({ path: "/" });
+      };
+      const getAuthUser = () => {
+        const handleGetAuthUserResponse = response => {
+          const { id, name, email } = get(response, "data.user", {});
+          this.setAuthUser({
+            data: { id, name, email }
+          });
+        };
+        return axios.get("api/user").then(handleGetAuthUserResponse);
+      };
+      const handleError = error => {
+        this.submission = { errors: getSubmissionErrors(error) };
+      };
+      axios
+        .post("api/login", { email, password })
+        .then(handleSuccess)
+        // .then(getAuthUser)
+        .catch(handleError);
     },
-
-    clear() {
-      this.$v.$reset();
-      this.name = "";
-      this.email = "";
+    resetSubmissionErrors() {
+      this.submission = { errors: null };
     }
   }
 };

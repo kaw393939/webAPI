@@ -46,11 +46,21 @@ class EventServiceProvider extends ServiceProvider
         //New Question Made Event/Listener Pair
 
         'App\Events\NewQuestionEvent'=>[
-            'App\Listeners\NewQuestionLisetner'
+            'App\Listeners\NewQuestionListener'
         ],
 
-        //New Answer Made Event/Listener Pair
+        //Question Edited Event/Listener Pair
 
+        'App\Events\QuestionEditedEvent'=>[
+            'App\Listeners\QuestionEditedListener'
+        ],
+
+        //Question Deleted Event/Listener Pair
+        'App\Events\QuestionDeletedEvent'=>[
+            'App\Listeners\QuestionDeletedListener'
+        ],
+
+        //New Answer Created
         'App\Events\NewAnswerEvent'=>[
             'App\Listeners\NewAnswerListener'
         ],

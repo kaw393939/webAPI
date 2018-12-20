@@ -336,6 +336,8 @@ class ProfileController extends Controller
 
     /**
      *
+     *  /**
+     *
      * * @SWG\Delete (
      *      path = "/profiles/{id}",
      *      operationId = "deleteProfile",
@@ -378,9 +380,6 @@ class ProfileController extends Controller
      *
      *
      *
-     *
-     *
-     *
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -407,4 +406,3 @@ class ProfileController extends Controller
         }
     }
 }
-

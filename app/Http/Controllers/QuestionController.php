@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewQuestionEvent;
+use App\Events\QuestionDeletedEvent;
+use App\Events\QuestionEditedEvent;
 use App\Http\Requests\QuestionCreateRequest;
 use App\Http\Requests\QuestionDeleteRequest;
 use App\Http\Requests\QuestionEditRequest;
@@ -15,30 +18,6 @@ use JWTAuth;
 
 class QuestionController extends Controller
 {
-    /**
-     *
-     * @SWG\Get (
-     *      path = "/questions",
-     *      operationId = "getQuestions",
-     *      tags = {"Questions"},
-     *      summary  = "Get list of Questions",
-     *      description = "return list of questions",
-     *      @SWG\Response(
-     *          response = 200,
-     *          description = "successful operation"
-     *      ),
-     *     @SWG\Response(response = 400, description = "Bad request"),
-     *     )
-     *    )
-     *
-     * Display a listing of the resource.
-     *
-     */
-
-
-
-
-
 
 
 
@@ -105,6 +84,9 @@ class QuestionController extends Controller
             $question = Question::create($input);
             $question->user_id = $user->id;
             $question->save();
+
+            event(new NewQuestionEvent($question));
+
             return response()->json([
                 'id' => $question->id,
                 'code' => 200,
@@ -159,6 +141,8 @@ class QuestionController extends Controller
             $question->question = $input['question'];
             $question->save();
 
+            event(new QuestionEditedEvent($question));
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,
@@ -186,6 +170,9 @@ class QuestionController extends Controller
     {
 
         if(Question::destroy($id)) {
+
+            event(new QuestionDeletedEvent($id));
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,

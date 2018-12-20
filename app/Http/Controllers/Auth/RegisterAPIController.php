@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -25,10 +26,19 @@ class RegisterAPIController extends Controller
      *      description = "registers a user",
      *
      *     @SWG\Parameter(
-     *     name = "name",
+     *     name = "first_name",
      *     in = "formData",
      *     type = "string",
-     *     description = "name",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *    @SWG\Parameter(
+     *     name = "last_name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
      *     required =true,
      *     ),
      *     @SWG\Parameter(
@@ -38,6 +48,15 @@ class RegisterAPIController extends Controller
      *     description = "email",
      *     required =true,
      *     ),
+     *
+     *      @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio",
+     *     required =true,
+     *     ),
+     *
      *     @SWG\Parameter(
      *     name = "password",
      *     in = "formData",
@@ -59,10 +78,14 @@ class RegisterAPIController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $input = $request->only( 'email', 'password');
+        $input = $request->only( 'email', 'password', 'first_name', 'last_name', 'bio');
+        $profileInput = $request->only( 'first_name', 'last_name', 'bio');
         $user = User::create($input);
         $user->password = Hash::make($input['password']);
         $user->save();
+        $profile = Profile::create($profileInput);
+        $profile->user()->associate($user);
+        $profile->save();
 
         $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
 

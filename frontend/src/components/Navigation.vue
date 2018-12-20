@@ -44,42 +44,20 @@
 <script>
 import pick from "lodash/pick";
 import { mapGetters, mapMutations } from "vuex";
-
-import { routes } from "@/router";
 import { removeAuthToken } from "@/utils/LocalStorageUtils";
-
-function isNavItem(route) {
-  const navItems = ["/login", "/register"];
-
-  return navItems.includes(route.href);
-}
-
-function withAdditionalAttributes(route) {
-  switch (route.href) {
-    case "/login":
-      return { ...route, icon: "fa-sign-in-alt", text: "Login" };
-    case "/register":
-      return { ...route, icon: "fa-user-plus", text: "Register" };
-    default:
-      return route;
-  }
-}
 
 export default {
   data() {
     return {
       drawer: null,
 
-      navItems: routes
-        .map(route => pick(route, ["path"]))
-        .map(route => ({ href: route.path }))
-        .filter(isNavItem)
-        .map(withAdditionalAttributes)
-        .concat([
-          { divider: true },
-          { icon: "fa-home", text: "Home", href: "/" }
-        ])
-        .reverse()
+      navItems: [
+        { href: "/", text: "Home", icon: "fa-home" },
+        { divider: true },
+        { href: "/login", text: "Login", icon: "fa-sign-in-alt" },
+        { href: "/register", text: "Register", icon: "fa-user-plus" },
+        { href: "/profile/:id", text: "Profile", icon: "fa-user" }
+      ]
     };
   },
 
@@ -87,13 +65,28 @@ export default {
     ...mapGetters(["isLoggedIn"]),
 
     navLinks: function() {
-      return this.isLoggedIn
-        ? this.navItems.filter(({ href }) => {
-            const excluded = ["/login", "/register"];
+      const excludedItemsIfAuthenticated = ["/login", "/register"];
+      const excludedItemsIfNotAuthenticated = ["/profile/:id"];
 
-            return !excluded.includes(href);
-          })
-        : this.navItems;
+      const navItemsBeforeAuth = this.navItems.filter(
+        item => !excludedItemsIfNotAuthenticated.includes(item.href)
+      );
+      const navItemsAfterAuth = this.navItems
+        .filter(item => !excludedItemsIfAuthenticated.includes(item.href))
+        .map(item => {
+          if (item.href !== "/profile/:id") return item;
+
+          // Get userId from global store when ready
+          // const userId = this.authUser.id || 1
+          const userId = 1;
+
+          return {
+            ...item,
+            href: item.href.replace(":id", userId)
+          };
+        });
+
+      return this.isLoggedIn ? navItemsAfterAuth : navItemsBeforeAuth;
     },
 
     isUserLoggedIn: function() {
@@ -112,7 +105,7 @@ export default {
       };
 
       axios
-        .get("api/logout")
+        .post("api/logout")
         .then(logUserOut)
         .catch(logUserOut);
     }

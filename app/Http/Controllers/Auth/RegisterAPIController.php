@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -59,10 +60,14 @@ class RegisterAPIController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $input = $request->only( 'email', 'password');
+        $input = $request->only( 'email', 'password', 'first_name', 'last_name', 'bio');
+        $profileInput = $request->only( 'first_name', 'last_name', 'bio');
         $user = User::create($input);
         $user->password = Hash::make($input['password']);
         $user->save();
+        $profile = Profile::create($profileInput);
+        $profile->user()->associate($user);
+        $profile->save();
 
         $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
 

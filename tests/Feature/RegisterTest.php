@@ -32,9 +32,11 @@ class RegisterTest extends TestCase
         $this->expectsEvents(RegistrationEvent::class);
 
         $payload = [
-            'name' => 'frank',
             'email' => 'frank@toptal.com',
             'password' => 'toptal123',
+            'first_name' => 'Frank',
+            'last_name' => 'Smith',
+            'bio' => 'Hello World!',
         ];
 
         $this->json('post', '/api/register', $payload)

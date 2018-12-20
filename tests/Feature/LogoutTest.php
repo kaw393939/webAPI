@@ -31,6 +31,9 @@ class LogoutTest extends TestCase
         $payload = [
             'email' => 'john@toptal.com',
             'password' => 'toptal123',
+            'first_name' => 'Frank',
+            'last_name' => 'Smith',
+            'bio' => 'Hello World!',
         ];
         $this->json('post', '/api/register', $payload);
 

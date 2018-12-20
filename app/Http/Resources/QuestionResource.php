@@ -23,20 +23,36 @@ class QuestionResource extends Resource
             'author' =>[
                 'firstName'=>$profile->first_name,
                 'lastName'=>$profile->last_name,
-                'avatar'=>''
+                'avatar'=>'https://s3.amazonaws.com/uifaces/faces/twitter/ruehldesign/128.jpg'
             ],
 
             'text' => (string)$this->question,
 //            'relationships' => new UsersRelationshipResource($this),
-            'tags'=>[
+            'tags'=> [
                 [
-                    'id'=>'',
-                    'title'=>''
-                ]
+                    'id' => 0,
+                    'title' => 'sint',
+                ],
+                [
+                    'id' => 1,
+                    'title' => 'omnis',
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'aliquam',
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'vel',
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'qui',
+                ],
             ],
             'createdAt'=>$this->created_at,
-            'likes'=>'',
-            'votes'=>'',
+            'likes'=>458,
+            'votes'=>65,
 //           ANSWERS OBJECT CAN GO HERE
             'answers'=> AnswerResource::collection($answers),
 //                'data' => new AnswersResource(AnswerResource::collection($answers)),

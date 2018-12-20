@@ -26,10 +26,19 @@ class RegisterAPIController extends Controller
      *      description = "registers a user",
      *
      *     @SWG\Parameter(
-     *     name = "name",
+     *     name = "first_name",
      *     in = "formData",
      *     type = "string",
-     *     description = "name",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *    @SWG\Parameter(
+     *     name = "last_name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
      *     required =true,
      *     ),
      *     @SWG\Parameter(
@@ -39,6 +48,15 @@ class RegisterAPIController extends Controller
      *     description = "email",
      *     required =true,
      *     ),
+     *
+     *      @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio",
+     *     required =true,
+     *     ),
+     *
      *     @SWG\Parameter(
      *     name = "password",
      *     in = "formData",

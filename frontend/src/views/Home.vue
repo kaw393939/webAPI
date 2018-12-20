@@ -156,6 +156,10 @@ export default {
         withFormattedDate(question, "createdAt.date")
       );
       questions = questions.map(question => withQuestionAnswerCount(question));
+      questions = questions.map(question => ({
+        ...question,
+        path: `/question/${question.id}`
+      }));
 
       this.questions = questions;
       this.isLoading = false;

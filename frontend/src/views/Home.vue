@@ -1,7 +1,8 @@
 <template>
   <v-container fluid>
     <page-heading>New Questions</page-heading>
-    <v-layout justify-center wrap>
+
+    <v-layout justify-center wrap v-if="questionsDidFetch">
       <template v-for="question in questions">
         <card :key="question.id" :path="question.path" classes="card">
           <card-header>
@@ -47,6 +48,20 @@
       </template>
     </v-layout>
 
+    <v-layout>
+      <div class="messageWrapper"></div>
+    </v-layout>
+
+    <v-layout>
+      <div class="messageWrapper">
+        <h3
+          class="message headline"
+          v-if="requestFailed"
+        >Oops! Looks like were having some troubles. Try again.</h3>
+        <h3 class="message headline" v-if="noQuestionsFetched">There are no new questions</h3>
+      </div>
+    </v-layout>
+
     <v-btn v-if="userAuthenticated" fab fixed bottom right to="/question" color="primary">
       <v-icon>add</v-icon>
     </v-btn>
@@ -82,6 +97,14 @@
 .statItem div {
   margin-right: 5px;
 }
+
+.messageWrapper {
+  width: 100%;
+  margin-top: 50px;
+}
+.message {
+  text-align: center;
+}
 </style>
 
 <script>
@@ -92,11 +115,27 @@ import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import PageHeading from "@/components/PageHeading.vue";
-import { fetchQuestions } from "@/utils/FakerUtils";
+import { generateTags } from "@/utils/FakerUtils";
+
 import {
   withFormattedDate,
   withQuestionAnswerCount
 } from "@/utils/ApiResponseUtils";
+
+function withTags(item) {
+  /**
+   * Temporarily generate fake tags until API requests
+   * are fixed
+   */
+  return { ...item, tags: generateTags() };
+}
+function withLikesAndVotes(item) {
+  /**
+   * Temporarily generate fake likes and votes until
+   * API requests are fixed
+   */
+  return { ...item, likes: 3, votes: 5 };
+}
 
 export default {
   components: {
@@ -113,46 +152,41 @@ export default {
 
   data() {
     return {
-      isLoading: false,
+      error: null,
+      isLoading: true,
       questions: []
     };
   },
 
   created() {
     const handleResponse = response => {
+      /**
+       * Get first 30 questions for now, no pagination on
+       * the API side at the time of implementation
+       */
       let questions = get(response, "data.data", []);
 
-      // grab first 30 for now, no pagination on API side
-      // as the time of writing this implementation
       questions = Array.isArray(questions) ? questions.slice(0, 30) : [];
       questions = questions.map(question =>
         withFormattedDate(question, "createdAt.date")
       );
       questions = questions.map(question => withQuestionAnswerCount(question));
+      questions = questions.map(withTags);
+      questions = questions.map(withLikesAndVotes);
 
-      console.log("questions", questions[0]);
-    };
-
-    const handleError = error => {
-      console.log("error", error);
+      this.questions = questions;
       this.isLoading = false;
     };
 
-    this.isLoading = true;
+    const handleError = error => {
+      this.error = true;
+      this.isLoading = false;
+    };
 
     axios
       .get("api/questions")
       .then(handleResponse)
       .catch(handleError);
-
-    fetchQuestions()
-      .then(response => {
-        this.questions = response.map(withFormattedDate).map(question => ({
-          ...question,
-          path: `/question/${question.id}`
-        }));
-      })
-      .catch(console.error);
   },
 
   computed: {
@@ -160,6 +194,18 @@ export default {
 
     userAuthenticated() {
       return this.isLoggedIn ? true : false;
+    },
+
+    questionsDidFetch() {
+      return !this.isLoading;
+    },
+
+    noQuestionsFetched() {
+      return !this.isLoading && this.questions.length === 0 && !this.error;
+    },
+
+    requestFailed() {
+      return !this.isLoading && this.error;
     }
   }
 };

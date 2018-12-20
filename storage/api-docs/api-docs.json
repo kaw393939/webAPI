@@ -204,7 +204,14 @@
                 "operationId": "registerUser",
                 "parameters": [
                     {
-                        "name": "name",
+                        "name": "first_name",
+                        "in": "formData",
+                        "description": "name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last_name",
                         "in": "formData",
                         "description": "name",
                         "required": true,
@@ -212,6 +219,13 @@
                     },
                     {
                         "name": "email",
+                        "in": "formData",
+                        "description": "email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "bio",
                         "in": "formData",
                         "description": "email",
                         "required": true,

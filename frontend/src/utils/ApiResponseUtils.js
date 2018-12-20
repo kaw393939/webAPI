@@ -14,10 +14,10 @@ export function withFormattedDate(item, path) {
 
 export function withQuestionAnswerCount(item, path) {
     const answers = path ? get(item, path, []) : item.answers;
-    const answerCount = answers.length;
+    const comments = answers.length;
 
     return {
         ...item,
-        answerCount
+        comments
     };
 }

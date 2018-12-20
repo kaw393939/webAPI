@@ -52,3 +52,10 @@ export function fetchQuestions() {
         resolve(questions);
     });
 }
+
+export function generateTags() {
+    return range(0, 5).map(id => ({
+        id,
+        title: faker.lorem.word()
+    }));
+}

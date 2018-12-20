@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import get from "lodash/get";
 import { mapMutations } from "vuex";
 
 import Navigation from "@/components/Navigation.vue";
@@ -24,7 +25,7 @@ export default {
     if (!authToken) return;
 
     const handleResponse = response => {
-      const { user } = response.data;
+      const { user } = get(response, "data.user", {});
 
       this.setAuthUser({
         data: {
@@ -36,7 +37,7 @@ export default {
     };
 
     const handleError = err => {
-      const { status } = err.response;
+      const status = get(err, "response", {});
 
       const StatusCode = { UNAUTHORIZED: 401, FORBIDDEN: 403 };
 
@@ -53,7 +54,7 @@ export default {
     };
 
     axios
-      .get("api/user")
+      .get("/api/user")
       .then(handleResponse)
       .catch(handleError);
   },

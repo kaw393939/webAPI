@@ -59,6 +59,15 @@ class AnswerController extends Controller
      *     required =true,
      *     ),
      *
+     *
+     *      *     @SWG\Parameter(
+     *     name = "answer ",
+     *     in = "path",
+     *     type = "string",
+     *     description = "answer for question",
+     *     required =true,
+     *     ),
+     *
      *          @SWG\Parameter(
      *     name = "Authorization",
      *     in = "header",

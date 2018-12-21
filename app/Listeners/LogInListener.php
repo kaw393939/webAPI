@@ -8,6 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\User;
 
+/**
+ * Class LogInListener
+ * @package App\Listeners
+ */
 class LogInListener
 {
     /**
@@ -28,6 +32,6 @@ class LogInListener
      */
     public function handle(LogInEvent $event)
     {
-        Log::notice('User Has Logged In: ',['name'=>$event->user->name,'email'=>$event->user->email]);
+        Log::notice('User Has Logged In: ', ['name'=>$event->user->name, 'email'=>$event->user->email]);
     }
 }

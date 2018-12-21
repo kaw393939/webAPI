@@ -7,6 +7,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class ProfileUpdateRequest
+ * @package App\Http\Requests
+ */
 class ProfileUpdateRequest extends FormRequest
 {
     /**

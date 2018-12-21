@@ -8,6 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\User;
 
+/**
+ * Class RegistrationListener
+ * @package App\Listeners
+ */
 class RegistrationListener
 {
     /**

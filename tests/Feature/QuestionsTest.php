@@ -32,6 +32,16 @@ class QuestionsTest extends TestCase
         $question->user()->associate($user);
         $question->save();
 
+        $answer = factory(\App\Answer::class)->make();
+        $answer->user()->associate($user);
+        $answer->question()->associate($question);
+        $answer->save();
+
+        $answer = factory(\App\Answer::class)->make();
+        $answer->user()->associate($user);
+        $answer->question()->associate($question);
+        $answer->save();
+
         $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
         $response = $this->json('POST', 'api/login', $payload);
 

@@ -164,6 +164,12 @@ class QuestionController extends Controller
      */
     public function destroy(QuestionDeleteRequest $request, $id)
     {
+        $answers = \App\Answer::where('question_id', $id)->get();
+
+        foreach($answers as $answer) {
+            \App\Answer::destroy($answer->id);
+        }
+
 
         if(Question::destroy($id)) {
 

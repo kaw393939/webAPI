@@ -40,13 +40,7 @@ class AnswerController extends Controller
      *      tags = {"Answers"},
      *      summary  = "create a  answer ",
      *      description = "Create a an answer for a specific question",
-     *
-     *       @SWG\SecurityScheme(
-     *         securityDefinition="Bearer",
-     *         type="apiKey",
-     *         name="Authorization",
-     *         in="header"
-     *     ),
+
      *
      *
      *
@@ -151,7 +145,65 @@ class AnswerController extends Controller
      *
      *  /**
      *
-
+     *  * /**
+     *
+     * @SWG\Put (
+     *      path = "/questions/{questionId}/answers/{answerId}",
+     *      operationId = "editAnswer",
+     *      tags = {"Answers"},
+     *      summary  = "Edit an answer for a particular question",
+     *      description = "Edit a answer for a particular question",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "questionId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Id of a given question",
+     *     required =true,
+     *     ),
+     *
+     *     @SWG\Parameter(
+     *     name = "answerId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Id of an answer for a given question",
+     *     required =true,
+     *     ),
+     *
+     *
+     *
+     *    @SWG\Parameter(
+     *     name = "answer",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "answer text",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -191,7 +243,55 @@ class AnswerController extends Controller
      * /**
      *
      *  /**
-
+     *
+     * * @SWG\Delete (
+     *      path = "/questions/{questionId}/answers/{answerId}",
+     *      operationId = "deleteAnswer",
+     *      tags = {"Answers"},
+     *      summary  = "delete an answer for a given question",
+     *      description = "Delete an answer for a given question",
+     *
+     *   @SWG\SecurityScheme(
+     *         securityDefinition="Bearer",
+     *         type="apiKey",
+     *         name="Authorization",
+     *         in="header"
+     *     ),
+     * @SWG\Parameter(
+     *     name = "questionId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "question Id",
+     *     required =true,
+     *     ),
+     *
+     *
+     *  @SWG\Parameter(
+     *     name = "answerId",
+     *     in = "path",
+     *     type = "string",
+     *     description = "Answer Id",
+     *     required =true,
+     *     ),
+     *
+     *
+     *     @SWG\Parameter(
+     *     name = "Authorization",
+     *     in = "header",
+     *     type = "string",
+     *     description = "Bearer TOKEN",
+     *     required =true,
+     *
+     *     ),
+     *
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "succes: true"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *
+     *
      *
      *
      *

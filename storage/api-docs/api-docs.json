@@ -99,45 +99,6 @@
                         "description": "The given data was invalid"
                     }
                 }
-            },
-            "delete": {
-                "tags": [
-                    "Answers"
-                ],
-                "summary": "delete an answer for a given question",
-                "description": "Delete an answer for a given question",
-                "operationId": "deleteAnswer",
-                "parameters": [
-                    {
-                        "name": "questionId",
-                        "in": "path",
-                        "description": "question Id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "answerId",
-                        "in": "path",
-                        "description": "Answer Id",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "description": "Bearer TOKEN",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "succes: true"
-                    },
-                    "422": {
-                        "description": "The given data was invalid"
-                    }
-                }
             }
         },
         "/login": {

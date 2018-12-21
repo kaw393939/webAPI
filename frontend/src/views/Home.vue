@@ -122,21 +122,6 @@ import {
   withQuestionAnswerCount
 } from "@/utils/ApiResponseUtils";
 
-function withTags(item) {
-  /**
-   * Temporarily generate fake tags until API requests
-   * are fixed
-   */
-  return { ...item, tags: generateTags() };
-}
-function withLikesAndVotes(item) {
-  /**
-   * Temporarily generate fake likes and votes until
-   * API requests are fixed
-   */
-  return { ...item, likes: 3, votes: 5 };
-}
-
 export default {
   components: {
     Card,
@@ -171,8 +156,10 @@ export default {
         withFormattedDate(question, "createdAt.date")
       );
       questions = questions.map(question => withQuestionAnswerCount(question));
-      questions = questions.map(withTags);
-      questions = questions.map(withLikesAndVotes);
+      questions = questions.map(question => ({
+        ...question,
+        path: `/question/${question.id}`
+      }));
 
       this.questions = questions;
       this.isLoading = false;

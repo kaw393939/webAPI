@@ -136,25 +136,26 @@ export default {
 
         setAuthToken(token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-        // move this getAuthUser when API route gets fixed
-        this.setAuthUser({
-          data: {
-            id: 1,
-            name: "John",
-            email: "Doe"
-          }
-        });
-        this.$router.push({ path: "/" });
       };
 
       const getAuthUser = () => {
         const handleGetAuthUserResponse = response => {
-          const { id, name, email } = get(response, "data.user", {});
-
+          console.log("response", response);
+          const { id, first_name, last_name, email, bio } = get(
+            response,
+            "data.user",
+            {}
+          );
           this.setAuthUser({
-            data: { id, name, email }
+            data: {
+              id,
+              email,
+              bio,
+              lastName: last_name,
+              firstName: first_name
+            }
           });
+          this.$router.push({ path: "/" });
         };
 
         return axios.get("api/user").then(handleGetAuthUserResponse);
@@ -167,7 +168,7 @@ export default {
       axios
         .post("api/login", { email, password })
         .then(handleSuccess)
-        // .then(getAuthUser)
+        .then(getAuthUser)
         .catch(handleError);
     },
 

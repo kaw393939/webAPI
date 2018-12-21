@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+	namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -11,27 +11,31 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Question;
 
+/**
+ * Class QuestionEditedEvent
+ * @package App\Events
+ */
 class QuestionEditedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
+	/**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Question $question)
-    {
-        $this->$question=$question;
-    }
+	public function __construct(Question $question)
+	{
+		$this->$question=$question;
+	}
 
-    /**
+	/**
      * Get the channels the event should broadcast on.
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
-    }
+	public function broadcastOn()
+	{
+		return new PrivateChannel('channel-name');
+	}
 }

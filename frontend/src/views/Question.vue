@@ -56,7 +56,13 @@
           </card-footer>
         </card>
       </v-layout>
-
+      <router-link
+        :to="{ path: `${this.$route.path}/answer`, params: { id: this.$route.params.id }}"
+      >
+        <div class="area-btn-wrapper">
+          <v-btn class="area-btn">Answer this question</v-btn>
+        </div>
+      </router-link>
       <v-layout align-center>
         <v-flex xs6 class="answersCountWrapper">
           <p class="headline">{{ answers.length }} Answers</p>
@@ -110,7 +116,6 @@
         </v-layout>
       </template>
     </template>
-    <answer-area/>
   </v-container>
 </template>
 
@@ -148,6 +153,18 @@
 .addAnswerButtonWrapper {
   margin-left: 10px;
 }
+.area-btn-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 2rem 0;
+}
+.theme--light.v-btn:not(.v-btn--icon):not(.v-btn--flat) {
+  background-color: rgb(25, 118, 210);
+  height: 4rem;
+  color: #fff;
+}
 </style>
 
 <script>
@@ -183,6 +200,8 @@ export default {
 
   created() {
     const { id } = this.$route.params;
+
+    console.log(this.$route);
 
     if (isNil(id)) return;
 

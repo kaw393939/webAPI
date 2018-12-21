@@ -110,6 +110,7 @@
         </v-layout>
       </template>
     </template>
+    <answer-area/>
   </v-container>
 </template>
 
@@ -160,6 +161,7 @@ import Card from "@/components/Card.vue";
 import CardFooter from "@/components/CardFooter.vue";
 import CardHeader from "@/components/CardHeader.vue";
 import PageHeading from "@/components/PageHeading.vue";
+import AnswerArea from "@/components/AnswerArea.vue";
 
 import { fetchQuestion } from "@/utils/FakerUtils";
 
@@ -168,7 +170,8 @@ export default {
     Card,
     CardFooter,
     CardHeader,
-    PageHeading
+    PageHeading,
+    AnswerArea
   },
 
   data() {

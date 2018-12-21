@@ -180,12 +180,6 @@ export default {
 
       const fullName = `${userInfo.first_name} ${userInfo.last_name}`;
 
-      console.log({
-        ...userInfo,
-        fullName,
-        profileAvatar: faker.image.avatar()
-      });
-
       this.userInfo = {
         ...userInfo,
         fullName,

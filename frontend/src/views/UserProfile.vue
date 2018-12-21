@@ -1,81 +1,92 @@
 <template>
   <v-container fluid>
+    <template v-if="dataFetched">
+      <v-layout>
+        <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
+          <v-card dark color="blue darken-2" class="infoCard">
+            <v-layout column class="infoCardContent">
+              <v-flex class="infoCardRow">
+                <v-avatar size="68">
+                  <img :src="userInfo.profileAvatar" alt="avatar">
+                </v-avatar>
+              </v-flex>
+              <v-flex class="infoCardRow">
+                <p class="headline font-weight-bold infoCardUserName">{{ userInfo.fullName }}</p>
+              </v-flex>
+              <v-flex class="infoCardRow" v-if="showEditProfileButton">
+                <v-btn class="white--text" :to="editProfileLink">EDIT PROFILE</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-flex>
+        <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
+          <v-card dark color="blue darken-2" class="infoCard">
+            <v-layout column class="infoCardContent">
+              <v-flex>
+                <v-icon small color="black darken-2">email</v-icon>
+                <span class="body-2 infoCardUserEmail">{{ userInfo.email }}</span>
+              </v-flex>
+              <v-flex>
+                <p class="subheading">{{ userInfo.bio }}</p>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <v-layout justify-center wrap>
+        <template v-for="question in questions">
+          <card :key="question.id">
+            <card-header>
+              <v-flex xs6 class="cardHeader__left">
+                <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
+              </v-flex>
+              <v-flex xs6 class="cardHeader__right">
+                <v-btn icon color="blue-grey--text darken-1--text">
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
+              </v-flex>
+            </card-header>
+
+            <v-card-text>
+              <p class="title">{{ question.text }}</p>
+            </v-card-text>
+
+            <v-layout class="stats">
+              <v-flex shrink class="statItem">
+                <div>
+                  <v-icon>favorite</v-icon>
+                </div>
+                <div>
+                  <span>{{ question.likes }}</span>
+                </div>
+              </v-flex>
+              <v-flex shrink class="statItem">
+                <div>
+                  <v-icon>mode_comment</v-icon>
+                </div>
+                <div>
+                  <span>{{ question.comments }}</span>
+                </div>
+              </v-flex>
+            </v-layout>
+
+            <card-footer>
+              <template v-for="tag in question.tags">
+                <v-chip label outline small color="white" :key="tag.id">{{ tag.title }}</v-chip>
+              </template>
+            </card-footer>
+          </card>
+        </template>
+      </v-layout>
+    </template>
+
     <v-layout>
-      <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
-        <v-card dark color="blue darken-2" class="infoCard">
-          <v-layout column class="infoCardContent">
-            <v-flex class="infoCardRow">
-              <v-avatar size="68">
-                <img :src="profileAvatar" alt="avatar">
-              </v-avatar>
-            </v-flex>
-            <v-flex class="infoCardRow">
-              <p class="headline font-weight-bold infoCardUserName">{{ name }}</p>
-            </v-flex>
-            <v-flex class="infoCardRow" v-if="isLoggedIn">
-              <v-btn class="white--text" :to="editProfileLink">EDIT PROFILE</v-btn>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 sm12 md6 lg6 class="infoCardWrapper">
-        <v-card dark color="blue darken-2" class="infoCard">
-          <v-layout column class="infoCardContent">
-            <v-flex>
-              <v-icon small color="black darken-2">email</v-icon>
-              <span class="body-2 infoCardUserEmail">{{ email }}</span>
-            </v-flex>
-            <v-flex>
-              <p class="subheading">{{ description }}</p>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    <v-layout justify-center wrap>
-      <template v-for="question in questions">
-        <card :key="question.id">
-          <card-header>
-            <v-flex xs6 class="cardHeader__left">
-              <span class="font-weight-regular font-italic">{{ question.createdAtFormatted }}</span>
-            </v-flex>
-            <v-flex xs6 class="cardHeader__right">
-              <v-btn icon color="blue-grey--text darken-1--text">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-            </v-flex>
-          </card-header>
-
-          <v-card-text>
-            <p class="title">{{ question.text }}</p>
-          </v-card-text>
-
-          <v-layout class="stats">
-            <v-flex shrink class="statItem">
-              <div>
-                <v-icon>favorite</v-icon>
-              </div>
-              <div>
-                <span>{{ question.likes }}</span>
-              </div>
-            </v-flex>
-            <v-flex shrink class="statItem">
-              <div>
-                <v-icon>mode_comment</v-icon>
-              </div>
-              <div>
-                <span>{{ question.comments }}</span>
-              </div>
-            </v-flex>
-          </v-layout>
-
-          <card-footer>
-            <template v-for="tag in question.tags">
-              <v-chip label outline small color="white" :key="tag.id">{{ tag.title }}</v-chip>
-            </template>
-          </card-footer>
-        </card>
-      </template>
+      <div class="messageWrapper">
+        <h3
+          class="message headline"
+          v-if="requestFailed"
+        >Oops! Looks like were having some troubles. Try again.</h3>
+      </div>
     </v-layout>
   </v-container>
 </template>
@@ -127,10 +138,20 @@
 .statItem div {
   margin-right: 5px;
 }
+
+.messageWrapper {
+  width: 100%;
+  margin-top: 50px;
+}
+.message {
+  text-align: center;
+}
 </style>
 
 <script>
 import faker from "faker";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import { mapGetters } from "vuex";
 import Card from "@/components/Card.vue";
 import CardHeader from "@/components/CardHeader.vue";
@@ -151,41 +172,72 @@ export default {
         this.questions = response.map(withFormattedDate);
       })
       .catch(console.error);
+
+    const { id } = this.$route.params;
+
+    const handleResponse = response => {
+      const userInfo = get(response, "data", {});
+
+      const fullName = `${userInfo.first_name} ${userInfo.last_name}`;
+
+      console.log({
+        ...userInfo,
+        fullName,
+        profileAvatar: faker.image.avatar()
+      });
+
+      this.userInfo = {
+        ...userInfo,
+        fullName,
+        profileAvatar: faker.image.avatar()
+      };
+
+      this.isLoading = false;
+    };
+
+    const handleError = error => {
+      this.error = true;
+      this.isLoading = false;
+    };
+
+    axios
+      .get(`/api/profiles/${id}`)
+      .then(handleResponse)
+      .catch(handleError);
   },
 
   data() {
     return {
       questions: [],
-      name: "John Doe",
-      email: "johndoe@abc.xyz",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis at tortor at maximus. Quisque dignissim ipsum neque, a aliquam diam consequat in. Fusce lacinia dictum risus, nec pulvinar erat sodales.",
-      profileAvatar: faker.image.avatar()
+      userInfo: {},
+      error: null,
+      isLoading: true
     };
   },
 
-  methods: {
-    edit() {
-      //    attempt to take the user to edit-profile route after checking for token in the storage
-      //    if the user is authorized, user is guided to edit-profile page with its information pre-populated
-      //    otherwise 401 error thrown out
-    }
-  },
-
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(["isLoggedIn", "authUser"]),
 
     showEditProfileButton() {
-      // TODO: return true or false based on whether
-      // user is allowed to edit this profile or not
+      if (!this.isLoggedIn) {
+        return false;
+      }
+
+      return parseInt(this.$route.params.id, 10) === parseInt(this.authUser.id);
     },
 
     editProfileLink() {
-      // TODO: get userId from store when ready
-      // const userId = this.authUser.id
-      const userId = 1;
+      const userId = this.authUser.id;
 
       return `/profile/${userId}/edit`;
+    },
+
+    dataFetched() {
+      return !this.isLoading && !this.error;
+    },
+
+    requestFailed() {
+      return !this.isLoading && this.error;
     }
   }
 };

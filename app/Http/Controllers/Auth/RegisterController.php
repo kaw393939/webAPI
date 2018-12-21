@@ -2,71 +2,106 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Profile;
 use App\User;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use JWTAuth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Events\RegistrationEvent;
 
+/**
+ * Class RegisterAPIController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
      *
-     * @var string
+     * @SWG\Post (
+     *      path = "/register",
+     *      operationId = "registerUser",
+     *      tags = {"register"},
+     *      summary  = "register user",
+     *      description = "registers a user",
+     *
+     *     @SWG\Parameter(
+     *     name = "first_name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "first name",
+     *     required =true,
+     *     ),
+     *
+     *
+     *    @SWG\Parameter(
+     *     name = "last_name",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "last name",
+     *     required =true,
+     *     ),
+     *     @SWG\Parameter(
+     *     name = "email",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "email",
+     *     required =true,
+     *     ),
+     *
+     *      @SWG\Parameter(
+     *     name = "bio",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "bio",
+     *     required =true,
+     *     ),
+     *
+     *     @SWG\Parameter(
+     *     name = "password",
+     *     in = "formData",
+     *     type = "string",
+     *     description = "password",
+     *     required =true,
+     *     ),
+     *      @SWG\Response(
+     *          response = 200,
+     *          description = "successful operation"
+     *      ),
+     *     @SWG\Response(response = 422, description = "The given data was invalid"),
+     *     )
+     *    )
+     *
+     * Display a listing of the resource.
+     *
      */
-    protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function register(RegisterRequest $request)
     {
-        $this->middleware('guest');
-    }
+        $input = $request->only('email', 'password', 'first_name', 'last_name', 'bio');
+        $profileInput = $request->only('first_name', 'last_name', 'bio');
+        $user = User::create($input);
+        $user->password = Hash::make($input['password']);
+        $user->save();
+        $profile = Profile::create($profileInput);
+        $profile->user()->associate($user);
+        $profile->save();
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
-    }
+        $token = auth()->attempt(['email' => $input['email'], 'password' => $input['password']]);
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        event(new RegistrationEvent($user));
+
+        //refactor this with a custom response class.
+        return response()->json([
+            'code'   => 201,
+            'status' => true,
+            'message'=> "Register Success",
+            'token' => $token
+        ], 201);
     }
 }

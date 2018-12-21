@@ -46,7 +46,7 @@ export const routes = [
     },
     {
         path: "/question/:id/answer",
-        component: () => import("./components/AnswerArea.vue")
+        component: () => import("./views/Answer.vue")
     },
     {
         path: "*",

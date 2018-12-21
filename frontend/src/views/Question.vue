@@ -56,22 +56,19 @@
           </card-footer>
         </card>
       </v-layout>
-      <router-link
-        :to="{ path: `${this.$route.path}/answer`, params: { id: this.$route.params.id }}"
-      >
-        <div class="area-btn-wrapper">
-          <v-btn class="area-btn">Answer this question</v-btn>
-        </div>
-      </router-link>
       <v-layout align-center>
         <v-flex xs6 class="answersCountWrapper">
           <p class="headline">{{ answers.length }} Answers</p>
         </v-flex>
-        <v-flex xs6 class="addAnswerButtonWrapper">
-          <v-btn fab dark small color="blue darken-2">
-            <v-icon dark>add</v-icon>
-          </v-btn>
-        </v-flex>
+        <router-link
+          :to="{ path: `${this.$route.path}/answer`, params: { id: this.$route.params.id }}"
+        >
+          <v-flex xs6 class="addAnswerButtonWrapper">
+            <v-btn fab dark small color="blue darken-2">
+              <v-icon dark>add</v-icon>
+            </v-btn>
+          </v-flex>
+        </router-link>
       </v-layout>
 
       <template v-for="(answer, index) in answers">

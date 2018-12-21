@@ -4,6 +4,7 @@ const state = {
 };
 
 const getters = {
+    authUser: state => state.authUser,
     isLoggedIn: state => state.isLogged
 };
 

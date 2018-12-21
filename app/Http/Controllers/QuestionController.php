@@ -15,8 +15,11 @@ use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 use JWTAuth;
 
-
-class QuestionController extends Controller
+/**
+ * Class QuestionController
+ * @package App\Http\Controllers
+ */
+class sc_5c1cc5d23a4de extends Controller
 {
 
 
@@ -36,7 +39,6 @@ class QuestionController extends Controller
      */
     public function create()
     {
-
     }
     /**
      *
@@ -77,7 +79,7 @@ class QuestionController extends Controller
      */
     public function store(QuestionCreateRequest $request)
     {
-        $input = $request->only( 'question');
+        $input = $request->only('question');
         $user = JWTAuth::toUser($request->bearerToken());
 
         try {
@@ -91,16 +93,13 @@ class QuestionController extends Controller
                 'status' => true,
                 'message' => "Create Success",
             ], 200);
-        }
-        catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json([
                 'code' => 404,
                 'status' => false,
                 'message' => "Create Fail",
             ], 404);
         }
-
-
     }
     /**
      * Display the specified resource.
@@ -132,7 +131,7 @@ class QuestionController extends Controller
      */
     public function update(QuestionEditRequest $request, $id)
     {
-        $input = $request->only( 'question');
+        $input = $request->only('question');
 
         try {
             $question = Question::findOrFail($id);
@@ -145,8 +144,7 @@ class QuestionController extends Controller
                 'status' => true,
                 'message' => "Update Success",
             ], 200);
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json([
                 'id' => $id,
                 'code' => 404,
@@ -154,7 +152,6 @@ class QuestionController extends Controller
                 'message' => "Update Fail",
             ], 404);
         }
-
     }
     /**
      * Remove the specified resource from storage.
@@ -164,18 +161,14 @@ class QuestionController extends Controller
      */
     public function destroy(QuestionDeleteRequest $request, $id)
     {
-
-        if(Question::destroy($id)) {
-
+        if (Question::destroy($id)) {
             return response()->json([
                 'id' => $id,
                 'code' => 200,
                 'status' => true,
                 'message' => "Delete Success",
             ], 200);
-        }
-        else {
-
+        } else {
             return response()->json([
                 'id' => $id,
                 'code' => 404,

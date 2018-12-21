@@ -85,8 +85,6 @@ class QuestionController extends Controller
             $question->user_id = $user->id;
             $question->save();
 
-            event(new NewQuestionEvent($question));
-
             return response()->json([
                 'id' => $question->id,
                 'code' => 200,
@@ -141,8 +139,6 @@ class QuestionController extends Controller
             $question->question = $input['question'];
             $question->save();
 
-            event(new QuestionEditedEvent($question));
-
             return response()->json([
                 'id' => $id,
                 'code' => 200,
@@ -170,8 +166,6 @@ class QuestionController extends Controller
     {
 
         if(Question::destroy($id)) {
-
-            event(new QuestionDeletedEvent($id));
 
             return response()->json([
                 'id' => $id,

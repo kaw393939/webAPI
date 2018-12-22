@@ -87,6 +87,8 @@ class QuestionController extends Controller
             $question->user_id = $user->id;
             $question->save();
 
+            event(new NewQuestionEvent($question));
+
             return response()->json([
                 'id' => $question->id,
                 'code' => 200,

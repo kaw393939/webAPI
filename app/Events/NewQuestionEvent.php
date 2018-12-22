@@ -11,6 +11,10 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Question;
 
+/**
+ * Class NewQuestionEvent
+ * @package App\Events
+ */
 class NewQuestionEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

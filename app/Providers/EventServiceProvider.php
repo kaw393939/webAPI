@@ -60,7 +60,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\QuestionDeletedListener'
         ],
 
-        //New Answer Created
+        //New Answer Created Event/Listener Pair
         'App\Events\NewAnswerEvent'=>[
             'App\Listeners\NewAnswerListener'
         ],
@@ -69,6 +69,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AnswerEditedEvent'=>[
             'App\Listeners\AnswerEditedListener'
         ],
+
+        //Answer Deleted Event/Listener Pair
+        'App\Events\AnswerDeletedEvent'=>[
+            'App\Listeners\AnswerDeletedListener'
+        ]
     ];
 
     /**

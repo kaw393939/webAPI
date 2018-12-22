@@ -3,6 +3,7 @@
 	namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Events\AnswerDeletedEvent;
 use App\Events\AnswerEditedEvent;
 use App\Events\NewAnswerEvent;
 use App\Http\Requests\AnswerCreateRequest;
@@ -323,6 +324,9 @@ class AnswerController extends Controller
 			->first();
 
 		if($answer) {
+
+		    event(new AnswerDeletedEvent($answer));
+
 			Answer::destroy($id);
 			return response()->json([
 				'id' => $id,

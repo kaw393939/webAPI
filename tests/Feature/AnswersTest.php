@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Answer;
+use App\Events\AnswerDeletedEvent;
 use App\Events\AnswerEditedEvent;
 use App\Events\NewAnswerEvent;
 use App\Profile;
@@ -75,6 +76,8 @@ class AnswersTest extends TestCase
 
     public function testDeleteAnswer()
     {
+        $this->expectsEvents(AnswerDeletedEvent::class);
+
         $user = factory(User::class)->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),

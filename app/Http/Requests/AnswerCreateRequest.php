@@ -7,6 +7,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class AnswerCreateRequest
+ * @package App\Http\Requests
+ */
 class AnswerCreateRequest extends FormRequest
 {
     /**
@@ -19,8 +23,7 @@ class AnswerCreateRequest extends FormRequest
     {
         if (JWTAuth::parseToken()->authenticate()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

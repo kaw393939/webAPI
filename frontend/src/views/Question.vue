@@ -62,7 +62,14 @@
           <p class="headline">{{ answers.length }} Answers</p>
         </v-flex>
         <v-flex xs6 class="addAnswerButtonWrapper">
-          <v-btn fab dark small color="blue darken-2" v-if="allowCreatingAnswer">
+          <v-btn
+            fab
+            dark
+            small
+            color="blue darken-2"
+            v-if="allowCreatingAnswer"
+            :to="question.createAnswerLink"
+          >
             <v-icon dark>add</v-icon>
           </v-btn>
         </v-flex>
@@ -219,7 +226,7 @@ export default {
 
       return {
         ...withFormattedAttrs(question),
-        answers: question.answers.map(withFormattedAttrs)
+        answers: question.answers.map(withFormattedAttrs).reverse()
       };
     };
 
@@ -239,8 +246,6 @@ export default {
     ...mapGetters(["isLoggedIn"]),
 
     allowCreatingAnswer() {
-      // console.log("question", this.question);
-
       return this.isLoggedIn;
     },
 

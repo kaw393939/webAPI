@@ -7,6 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 use App\User;
 
+/**
+ * Class QuestionEditRequest
+ * @package App\Http\Requests
+ */
 class QuestionEditRequest extends FormRequest
 {
     /**

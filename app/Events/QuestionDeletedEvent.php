@@ -10,6 +10,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class QuestionDeletedEvent
+ * @package App\Events
+ */
 class QuestionDeletedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

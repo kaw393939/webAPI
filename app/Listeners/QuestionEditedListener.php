@@ -6,6 +6,7 @@ use App\Events\QuestionEditedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use App\Question;
 
 /**
  * Class QuestionEditedListener
@@ -31,6 +32,6 @@ class QuestionEditedListener
      */
     public function handle(QuestionEditedEvent $event)
     {
-        Log::notice($event->question->user_id.' has edited their question: '.$event->question->question);
+        Log::notice('User '.$event->question->user_id.' has edited their question: '.$event->question->getQuestion());
     }
 }

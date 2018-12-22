@@ -26,7 +26,7 @@ class QuestionEditedEvent
      */
 	public function __construct(Question $question)
 	{
-		$this->$question=$question;
+		$this->question=$question;
 	}
 
 	/**

@@ -100,7 +100,7 @@ class QuestionsTest extends TestCase
 
     public function testUpdateQuestion()
     {
-        //$this->expectsEvents(QuestionEditedEvent::class);
+        $this->expectsEvents(QuestionEditedEvent::class);
         $user = factory(\App\User::class)->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),

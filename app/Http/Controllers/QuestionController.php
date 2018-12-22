@@ -140,7 +140,7 @@ class QuestionController extends Controller
             $question->question = $input['question'];
             $question->save();
 
-            //event(new QuestionEditedEvent($question));
+            event(new QuestionEditedEvent($question));
 
             return response()->json([
                 'id' => $id,

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Answer;
+use App\Events\AnswerEditedEvent;
 use App\Events\NewAnswerEvent;
 use App\Profile;
 use App\Question;
@@ -27,6 +28,8 @@ class AnswersTest extends TestCase
 
     public function testUpdateAnswerSuccessfullyTest()
     {
+        $this->expectsEvents(AnswerEditedEvent::class);
+
         $user = factory(User::class)->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),

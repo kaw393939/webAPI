@@ -64,6 +64,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\NewAnswerEvent'=>[
             'App\Listeners\NewAnswerListener'
         ],
+
+        //Answer Edited Event/Listener Pair
+        'App\Events\AnswerEditedEvent'=>[
+            'App\Listeners\AnswerEditedListener'
+        ],
     ];
 
     /**

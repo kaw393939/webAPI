@@ -3,6 +3,7 @@
 	namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Events\AnswerEditedEvent;
 use App\Events\NewAnswerEvent;
 use App\Http\Requests\AnswerCreateRequest;
 use App\Http\Requests\AnswerDeleteRequest;
@@ -230,6 +231,8 @@ class AnswerController extends Controller
 				->first();
 			$answer->answer = $input['answer'];
 			$answer->save();
+
+			event(new AnswerEditedEvent($answer));
 
 			return response()->json([
 				'code' => 200,

@@ -20,7 +20,7 @@ class SuccessfulRegistrationTest extends DuskTestCase
                     ->type('email', 'johndoe@email.com')
                     ->type('password', 'your_password')
                     ->type('passwordConf', 'your_password')
-                    ->type('bio', 'Lorem ipseum.')
+                    ->type('bio', 'Lorem Ipsum.')
                     ->press('REGISTER');
             $browser->pause(1000)
                     ->assertPathIs('/login');

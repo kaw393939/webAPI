@@ -23,59 +23,6 @@ class RegisterController extends Controller
 
     /**
      *
-     * @SWG\Post (
-     *      path = "/register",
-     *      operationId = "registerUser",
-     *      tags = {"register"},
-     *      summary  = "register user",
-     *      description = "registers a user",
-     *
-     *     @SWG\Parameter(
-     *     name = "first_name",
-     *     in = "formData",
-     *     type = "string",
-     *     description = "first name",
-     *     required =true,
-     *     ),
-     *
-     *
-     *    @SWG\Parameter(
-     *     name = "last_name",
-     *     in = "formData",
-     *     type = "string",
-     *     description = "last name",
-     *     required =true,
-     *     ),
-     *     @SWG\Parameter(
-     *     name = "email",
-     *     in = "formData",
-     *     type = "string",
-     *     description = "email",
-     *     required =true,
-     *     ),
-     *
-     *      @SWG\Parameter(
-     *     name = "bio",
-     *     in = "formData",
-     *     type = "string",
-     *     description = "bio",
-     *     required =true,
-     *     ),
-     *
-     *     @SWG\Parameter(
-     *     name = "password",
-     *     in = "formData",
-     *     type = "string",
-     *     description = "password",
-     *     required =true,
-     *     ),
-     *      @SWG\Response(
-     *          response = 200,
-     *          description = "successful operation"
-     *      ),
-     *     @SWG\Response(response = 422, description = "The given data was invalid"),
-     *     )
-     *    )
      *
      * Display a listing of the resource.
      *

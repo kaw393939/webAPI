@@ -3,6 +3,7 @@
 	namespace App\Http\Controllers;
 
 use App\Answer;
+use App\Events\NewAnswerEvent;
 use App\Http\Requests\AnswerCreateRequest;
 use App\Http\Requests\AnswerDeleteRequest;
 use App\Http\Requests\AnswerUpdateRequest;
@@ -106,6 +107,9 @@ class AnswerController extends Controller
 			$answer->user_id = $user->id;
 			$answer->question_id = $questionId;
 			$answer->save();
+
+			event(new NewAnswerEvent($answer));
+
 			return response()->json([
 				'id' => $answer->id,
 				'code' => 200,

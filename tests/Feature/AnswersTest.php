@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Answer;
+use App\Events\NewAnswerEvent;
 use App\Profile;
 use App\Question;
 use Tests\TestCase;
@@ -115,6 +116,8 @@ class AnswersTest extends TestCase
 
     public function testCreateAnswer()
     {
+        $this->expectsEvents(NewAnswerEvent::class);
+
         $user = factory(User::class)->create([
             'email' => 'testlogin@user.com',
             'password' => bcrypt('toptal123'),

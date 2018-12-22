@@ -31,6 +31,6 @@ class NewAnswerListener
      */
     public function handle(NewAnswerEvent $event)
     {
-        Log::notice('New Answer Has Been Added.');
+        Log::notice('User '.$event->answer->user_id.' has answered question '.$event->answer->question_id);
     }
 }

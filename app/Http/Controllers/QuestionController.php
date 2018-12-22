@@ -19,7 +19,7 @@ use JWTAuth;
  * Class QuestionController
  * @package App\Http\Controllers
  */
-class sc_5c1cc5d23a4de extends Controller
+class QuestionController extends Controller
 {
 
 

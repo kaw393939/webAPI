@@ -32,6 +32,6 @@ class NewQuestionListener
      */
     public function handle(NewQuestionEvent $event)
     {
-        Log::notice($event->question->user_id.' has asked a question: '.$event->question->getQuestion());
+        Log::notice('User '.$event->question->user_id.' has asked a question: '.$event->question->getQuestion());
     }
 }

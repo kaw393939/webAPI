@@ -31,6 +31,6 @@ class QuestionDeletedListener
      */
     public function handle(QuestionDeletedEvent $event)
     {
-        Log::notice('Question '.$event->question.' has been deleted.');
+        Log::notice('Question '.$event->question->id.' has been deleted.');
     }
 }

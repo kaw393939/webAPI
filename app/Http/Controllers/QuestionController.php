@@ -140,6 +140,8 @@ class QuestionController extends Controller
             $question->question = $input['question'];
             $question->save();
 
+            //event(new QuestionEditedEvent($question));
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,
@@ -168,6 +170,9 @@ class QuestionController extends Controller
         try {
 
             $question = \App\Question::find($id);
+
+            event(new QuestionDeletedEvent($question));
+
             $question->answers()->delete();
             $question->delete();
 

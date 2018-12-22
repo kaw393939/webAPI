@@ -21,7 +21,7 @@ class QuestionsTest extends TestCase
 
     public function testDeleteQuestion()
     {
-        //$this->expectsEvents(QuestionDeletedEvent::class);
+        $this->expectsEvents(QuestionDeletedEvent::class);
 
         $user = factory(\App\User::class)->create([
             'email' => 'testlogin@user.com',
@@ -66,7 +66,7 @@ class QuestionsTest extends TestCase
 
     public function testCreateQuestion()
         {
-            //$this->expectsEvents(NewQuestionEvent::class);
+            $this->expectsEvents(NewQuestionEvent::class);
 
             $user = factory(\App\User::class)->create([
                 'email' => 'testlogin@user.com',

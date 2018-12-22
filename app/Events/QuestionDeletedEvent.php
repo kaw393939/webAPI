@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Question;
 
 /**
  * Class QuestionDeletedEvent
@@ -23,7 +24,7 @@ class QuestionDeletedEvent
      *
      * @return void
      */
-    public function __construct($question)
+    public function __construct(Question $question)
     {
         $this->question=$question;
     }

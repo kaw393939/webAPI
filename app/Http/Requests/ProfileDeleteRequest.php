@@ -7,6 +7,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class ProfileDeleteRequest
+ * @package App\Http\Requests
+ */
 class ProfileDeleteRequest extends FormRequest
 {
     /**

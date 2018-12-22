@@ -8,6 +8,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class AnswerUpdateRequest
+ * @package App\Http\Requests
+ */
 class AnswerUpdateRequest extends FormRequest
 {
     /**

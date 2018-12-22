@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class QuestionDeleteRequest
+ * @package App\Http\Requests
+ */
 class QuestionDeleteRequest extends FormRequest
 {
     /**

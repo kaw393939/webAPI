@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
@@ -8,6 +9,10 @@ use JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Events\LogInEvent;
 
+/**
+ * Class LoginAPIController
+ * @package App\Http\Controllers\Auth
+ */
 class LoginAPIController extends Controller
 {
 
@@ -55,7 +60,6 @@ class LoginAPIController extends Controller
         event(new LogInEvent($request->email));
 
         try {
-
             if (! $jwt_token = JWTAuth::attempt($input)) {
                 return response()->json([
                     'code' => 401,
@@ -71,7 +75,6 @@ class LoginAPIController extends Controller
                 'message' => "Login Success",
                 'token' => $jwt_token,
             ], 200);
-
         } catch (JWTException $exception) {
             return response()->json([
                 'code' => 500,
@@ -80,6 +83,4 @@ class LoginAPIController extends Controller
             ], 500);
         }
     }
-
-
 }

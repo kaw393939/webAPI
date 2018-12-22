@@ -10,19 +10,31 @@
           <v-card-text>
             <v-form>
               <v-text-field
-                v-model="name"
-                :error-messages="nameErrors"
-                prepend-icon="person"
-                label="Name"
+                v-model.trim.lazy="firstName"
+                prepend-icon="account_circle"
+                name="firstName"
+                label="First Name"
                 type="text"
-                @input="$v.name.$touch()"
-                @blur="$v.name.$touch()"
+                :error-messages="firstNameErrors"
+                @input="$v.firstName.$touch()"
+                @blur="$v.firstName.$touch()"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model.trim.lazy="lastName"
+                prepend-icon="account_circle"
+                name="lastName"
+                label="Last Name"
+                type="text"
+                :error-messages="lastNameErrors"
+                @input="$v.lastName.$touch()"
+                @blur="$v.lastName.$touch()"
                 required
               ></v-text-field>
               <v-text-field
                 v-model="email"
                 :error-messages="emailErrors"
-                prepend-icon="person"
+                prepend-icon="mail"
                 label="Email"
                 type="email"
                 @input="$v.email.$touch()"
@@ -32,8 +44,8 @@
               <v-text-field
                 v-model="bio"
                 :error-messages="bioErrors"
-                prepend-icon="person"
-                label="Description.."
+                prepend-icon="assignment"
+                label="Bio.."
                 type="text"
                 @input="$v.bio.$touch()"
                 @blur="$v.bio.$touch()"
@@ -72,6 +84,8 @@
 
 
 <script>
+import get from "lodash/get";
+import { mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import {
   maxLength,
@@ -87,7 +101,9 @@ export default {
 
   data() {
     return {
-      name: "",
+      id: "",
+      firstName: "",
+      lastName: "",
       email: "",
       bio: "",
       submission: {
@@ -97,36 +113,65 @@ export default {
     };
   },
 
+  created() {
+    const { id } = this.$route.params;
+
+    const handleResponse = response => {
+      const userInfo = get(response, "data", {});
+
+      this.id = userInfo.id;
+      this.firstName = userInfo.first_name;
+      this.lastName = userInfo.last_name;
+      this.email = userInfo.email;
+      this.bio = userInfo.bio;
+    };
+
+    const handleError = error => {
+      // this.error = true;
+    };
+
+    axios
+      .get(`/api/profiles/${id}`)
+      .then(handleResponse)
+      .catch(handleError);
+  },
+
   validations: {
-    name: {
-      required,
-      minLength: minLength(2)
-    },
+    firstName: { required },
+    lastName: { required },
     email: {
       required,
       email
     },
-    bio: {
-      required,
-      minLength: minLength(5),
-      maxLength: maxLength(50)
-    }
+    bio: { required }
   },
 
   computed: {
-    nameErrors() {
-      const errors = [];
-      const { name } = this.$v;
+    ...mapGetters["authUser"],
 
-      if (!name.$dirty) {
+    firstNameErrors() {
+      const errors = [];
+      const { firstName } = this.$v;
+
+      if (!firstName.$dirty) {
         return errors;
       }
-      if (!name.minLength) {
-        const { minLength } = name.$params;
-        errors.push(`Name must be at least ${minLength.min} characters long.`);
+      if (!firstName.required) {
+        errors.push(`First name is required.`);
       }
-      if (!name.required) {
-        errors.push("Name is required.");
+
+      return errors;
+    },
+
+    lastNameErrors() {
+      const errors = [];
+      const { lastName } = this.$v;
+
+      if (!lastName.$dirty) {
+        return errors;
+      }
+      if (!lastName.required) {
+        errors.push(`Last name is required.`);
       }
 
       return errors;
@@ -157,16 +202,8 @@ export default {
       if (!bio.$dirty) {
         return errors;
       }
-      if (!bio.minLength || !bio.maxLength) {
-        const { minLength, maxLength } = bio.$params;
-        errors.push(
-          `Description must be between ${minLength.min} and ${
-            maxLength.max
-          } characters long.`
-        );
-      }
       if (!bio.required) {
-        errors.push("Description is required.");
+        errors.push("Bio is required.");
       }
 
       return errors;
@@ -189,6 +226,8 @@ export default {
     submit() {
       this.$v.$touch();
 
+      const { id } = this.$route.params;
+
       const submitForm = !this.$v.$invalid;
 
       if (!submitForm) return;
@@ -207,11 +246,19 @@ export default {
       const handleSuccessfulSubmission = response => {
         this.resetSubmissionErrors();
 
-        this.submission.success = true;
+        this.$router.push({
+          path: `/profile/${id}`
+        });
       };
 
       axios
-        .post("api/edit-profile", { name, email, bio })
+        .put(`/api/profiles/${id}`, {
+          id,
+          email: this.email,
+          first_name: this.firstName,
+          last_name: this.lastName,
+          bio: this.bio
+        })
         .then(handleSuccessfulSubmission)
         .catch(handleError);
     },

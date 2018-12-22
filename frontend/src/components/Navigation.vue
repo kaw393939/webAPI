@@ -62,7 +62,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(["isLoggedIn", "authUser"]),
 
     navLinks: function() {
       const excludedItemsIfAuthenticated = ["/login", "/register"];
@@ -76,9 +76,7 @@ export default {
         .map(item => {
           if (item.href !== "/profile/:id") return item;
 
-          // Get userId from global store when ready
-          // const userId = this.authUser.id || 1
-          const userId = 1;
+          const userId = this.authUser.id;
 
           return {
             ...item,

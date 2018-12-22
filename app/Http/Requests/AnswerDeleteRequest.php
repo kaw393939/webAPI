@@ -8,6 +8,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class AnswerDeleteRequest
+ * @package App\Http\Requests
+ */
 class AnswerDeleteRequest extends FormRequest
 {
     /**

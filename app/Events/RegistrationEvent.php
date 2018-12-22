@@ -11,6 +11,10 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
 
+/**
+ * Class RegistrationEvent
+ * @package App\Events
+ */
 class RegistrationEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

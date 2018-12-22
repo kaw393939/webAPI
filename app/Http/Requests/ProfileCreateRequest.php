@@ -7,6 +7,10 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class ProfileCreateRequest
+ * @package App\Http\Requests
+ */
 class ProfileCreateRequest extends FormRequest
 {
     /**
@@ -19,8 +23,7 @@ class ProfileCreateRequest extends FormRequest
     {
         if (JWTAuth::parseToken()->authenticate()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

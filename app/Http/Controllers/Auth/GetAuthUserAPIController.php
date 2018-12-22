@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Profile;
 use App\User;
@@ -10,9 +11,16 @@ use Illuminate\Support\Facades\Gate;
 use JWTAuth;
 use App\Http\Controllers\Controller;
 
-
+/**
+ * Class GetAuthUserAPIController
+ * @package App\Http\Controllers\Auth
+ */
 class GetAuthUserAPIController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getAuthUser(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
@@ -28,7 +36,7 @@ class GetAuthUserAPIController extends Controller
                 'first_name' => $profile->first_name,
                 'last_name' => $profile->last_name,
                 'bio' => $profile->bio,
-                ]
+            ]
         ], 200);
     }
 }

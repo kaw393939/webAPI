@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+	namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileCreateRequest;
 use App\Http\Requests\ProfileDeleteRequest;
@@ -13,13 +13,17 @@ use DB;
 use Illuminate\Http\Request;
 use JWTAuth;
 
+/**
+ * Class ProfileController
+ * @package App\Http\Controllers
+ */
 class ProfileController extends Controller
 {
 
 
 
 
-    /**
+	/**
      *
      * @SWG\Get (
      *      path = "/profiles",
@@ -38,7 +42,7 @@ class ProfileController extends Controller
      * Display a listing of the resource.
      *
      */
-    /**
+	/**
      *
      *
      *
@@ -48,22 +52,22 @@ class ProfileController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index()
-    {
-        return new ProfilesResource(ProfileResource::collection(Profile::all()));
-    }
+	public function index()
+	{
+		return new ProfilesResource(ProfileResource::collection(Profile::all()));
+	}
 
-    /**
+	/**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+	public function create()
+	{
+		//
+	}
 
-    /**
+	/**
      *
      *  * @SWG\Post (
      *      path = "/profiles/",
@@ -140,32 +144,32 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProfileCreateRequest $request)
-    {
-        $user = JWTAuth::parseToken()->authenticate();
-        $input = $request->only('first_name', 'last_name', 'bio');
+	public function store(ProfileCreateRequest $request)
+	{
+		$user = JWTAuth::parseToken()->authenticate();
+		$input = $request->only('first_name', 'last_name', 'bio');
 
-        try {
-            $profile = Profile::create($input);
-            $profile->user_id = $user->id;
-            $profile->save();
-            return response()->json([
-                'id' => $profile->id,
-                'code' => 200,
-                'status' => true,
-                'message' => "Create Success",
-            ], 200);
-        }
-        catch(\Exception $exception) {
-            return response()->json([
-                'code' => 404,
-                'status' => false,
-                'message' => "Create Fail",
-            ], 404);
-        }
-    }
+		try {
+			$profile = Profile::create($input);
+			$profile->user_id = $user->id;
+			$profile->save();
+			return response()->json([
+				'id' => $profile->id,
+				'code' => 200,
+				'status' => true,
+				'message' => "Create Success",
+			], 200);
+		}
+		catch(\Exception $exception) {
+			return response()->json([
+				'code' => 404,
+				'status' => false,
+				'message' => "Create Fail",
+			], 404);
+		}
+	}
 
-    /**
+	/**
      * Display the specified resource.
      *
      * /**
@@ -199,13 +203,13 @@ class ProfileController extends Controller
      * @param  User $user
      * @return ProfileResource
      */
-    public function show(Profile $profile)
-    {
-        ProfileResource::withoutWrapping();
-        return new ProfileResource($profile);
-    }
+	public function show(Profile $profile)
+	{
+		ProfileResource::withoutWrapping();
+		return new ProfileResource($profile);
+	}
 
-    /**
+	/**
      *
      *
      * Show the form for editing the specified resource.
@@ -213,12 +217,12 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+	public function edit($id)
+	{
+		//
+	}
 
-    /**
+	/**
      *
      *  * /**
      *
@@ -310,31 +314,31 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProfileUpdateRequest $request, $id)
-    {
-        try {
-            $profile = Profile::findOrFail($id);
-            $profile->update($request->all());
-            $user = User::findOrFail($profile['user_id']);
-            $user->email = $request->email;
-            $user->save();
+	public function update(ProfileUpdateRequest $request, $id)
+	{
+		try {
+			$profile = Profile::findOrFail($id);
+			$profile->update($request->all());
+			$user = User::findOrFail($profile['user_id']);
+			$user->email = $request->email;
+			$user->save();
 
-            return response()->json([
-                'code' => 200,
-                'status' => true,
-                'message' => "Profile Updated",
-            ], 200);
-        }
-        catch (\Exception $e) {
-            return response()->json([
-                'code' => 404,
-                'status' => true,
-                'message' => "Profile Update Failed",
-            ], 404);
-        }
-    }
+			return response()->json([
+				'code' => 200,
+				'status' => true,
+				'message' => "Profile Updated",
+			], 200);
+		}
+		catch (\Exception $e) {
+			return response()->json([
+				'code' => 404,
+				'status' => true,
+				'message' => "Profile Update Failed",
+			], 404);
+		}
+	}
 
-    /**
+	/**
      *
      *  /**
      *
@@ -385,24 +389,24 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProfileDeleteRequest $request, $id)
-    {
-        if(Profile::destroy($id)) {
-            return response()->json([
-                'id' => $id,
-                'code' => 200,
-                'status' => true,
-                'message' => "Delete Success",
-            ], 200);
-        }
-        else {
+	public function destroy(ProfileDeleteRequest $request, $id)
+	{
+		if(Profile::destroy($id)) {
+			return response()->json([
+				'id' => $id,
+				'code' => 200,
+				'status' => true,
+				'message' => "Delete Success",
+			], 200);
+		}
+		else {
 
-            return response()->json([
-                'id' => $id,
-                'code' => 404,
-                'status' => false,
-                'message' => "Delete Fail",
-            ], 404);
-        }
-    }
+			return response()->json([
+				'id' => $id,
+				'code' => 404,
+				'status' => false,
+				'message' => "Delete Fail",
+			], 404);
+		}
+	}
 }

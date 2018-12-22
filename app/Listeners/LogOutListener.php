@@ -7,6 +7,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class LogOutListener
+ * @package App\Listeners
+ */
 class LogOutListener
 {
     /**
@@ -27,6 +31,6 @@ class LogOutListener
      */
     public function handle(LogOutEvent $event)
     {
-        Log::notice('A User Has Logged Off:',['name'=>$event->user->name, 'email'=>$event->user->email]);
+        Log::notice('A User Has Logged Off:', ['name'=>$event->user->name, 'email'=>$event->user->email]);
     }
 }

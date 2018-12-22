@@ -11,6 +11,10 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
 
+/**
+ * Class LogOutEvent
+ * @package App\Events
+ */
 class LogOutEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

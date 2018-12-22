@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
+/**
+ * Class QuestionCreateRequest
+ * @package App\Http\Requests
+ */
 class QuestionCreateRequest extends FormRequest
 {
     /**
@@ -16,8 +20,7 @@ class QuestionCreateRequest extends FormRequest
     {
         if (JWTAuth::parseToken()->authenticate()) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UsersResource;
+
+/**
+ * Class UserController
+ * @package App\Http\Controllers
+ */
 class UserController extends Controller
 {
     /**
@@ -29,7 +34,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
         return new UsersResource(UserResource::collection(User::all()));
     }
 

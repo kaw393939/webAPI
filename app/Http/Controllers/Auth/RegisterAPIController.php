@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Profile;
@@ -13,6 +13,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Events\RegistrationEvent;
 
+/**
+ * Class RegisterAPIController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterAPIController extends Controller
 {
 
@@ -78,8 +82,8 @@ class RegisterAPIController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $input = $request->only( 'email', 'password', 'first_name', 'last_name', 'bio');
-        $profileInput = $request->only( 'first_name', 'last_name', 'bio');
+        $input = $request->only('email', 'password', 'first_name', 'last_name', 'bio');
+        $profileInput = $request->only('first_name', 'last_name', 'bio');
         $user = User::create($input);
         $user->password = Hash::make($input['password']);
         $user->save();

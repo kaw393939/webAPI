@@ -11,6 +11,10 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
 
+/**
+ * Class LogInEvent
+ * @package App\Events
+ */
 class LogInEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

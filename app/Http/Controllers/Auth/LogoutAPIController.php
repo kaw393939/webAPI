@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
 namespace App\Http\Controllers\Auth;
+
 use App\Events\LogOutEvent;
 use Illuminate\Http\Request;
 use JWTAuth;
@@ -10,6 +10,10 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Controllers\Controller;
 use App\User;
 
+/**
+ * Class LogoutAPIController
+ * @package App\Http\Controllers\Auth
+ */
 class LogoutAPIController extends Controller
 {
     /**
@@ -51,9 +55,7 @@ class LogoutAPIController extends Controller
 
     public function logout(Request $request)
     {
-
         try {
-
             event(new LogOutEvent($request->user()));
 
             JWTAuth::parseToken()->invalidate();

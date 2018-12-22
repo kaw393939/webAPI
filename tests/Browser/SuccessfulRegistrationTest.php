@@ -8,11 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SuccessfulRegistrationTest extends DuskTestCase
 {
-    /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
+
     public function testSuccessfulRegistration()
     {
         $this->artisan('migrate:refresh');

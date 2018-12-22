@@ -8,11 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class FailedLoginTest extends DuskTestCase
 {
-    /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
+
     public function testFailedLogin()
     {
         $this->browse(function (Browser $browser) {

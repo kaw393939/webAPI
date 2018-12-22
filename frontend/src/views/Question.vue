@@ -70,7 +70,7 @@
             v-if="allowCreatingAnswer"
             :to="question.createAnswerLink"
           >
-            <v-icon dark>add</v-icon>
+            <v-icon dark name="addQuestion">add</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>

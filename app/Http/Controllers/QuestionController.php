@@ -161,14 +161,23 @@ class QuestionController extends Controller
      */
     public function destroy(QuestionDeleteRequest $request, $id)
     {
-        if (Question::destroy($id)) {
+
+
+        try {
+
+            $question = \App\Question::find($id);
+            $question->answers()->delete();
+            $question->delete();
+
             return response()->json([
                 'id' => $id,
                 'code' => 200,
                 'status' => true,
                 'message' => "Delete Success",
             ], 200);
-        } else {
+        }
+        catch (\Exception $exception) {
+
             return response()->json([
                 'id' => $id,
                 'code' => 404,

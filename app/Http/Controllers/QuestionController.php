@@ -164,14 +164,13 @@ class QuestionController extends Controller
      */
     public function destroy(QuestionDeleteRequest $request, $id)
     {
-        $answers = \App\Answer::where('question_id', $id)->get();
-
-        foreach($answers as $answer) {
-            \App\Answer::destroy($answer->id);
-        }
 
 
-        if(Question::destroy($id)) {
+        try {
+
+            $question = \App\Question::find($id);
+            $question->answers()->delete();
+            $question->delete();
 
             return response()->json([
                 'id' => $id,
@@ -180,7 +179,7 @@ class QuestionController extends Controller
                 'message' => "Delete Success",
             ], 200);
         }
-        else {
+        catch (\Exception $exception) {
 
             return response()->json([
                 'id' => $id,

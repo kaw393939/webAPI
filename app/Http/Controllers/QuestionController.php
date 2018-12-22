@@ -14,6 +14,7 @@ use App\Question;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 use JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class QuestionController
@@ -87,6 +88,8 @@ class QuestionController extends Controller
             $question->user_id = $user->id;
             $question->save();
 
+            event(new NewQuestionEvent($question));
+
             return response()->json([
                 'id' => $question->id,
                 'code' => 200,
@@ -94,6 +97,7 @@ class QuestionController extends Controller
                 'message' => "Create Success",
             ], 200);
         } catch (\Exception $exception) {
+            Log::error($exception);
             return response()->json([
                 'code' => 404,
                 'status' => false,

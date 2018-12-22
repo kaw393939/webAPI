@@ -140,7 +140,6 @@ export default {
 
       const getAuthUser = () => {
         const handleGetAuthUserResponse = response => {
-          console.log("response", response);
           const { id, first_name, last_name, email, bio } = get(
             response,
             "data.user",

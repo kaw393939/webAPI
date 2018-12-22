@@ -151,7 +151,9 @@ export default {
        */
       let questions = get(response, "data.data", []);
 
-      questions = Array.isArray(questions) ? questions.slice(0, 30) : [];
+      questions = Array.isArray(questions)
+        ? questions.reverse().slice(0, 30)
+        : [];
       questions = questions.map(question =>
         withFormattedDate(question, "createdAt.date")
       );

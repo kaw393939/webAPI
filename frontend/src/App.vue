@@ -37,13 +37,18 @@ export default {
     };
 
     const handleError = err => {
-      const status = get(err, "response", {});
+      const status = get(err, "response.status", 400);
 
-      const StatusCode = { UNAUTHORIZED: 401, FORBIDDEN: 403 };
+      const StatusCode = {
+        UNAUTHORIZED: 401,
+        FORBIDDEN: 403,
+        BAD_REQUEST: 400
+      };
 
       if (
         status === StatusCode.FORBIDDEN ||
-        status === StatusCode.UNAUTHORIZED
+        status === StatusCode.UNAUTHORIZED ||
+        status === StatusCode.BAD_REQUEST
       ) {
         // delete all auth user data
         removeAuthToken();

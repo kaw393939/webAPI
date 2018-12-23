@@ -10,6 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
+use App\Profile;
 
 /**
  * Class LogOutEvent
@@ -26,7 +27,9 @@ class LogOutEvent
      */
     public function __construct(User $user)
     {
+        $profile = Profile::find($user->id);
         $this->user=$user;
+        $this->profile=$profile;
     }
 
     /**

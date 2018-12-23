@@ -10,6 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
+use App\Profile;
 
 /**
  * Class LogInEvent
@@ -26,8 +27,10 @@ class LogInEvent
      */
     public function __construct($email)
     {
-        $logging=User::where('email',$email)->first();
-        $this->user=$logging;
+        $user = User::where('email',$email)->first();
+        $profile = Profile::find($user->id);
+        $this->user=$user;
+        $this->profile=$profile;
     }
 
     /**

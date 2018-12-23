@@ -10,6 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\User;
+use App\Profile;
 
 /**
  * Class RegistrationEvent
@@ -24,9 +25,11 @@ class RegistrationEvent
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct(User $user)
     {
+        $profile = Profile::find($user->id);
         $this->user=$user;
+        $this->profile=$profile;
     }
 
     /**

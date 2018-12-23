@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\User;
+use App\Profile;
 
 /**
  * Class RegistrationListener
@@ -32,6 +33,6 @@ class RegistrationListener
      */
     public function handle(RegistrationEvent $event)
     {
-        Log::notice('New User Registered: ', ['name'=>$event->user->name, 'email'=>$event->user->email]);
+        Log::notice('New User Registered: ', ['name'=>$event->profile->first_name . " " . $event->profile->last_name, 'email'=>$event->user->email]);
     }
 }

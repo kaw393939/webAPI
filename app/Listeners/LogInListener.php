@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use App\User;
+use App\Profile;
 
 /**
  * Class LogInListener
@@ -32,6 +33,6 @@ class LogInListener
      */
     public function handle(LogInEvent $event)
     {
-        Log::notice('User Has Logged In: ', ['name'=>$event->user->name, 'email'=>$event->user->email]);
+        Log::notice('User Has Logged In: ', ['name'=>$event->profile->first_name . " " . $event->profile->last_name, 'email'=>$event->user->email]);
     }
 }

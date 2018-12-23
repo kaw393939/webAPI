@@ -31,6 +31,6 @@ class LogOutListener
      */
     public function handle(LogOutEvent $event)
     {
-        Log::notice('A User Has Logged Off:', ['name'=>$event->user->name, 'email'=>$event->user->email]);
+        Log::notice('A User Has Logged Off:', ['name'=>$event->profile->first_name . " " . $event->profile->last_name, 'email'=>$event->user->email]);
     }
 }

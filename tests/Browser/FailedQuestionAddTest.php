@@ -7,14 +7,14 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class SuccessfulQuestionAddTest extends DuskTestCase
+class FailedQuestionAddTest extends DuskTestCase
 {
     /**
      * A Dusk test example.
      *
      * @return void
      */
-    public function testSuccessfulQuestionAdd()
+    public function testFailedQuestionAdd()
     {
         $this->artisan('migrate:refresh');
         $this->browse(function (Browser $browser) {
@@ -40,12 +40,12 @@ class SuccessfulQuestionAddTest extends DuskTestCase
                 ->assertPathIs('/')
                 ->click('@addQuestion')
                 ->assertPathIs('/question')
-                ->type('question', 'Lorem ipsum')
-                ->press('SUBMIT')
-                ->assertSee('Your question was created successfully!')
-                ->click('@home')
-                ->assertPathIs('/')
-                ->assertSee('Lorem ipsum');
+                ->type('question', ' ')
+                ->assertSee('Question is required.')
+                ->type('question', str_random(1))
+                ->assertSee('Question must be between 10 and 500 characters long.')
+                ->type('question', str_random(501))
+                ->assertSee('Question must be between 10 and 500 characters long.');
         });
     }
 }

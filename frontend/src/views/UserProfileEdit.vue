@@ -32,24 +32,30 @@
                 required
               ></v-text-field>
               <v-text-field
-                v-model="email"
-                :error-messages="emailErrors"
-                prepend-icon="mail"
-                label="Email"
-                type="email"
-                @input="$v.email.$touch()"
-                @blur="$v.email.$touch()"
-                required
+                      v-model.trim.lazy="email"
+                      prepend-icon="mail"
+                      name="email"
+                      label="Email"
+                      type="email"
+                      :error-messages="emailErrors"
+                      @input="$v.email.$touch()"
+                      @blur="$v.email.$touch()"
+                      required
               ></v-text-field>
               <v-text-field
-                v-model="bio"
-                :error-messages="bioErrors"
-                prepend-icon="assignment"
-                label="Bio.."
-                type="text"
-                @input="$v.bio.$touch()"
-                @blur="$v.bio.$touch()"
-                required
+                      v-model.trim.lazy="bio"
+                      name="bio"
+                      value
+                      prepend-icon="assignment"
+                      placeholder="Enter your bio here..."
+                      rows="3"
+                      :error-messages="bioErrors"
+                      @input="$v.bio.$touch()"
+                      @blur="$v.bio.$touch()"
+                      no-resize
+                      counter
+                      required
+                      clearable
               ></v-text-field>
             </v-form>
           </v-card-text>

@@ -27,6 +27,8 @@ cp .env.example .env
 Change the content of the `.env` file to the following:
 
 ```sh
+APP_URL=http://127.0.0.1:8000
+
 DB_CONNECTION=sqlite
 DB_HOST=/absolute/path/to/database.sqlite
 # DB_CONNECTION=mysql
@@ -86,6 +88,12 @@ php artisan serve
 ```
 
 Open `127.0.0.1:3000` or `localhost:3000` to view it in the browser.
+
+To run Dusk tests, after starting your local development server:
+
+```sh
+php artisan dusk
+```
 
 ## Contributing
 

@@ -9,18 +9,14 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class FailedRegistrationTest extends DuskTestCase
 {
-    /**
-     * A Dusk test example.
-     *
-     * @return void
-     */
+
     public function testFailedRegistration()
     {
         $this->artisan('migrate:refresh');
         $this->browse(function (Browser $browser) {
             $user = new User;
             $user->email = 'johndoe@email.com';
-            $user->password = 'your_password';
+            $user->password = bcrypt('your_password');
             $user->save();
             $browser->visit('/')
                     ->clickLink('Register')

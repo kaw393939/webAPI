@@ -17,7 +17,7 @@
           </card-header>
 
           <v-card-text>
-            <p class="title">{{ question.text }}</p>
+            <p class="title" dusk="question">{{ question.text }}</p>
           </v-card-text>
 
           <v-layout class="stats">

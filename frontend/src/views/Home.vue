@@ -63,7 +63,7 @@
     </v-layout>
 
     <v-btn v-if="userAuthenticated" fab fixed bottom right to="/question" color="primary">
-      <v-icon>add</v-icon>
+      <v-icon dusk="addQuestion">add</v-icon>
     </v-btn>
   </v-container>
 </template>
